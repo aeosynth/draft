@@ -7,7 +7,6 @@ var PORT = 1337
   , WSS = require('ws').Server
   , wss = new WSS({ server: server })
   , router = require('./lib/router')
-  , Q = require('./lib/q')
   ;
 
 app
@@ -16,10 +15,7 @@ app
   ;
 
 app.post('/create', function(req, res) {
-  var q = new Q(req.body.set)
-    , id = q.id
-    ;
-  router.routes[id] = q;
+  var id = router.create(req.body.set);
   res.redirect('/q.html#' + id);
 });
 
