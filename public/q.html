@@ -1,12 +1,38 @@
 <!doctype html>
-<html>
+<html ng-app="app">
 <head>
   <meta charset="utf-8">
-  <title>draft queue</title>
-  <link rel="stylesheet" href="vendor/normalize.css">
+  <title>q</title>
 </head>
-<body>
-  <script src="vendor/zepto.js"></script>
+<body ng-controller="Ctrl">
+  <table>
+    <tr ng-repeat="player in players" class="{self: $index == index}">
+      <td>{{ $index }}</td><td>{{ player.name }}</td><td>{{ player.time }}</td><td>{{ player.packs }}</td>
+    </tr>
+  </table>
+  <button ng-show="end">download</button>
+  <ul>
+    <li ng-repeat="card in pack">
+      <img ng-src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={{ card.id }}&type=card"
+        ng-click="pick(card)"
+        >
+    </li>
+  </ul>
+  <ul>
+    <li ng-repeat="card in main">
+      <img ng-src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={{ card.id }}&type=card"
+        ng-click="toSide(card)"
+        >
+    </li>
+  </ul>
+  <ul>
+    <li ng-repeat="card in side">
+      <img ng-src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={{ card.id }}&type=card"
+        ng-click="toMain(card)"
+        >
+    </li>
+  </ul>
+  <script src="vendor/angular.js"></script>
   <script src="js/q.js"></script>
 </body>
 </html>
