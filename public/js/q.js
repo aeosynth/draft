@@ -6,9 +6,8 @@ angular.module('app', [], function($provide) {
       ws._emit('connect');
     };
     ws.onmessage = function(msg) {
-      console.log(msg);
-      msg = JSON.parse(msg);
-      ws._emit(msg.event, msg.arg);
+      var data = JSON.parse(msg.data);
+      ws._emit(data.name, data.args);
     };
     ws.on = function(event, cb) {
       ws.cb[event] || (ws.cb[event] = []);
@@ -19,9 +18,9 @@ angular.module('app', [], function($provide) {
         cb(arg);
       });
     };
-    ws.emit = function(event, obj) {
-      obj.event = event;
-      ws.send(JSON.stringify(obj));
+    ws.emit = function() {
+      var args = Array.prototype.slice.call(arguments);
+      ws.send(JSON.stringify(args));
     };
     return ws;
   });
@@ -31,18 +30,19 @@ function Ctrl($scope, ws) {
   localStorage.pid || (localStorage.pid = Math.floor(Math.random() * 1e8));
 
   ws.on('connect', function() {
-    ws.emit('init', {
-      qid: location.hash.slice(1)
-    , pid: localStorage.pid
-    , name: localStorage.name
-    });
+    var qid = location.hash.slice(1)
+    , pid = localStorage.pid
+    , name = localStorage.name
+    ;
+    ws.emit('init', qid, pid, name);
   });
 
   ws.on('index', function(index) {
     $scope.index = index;
   });
-  ws.on('meta', function(players) {
+  ws.on('players', function(players) {
     $scope.players = players;
+    $scope.$apply();
   });
   ws.on('pick', function(card) {
     $scope.main.push(card);
