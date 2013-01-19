@@ -66,6 +66,7 @@ function Ctrl($scope, $timeout, $http, ws) {
   });
   ws.on('pack', function(pack) {
     $scope.pack = pack;
+    $scope.pack.show = true;
     $scope.$apply();
   });
   ws.on('pick', function(card) {
@@ -83,10 +84,12 @@ function Ctrl($scope, $timeout, $http, ws) {
 
   $scope.pick = function(card) {
     ws.emit('pick', $scope.pack.id, card.id);
+    $scope.pack.show = false;
   };
   $scope.name = function(name) {
     $scope.self.edit = false;
     ws.emit('name', name);
+    localStorage.name = name;
   };
   $scope.toSide = function(card) {
     var main = $scope.main;

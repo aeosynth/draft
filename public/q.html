@@ -23,7 +23,7 @@
     <textarea name="deck" hidden>{{ deck }}</textarea>
     <button ng-click="download()">download</button>
   </form>
-  <div class="container">
+  <div class="container" ng-show="pack.show">
     <h1>pack</h1>
     <img ng-repeat="card in pack.cards" ng-src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={{ card.id }}&type=card"
       ng-click="pick(card)"
