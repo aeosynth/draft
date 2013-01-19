@@ -55,18 +55,23 @@ function Ctrl($scope, $timeout, $http, ws) {
 
   ws.on('index', function(index) {
     $scope.index = index;
+    $scope.opponentIndex = (index + 4) % 8;// XXX magic
     $scope.$apply();
   });
   ws.on('players', function(players) {
     $scope.players = players;
     $scope.self = $scope.players[$scope.index];
+    $scope.self.class = 'self';
+    var opp = $scope.players[$scope.opponentIndex];
+    if (opp)
+      opp.class = 'opponent';
     if (!$scope.self.name)
       $scope.self.edit = true;
     $scope.$apply();
   });
   ws.on('pack', function(pack) {
+    pack.show = true;
     $scope.pack = pack;
-    $scope.pack.show = true;
     $scope.$apply();
   });
   ws.on('pick', function(card) {
