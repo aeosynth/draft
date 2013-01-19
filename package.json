@@ -1,6 +1,6 @@
 {
   "name": "draft",
-  "version": "0.0.0-5",
+  "version": "0.0.0-7",
   "author": "James Campos <james.r.campos@gmail.com>",
   "dependencies": {
     "express": "~3.0.5",
@@ -8,6 +8,10 @@
     "ws": "~0.4.25"
   },
   "subdomain": "drafts.in",
+  "domains": [
+    "drafts.in",
+    "www.drafts.in"
+  ],
   "scripts": {
     "start": "app.js"
   },
