@@ -59,6 +59,9 @@ function Ctrl($scope, $timeout, $http, ws) {
   });
   ws.on('players', function(players) {
     $scope.players = players;
+    $scope.self = $scope.players[$scope.index];
+    if (!$scope.self.name)
+      $scope.self.edit = true;
     $scope.$apply();
   });
   ws.on('pack', function(pack) {
@@ -82,6 +85,7 @@ function Ctrl($scope, $timeout, $http, ws) {
     ws.emit('pick', $scope.pack.id, card.id);
   };
   $scope.name = function(name) {
+    $scope.self.edit = false;
     ws.emit('name', name);
   };
   $scope.toSide = function(card) {
