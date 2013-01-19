@@ -19,6 +19,12 @@ app.post('/create', function(req, res) {
   res.redirect('/q.html#' + id);
 });
 
+app.post('/deck', function(req, res) {
+  var deck = req.body.deck;
+  res.attachment('draft.dec');
+  res.send(deck);
+});
+
 wss.on('connection', router);
 
 server.listen(PORT);

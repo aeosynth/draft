@@ -5,6 +5,9 @@ angular.module('app', [], function($provide) {
     ws.onopen = function() {
       ws._emit('connect');
     };
+    ws.onclose = function() {
+      ws._emit('disconnect');
+    };
     ws.onmessage = function(msg) {
       var data = JSON.parse(msg.data);
       ws._emit(data.name, data.args);
@@ -26,8 +29,21 @@ angular.module('app', [], function($provide) {
   });
 });
 
-function Ctrl($scope, ws) {
+function Ctrl($scope, $timeout, $http, ws) {
+  $scope.main = [];
+  $scope.side = [];
+
   localStorage.pid || (localStorage.pid = Math.floor(Math.random() * 1e8));
+
+  function decrement() {
+    angular.forEach($scope.players, function(player) {
+      if (player.time)
+        --player.time;
+    });
+    $timeout(decrement, 1000);
+  }
+
+  $timeout(decrement, 1000);
 
   ws.on('connect', function() {
     var qid = location.hash.slice(1)
@@ -45,6 +61,10 @@ function Ctrl($scope, ws) {
     $scope.players = players;
     $scope.$apply();
   });
+  ws.on('pack', function(pack) {
+    $scope.pack = pack;
+    $scope.$apply();
+  });
   ws.on('pick', function(card) {
     $scope.main.push(card);
     $scope.$apply();
@@ -53,13 +73,13 @@ function Ctrl($scope, ws) {
     $scope.main = cards;
     $scope.$apply();
   });
-  ws.on('end', function() {
+  ws.on('disconnect', function() {
     $scope.end = true;
     $scope.$apply();
   });
 
   $scope.pick = function(card) {
-    ws.emit('pick', card);
+    ws.emit('pick', $scope.pack.id, card.id);
   };
   $scope.name = function(name) {
     ws.emit('name', name);
@@ -75,16 +95,24 @@ function Ctrl($scope, ws) {
     $scope.main.push(card);
   };
   $scope.download = function() {
-    var main = []
-      , side = []
+    var main = {}
+      , side = {}
+      , deck = []
       ;
     angular.forEach($scope.main, function(card) {
-      main.push(card.name);
+      main[card.name] || (main[card.name] = 0);
+      main[card.name] += 1;
     });
     angular.forEach($scope.side, function(card) {
-      side.push(card.name);
+      side[card.name] || (side[card.name] = 0);
+      side[card.name] += 1;
     });
-    console.log(main);
-    console.log(side);
+    angular.forEach(main, function(num, name) {
+      deck.push(num + ' ' + name);
+    });
+    angular.forEach(side, function(num, name) {
+      deck.push('SB: ' + num + ' ' + name);
+    });
+    $scope.deck = deck.join('\n');
   };
 }

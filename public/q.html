@@ -12,28 +12,25 @@
       <td>{{ $index }}</td><td>{{ player.name }}</td><td>{{ player.time }}</td><td>{{ player.packs }}</td>
     </tr>
   </table>
-  <button ng-show="end">download</button>
-  <ul>
-    <li ng-repeat="card in pack">
-      <img ng-src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={{ card.id }}&type=card"
-        ng-click="pick(card)"
-        >
-    </li>
-  </ul>
-  <ul>
-    <li ng-repeat="card in main">
-      <img ng-src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={{ card.id }}&type=card"
-        ng-click="toSide(card)"
-        >
-    </li>
-  </ul>
-  <ul>
-    <li ng-repeat="card in side">
-      <img ng-src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={{ card.id }}&type=card"
-        ng-click="toMain(card)"
-        >
-    </li>
-  </ul>
+  <form method="post" action="/deck" ng-show="end">
+    <textarea name="deck" hidden>{{ deck }}</textarea>
+    <button ng-click="download()">download</button>
+  </form>
+  <div class="container">
+    <img ng-repeat="card in pack.cards" ng-src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={{ card.id }}&type=card"
+      ng-click="pick(card)"
+      >
+  </div>
+  <div class="container">
+    <img ng-repeat="card in main" ng-src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={{ card.id }}&type=card"
+      ng-click="toSide(card)"
+      >
+    </div>
+  <div class="container">
+    <img ng-repeat="card in side" ng-src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={{ card.id }}&type=card"
+      ng-click="toMain(card)"
+      >
+  </div>
   <script src="vendor/angular.js"></script>
   <script src="js/q.js"></script>
 </body>
