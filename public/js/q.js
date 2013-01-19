@@ -39,6 +39,7 @@ function Ctrl($scope, ws) {
 
   ws.on('index', function(index) {
     $scope.index = index;
+    $scope.$apply();
   });
   ws.on('players', function(players) {
     $scope.players = players;
@@ -46,12 +47,15 @@ function Ctrl($scope, ws) {
   });
   ws.on('pick', function(card) {
     $scope.main.push(card);
+    $scope.$apply();
   });
   ws.on('picks', function(cards) {
     $scope.main = cards;
+    $scope.$apply();
   });
   ws.on('end', function() {
     $scope.end = true;
+    $scope.$apply();
   });
 
   $scope.pick = function(card) {
