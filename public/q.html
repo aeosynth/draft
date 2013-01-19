@@ -3,10 +3,12 @@
 <head>
   <meta charset="utf-8">
   <title>q</title>
+  <link rel="stylesheet" href="vendor/normalize.css">
+  <link rel="stylesheet" href="css/q.css">
 </head>
 <body ng-controller="Ctrl">
   <table>
-    <tr ng-repeat="player in players" class="{self: $index == index}">
+    <tr ng-repeat="player in players" ng-class="{self: $index == index}">
       <td>{{ $index }}</td><td>{{ player.name }}</td><td>{{ player.time }}</td><td>{{ player.packs }}</td>
     </tr>
   </table>
