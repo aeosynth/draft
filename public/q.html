@@ -17,16 +17,19 @@
     <button ng-click="download()">download</button>
   </form>
   <div class="container">
+    <h1>pack</h1>
     <img ng-repeat="card in pack.cards" ng-src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={{ card.id }}&type=card"
       ng-click="pick(card)"
       >
   </div>
   <div class="container">
+    <h1>main</h1>
     <img ng-repeat="card in main" ng-src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={{ card.id }}&type=card"
       ng-click="toSide(card)"
       >
-    </div>
+  </div>
   <div class="container">
+    <h1>side</h1>
     <img ng-repeat="card in side" ng-src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={{ card.id }}&type=card"
       ng-click="toMain(card)"
       >
