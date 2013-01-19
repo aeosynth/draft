@@ -9,6 +9,10 @@
   <script src="js/q.js"></script>
 </head>
 <body ng-controller="Ctrl" ng-cloak>
+  <div>
+    <label>beep<input type="checkbox" ng-model="beep"></label>
+    <audio src="/media/beep.wav"></audio>
+  </div>
   <table>
     <tr><th>name</th><th>time</th><th>packs</th></tr>
     <tr ng-repeat="player in players" ng-class="player.class">

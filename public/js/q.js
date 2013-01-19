@@ -70,7 +70,11 @@ function Ctrl($scope, $timeout, $http, ws) {
     $scope.$apply();
   });
   ws.on('pack', function(pack) {
-    pack.show = true;
+    if (pack) {
+      pack.show = true;
+      if (pack.cards.length && $scope.beep)
+        document.querySelector('audio').play();
+    }
     $scope.pack = pack;
     $scope.$apply();
   });

@@ -1,0 +1,11 @@
+.self {
+  background-color: rgba(0, 255, 0, .3);
+}
+
+.opponent {
+  background-color: rgba(255, 0, 0, .3);
+}
+
+.container {
+  border: 1px solid black;
+}
