@@ -6,6 +6,7 @@ var PORT = 1337
   , server = require('http').createServer(app)
   , wss = require('./lib/ws')(server)
   , router = require('./lib/router')
+  , genDeck = require('./lib/genDeck')
   ;
 
 app
@@ -23,8 +24,12 @@ app.post('/create', function(req, res) {
 });
 
 app.post('/deck', function(req, res) {
-  var deck = req.body.deck;
-  res.attachment('draft.dec');
+  var body = req.body
+    , deck = body.deck
+    , type = body.type
+    ;
+  deck = genDeck(deck, type);
+  res.attachment('draft.' + type);
   res.send(deck);
 });
 

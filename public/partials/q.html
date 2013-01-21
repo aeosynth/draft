@@ -26,8 +26,12 @@
     </tr>
   </table>
   <form method="post" action="/deck" ng-show="end">
-    <textarea name="deck" hidden>{{ deck }}</textarea>
+    <input type="text" name="deck" hidden ng-model="deck">
     <button ng-click="download()">download</button>
+    <select name="type">
+      <option value="dec">dec</option>
+      <option value="cod">cod</option>
+    </select>
   </form>
   <div class="container" ng-show="end">
     <h1>land</h1>

@@ -154,22 +154,20 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
   $scope.download = function() {
     var main = {}
       , side = {}
-      , deck = []
       ;
     angular.forEach($scope.main, function(card) {
-      main[card.name] || (main[card.name] = 0);
-      main[card.name] += 1;
+      var name = card.name;
+      main[name] || (main[name] = 0);
+      main[name] += 1;
     });
     angular.forEach($scope.side, function(card) {
-      side[card.name] || (side[card.name] = 0);
-      side[card.name] += 1;
+      var name = card.name;
+      side[name] || (side[name] = 0);
+      side[name] += 1;
     });
-    angular.forEach(main, function(num, name) {
-      deck.push(num + ' ' + name);
+    $scope.deck = JSON.stringify({
+      main: main,
+      side: side
     });
-    angular.forEach(side, function(num, name) {
-      deck.push('SB: ' + num + ' ' + name);
-    });
-    $scope.deck = deck.join('\n');
   };
 }
