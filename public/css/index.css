@@ -13,3 +13,7 @@
 .error {
   color: red;
 }
+
+img {
+  cursor: pointer;
+}
