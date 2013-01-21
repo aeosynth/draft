@@ -17,6 +17,9 @@ angular.module('app', [], function($provide, $routeProvider, $locationProvider) 
     ws.onopen = function() {
       ws._emit('connect');
     };
+    ws.onerror = function(error) {
+      ws._emit('error', error);
+    };
     ws.onclose = function() {
       ws._emit('disconnect');
     };
