@@ -147,7 +147,8 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
   };
   $scope.toMain = function(card) {
     var side = $scope.side;
-    side.splice(side.indexOf(card), 1);
+    if (!card.land)
+      side.splice(side.indexOf(card), 1);
     $scope.main.push(card);
   };
   $scope.download = function() {
