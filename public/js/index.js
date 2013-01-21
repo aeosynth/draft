@@ -83,16 +83,15 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
     $scope.$apply();
   });
 
-  ws.on('index', function(index) {
-    $scope.index = index;
-    $scope.opponentIndex = (index + 4) % 8;// XXX magic
-    $scope.$apply();
-  });
-  ws.on('players', function(players) {
+  ws.on('meta', function(meta) {
+    var players = meta.players
+      , index = meta.index
+      , oppIndex = (index + 4) % 8;// XXX magic
+      ;
     $scope.players = players;
-    $scope.self = $scope.players[$scope.index];
+    $scope.self = $scope.players[index];
     $scope.self.class = 'self';
-    var opp = $scope.players[$scope.opponentIndex];
+    var opp = players[oppIndex];
     if (opp)
       opp.class = 'opponent';
     if (!$scope.self.name)
