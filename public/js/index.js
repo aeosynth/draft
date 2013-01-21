@@ -58,6 +58,13 @@ function CreateCtrl($scope, $http, $location) {
 function QCtrl($scope, $timeout, $http, $routeParams, ws) {
   $scope.main = [];
   $scope.side = [];
+  $scope.land = [
+  { land: true, id: 73946, name: 'Forest' },
+  { land: true, id: 73951, name: 'Island' },
+  { land: true, id: 73958, name: 'Mountain' },
+  { land: true, id: 73963, name: 'Plains' },
+  { land: true, id: 73973, name: 'Swamp' }
+  ];
 
   localStorage.pid || (localStorage.pid = Math.floor(Math.random() * 1e8));
 
@@ -132,7 +139,8 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
   $scope.toSide = function(card) {
     var main = $scope.main;
     main.splice(main.indexOf(card), 1);
-    $scope.side.push(card);
+    if (!card.land)
+      $scope.side.push(card);
   };
   $scope.toMain = function(card) {
     var side = $scope.side;

@@ -26,7 +26,14 @@
     <textarea name="deck" hidden>{{ deck }}</textarea>
     <button ng-click="download()">download</button>
   </form>
-  <div class="container">
+  <div class="container" ng-show="end">
+    <h1>land</h1>
+    <img ng-repeat="card in land" ng-src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={{ card.id }}&type=card"
+      ng-src=""
+      ng-click="toMain(card)"
+      >
+  </div>
+  <div class="container" ng-hide="end">
     <h1>pack</h1>
     <div ng-show="pack.show">
       <img ng-repeat="card in pack.cards" ng-src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={{ card.id }}&type=card"
