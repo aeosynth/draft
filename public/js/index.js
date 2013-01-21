@@ -45,11 +45,26 @@ angular.module('app', [], function($provide, $routeProvider, $locationProvider) 
 });
 
 function CreateCtrl($scope, $http, $location) {
-  $scope.pack1 = 'Return to Ravnica';
-  $scope.pack2 = 'Return to Ravnica';
-  $scope.pack3 = 'Return to Ravnica';
+  $scope.sets = [
+    'Shards of Alara',
+    'Conflux',
+    'Alara Reborn',
+    'Zendikar',
+    'Worldwake',
+    'Rise of the Eldrazi',
+    'Scars of Mirrodin',
+    'Mirrodin Besieged',
+    'New Phyrexia',
+    'Innistrad',
+    'Dark Ascension',
+    'Avacyn Restored',
+    'Return to Ravnica'
+  ];
+  $scope.set1 = 'Return to Ravnica';
+  $scope.set2 = 'Return to Ravnica';
+  $scope.set3 = 'Return to Ravnica';
   $scope.create = function() {
-    var sets = [$scope.pack1, $scope.pack2, $scope.pack3];
+    var sets = [$scope.set1, $scope.set2, $scope.set3];
     $http.post('/create', { sets: sets })
       .success(function(data, status) {
         $location.path('/q/' + data.id);
