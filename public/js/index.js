@@ -1,4 +1,16 @@
-angular.module('app', [], function($provide) {
+angular.module('app', [], function($provide, $routeProvider, $locationProvider) {
+  $locationProvider.html5Mode(true);
+
+  $routeProvider
+    .when('/', {
+      templateUrl: '/partials/create.html',
+      controller: CreateCtrl
+    })
+    .when('/q/:qid', {
+      templateUrl: '/partials/q.html',
+      controller: QCtrl
+    })
+    ;
   $provide.factory('ws', function() {
     var ws = new WebSocket('ws://' + location.host);
     ws.cb = {};
@@ -29,7 +41,18 @@ angular.module('app', [], function($provide) {
   });
 });
 
-function Ctrl($scope, $timeout, $http, ws) {
+function CreateCtrl($scope, $http, $location) {
+  $scope.selected = 'Return to Ravnica';
+  $scope.create = function() {
+    $http.post('/create', { set: $scope.selected })
+      .success(function(data, status) {
+        $location.path('/q/' + data.id);
+      })
+      ;
+  };
+}
+
+function QCtrl($scope, $timeout, $http, $routeParams, ws) {
   $scope.main = [];
   $scope.side = [];
 
@@ -46,7 +69,7 @@ function Ctrl($scope, $timeout, $http, ws) {
   $timeout(decrement, 1000);
 
   ws.on('connect', function() {
-    var qid = location.hash.slice(1)
+    var qid = $routeParams.qid
     , pid = localStorage.pid
     , name = localStorage.name
     ;

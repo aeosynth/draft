@@ -1,0 +1,44 @@
+
+  <div>
+    <label>beep<input type="checkbox" ng-model="beep"></label>
+    <!--
+    http://freesound.org/people/pierrecartoons1979/sounds/90112/
+    cc-by-nc-3.0
+    -->
+    <audio src="/media/beep.wav"></audio>
+  </div>
+  <table>
+    <tr><th>#</th><th>name</th><th>time</th><th>packs</th></tr>
+    <tr ng-repeat="player in players" ng-class="player.class">
+      <td>{{ $index + 1 }}</td>
+      <td ng-switch on="player.edit">
+        <form ng-submit="name(player.name)" ng-switch-when="true"><input type="text" placeholder="username" autofocus ng-model="player.name"></form>
+        <span ng-switch-default>{{ player.name }}</span>
+      </td>
+      <td>{{ player.time }}</td><td>{{ player.packs }}</td>
+    </tr>
+  </table>
+  <form method="post" action="/deck" ng-show="end">
+    <textarea name="deck" hidden>{{ deck }}</textarea>
+    <button ng-click="download()">download</button>
+  </form>
+  <div class="container">
+    <h1>pack</h1>
+    <div ng-show="pack.show">
+      <img ng-repeat="card in pack.cards" ng-src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={{ card.id }}&type=card"
+        ng-click="pick(card)"
+        >
+    </div>
+  </div>
+  <div class="container">
+    <h1>main</h1>
+    <img ng-repeat="card in main" ng-src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={{ card.id }}&type=card"
+      ng-click="toSide(card)"
+      >
+  </div>
+  <div class="container">
+    <h1>side</h1>
+    <img ng-repeat="card in side" ng-src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={{ card.id }}&type=card"
+      ng-click="toMain(card)"
+      >
+  </div>

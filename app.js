@@ -10,12 +10,16 @@ var PORT = 1337
 
 app
   .use(express.static(__dirname + '/public'))
-  .use(express.urlencoded())
+  .use(express.bodyParser())
   ;
+
+app.get('/q/:qid', function(req, res) {
+  res.sendfile(__dirname + '/public/index.html');
+});
 
 app.post('/create', function(req, res) {
   var id = router.create(req.body.set);
-  res.redirect('/q.html#' + id);
+  res.send({ id: id });
 });
 
 app.post('/deck', function(req, res) {
