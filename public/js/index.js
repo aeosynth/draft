@@ -42,9 +42,12 @@ angular.module('app', [], function($provide, $routeProvider, $locationProvider) 
 });
 
 function CreateCtrl($scope, $http, $location) {
-  $scope.selected = 'Return to Ravnica';
+  $scope.pack1 = 'Return to Ravnica';
+  $scope.pack2 = 'Return to Ravnica';
+  $scope.pack3 = 'Return to Ravnica';
   $scope.create = function() {
-    $http.post('/create', { set: $scope.selected })
+    var sets = [$scope.pack1, $scope.pack2, $scope.pack3];
+    $http.post('/create', { sets: sets })
       .success(function(data, status) {
         $location.path('/q/' + data.id);
       })

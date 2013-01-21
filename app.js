@@ -18,7 +18,7 @@ app.get('/q/:qid', function(req, res) {
 });
 
 app.post('/create', function(req, res) {
-  var id = router.create(req.body.set);
+  var id = router.create(req.body.sets);
   res.send({ id: id });
 });
 
