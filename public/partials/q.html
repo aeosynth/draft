@@ -16,7 +16,10 @@
     <tr ng-repeat="player in players" ng-class="player.class">
       <td>{{ $index + 1 }}</td>
       <td ng-switch on="player.edit">
-        <form ng-submit="name(player.name)" ng-switch-when="true"><input type="text" placeholder="username" autofocus ng-model="player.name"></form>
+        <form ng-submit="name(player.name)" ng-switch-when="true">
+          <input type="text" placeholder="username" autofocus ng-model="player.name">
+          <button>save</button>
+        </form>
         <span ng-switch-default>{{ player.name }}</span>
       </td>
       <td>{{ player.time }}</td><td>{{ player.packs }}</td>
