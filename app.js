@@ -4,8 +4,7 @@ var PORT = 1337
   , express = require('express')
   , app = express()
   , server = require('http').createServer(app)
-  , WSS = require('ws').Server
-  , wss = new WSS({ server: server })
+  , wss = require('./lib/ws')(server)
   , router = require('./lib/router')
   ;
 
