@@ -1,4 +1,8 @@
+<div class="error" ng-show="error">
+  {{ error }}
+</div>
 
+<div ng-hide="error">
   <div>
     <label>beep<input type="checkbox" ng-model="beep"></label>
     <!--
@@ -42,3 +46,4 @@
       ng-click="toMain(card)"
       >
   </div>
+</div>

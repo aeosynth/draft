@@ -75,6 +75,10 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
     ;
     ws.emit('init', qid, pid, name);
   });
+  ws.on('error', function(error) {
+    $scope.error = error;
+    $scope.$apply();
+  });
 
   ws.on('index', function(index) {
     $scope.index = index;
