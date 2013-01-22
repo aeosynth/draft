@@ -3,13 +3,25 @@
 </div>
 
 <div ng-hide="error">
-  <div>
-    <label>beep<input type="checkbox" ng-model="beep"></label>
-    <!--
-    http://freesound.org/people/pierrecartoons1979/sounds/90112/
-    cc-by-nc-3.0
-    -->
-    <audio src="/media/beep.wav"></audio>
+  <div class="pull-right">
+    <div>
+      <label>beep<input type="checkbox" ng-model="beep"></label>
+      <!--
+      http://freesound.org/people/pierrecartoons1979/sounds/90112/
+      cc-by-nc-3.0
+      -->
+      <audio src="/media/beep.wav"></audio>
+    </div>
+    <div>
+      <form method="post" action="/deck">
+        <input type="text" name="deck" hidden ng-model="deck">
+        <button ng-disabled="!end" ng-click="download()">download</button>
+        <select name="type">
+          <option value="cod">cod</option>
+          <option value="dec">dec</option>
+        </select>
+      </form>
+    </div>
   </div>
   <table>
     <tr><th>#</th><th>name</th><th>time</th><th>packs</th></tr>
@@ -25,14 +37,6 @@
       <td>{{ player.time }}</td><td>{{ player.packs }}</td>
     </tr>
   </table>
-  <form method="post" action="/deck" ng-show="end">
-    <input type="text" name="deck" hidden ng-model="deck">
-    <button ng-click="download()">download</button>
-    <select name="type">
-      <option value="cod">cod</option>
-      <option value="dec">dec</option>
-    </select>
-  </form>
   <div class="container" ng-show="end">
     <h1>land</h1>
     <img ng-repeat="card in land" ng-src="{{ card.imgURL }}"
