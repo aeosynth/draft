@@ -39,12 +39,6 @@
     </tr>
   </table>
 
-  <div class="container">
-    <h1>land</h1>
-    <img ng-repeat="card in land" ng-src="{{ card.imgURL }}"
-      ng-click="toMain(card)"
-      >
-  </div>
   <div class="container" ng-hide="end">
     <h1>pack</h1>
     <div ng-show="pack.show">
@@ -52,6 +46,12 @@
         ng-click="pick(card)"
         >
     </div>
+  </div>
+  <div class="container">
+    <h1>land</h1>
+    <img ng-repeat="card in land" ng-src="{{ card.imgURL }}"
+      ng-click="toMain(card)"
+      >
   </div>
   <div class="container">
     <h1>main {{ main.length }}</h1>
