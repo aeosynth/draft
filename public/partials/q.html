@@ -37,12 +37,6 @@
       <td>{{ player.time }}</td><td>{{ player.packs }}</td>
     </tr>
   </table>
-  <div class="container" ng-show="end">
-    <h1>land</h1>
-    <img ng-repeat="card in land" ng-src="{{ card.imgURL }}"
-      ng-click="toMain(card)"
-      >
-  </div>
   <div class="container" ng-hide="end">
     <h1>pack</h1>
     <div ng-show="pack.show">
@@ -60,6 +54,12 @@
   <div class="container">
     <h1>side</h1>
     <img ng-repeat="card in side" ng-src="{{ card.imgURL }}"
+      ng-click="toMain(card)"
+      >
+  </div>
+  <div class="container">
+    <h1>land</h1>
+    <img ng-repeat="card in land" ng-src="{{ card.imgURL }}"
       ng-click="toMain(card)"
       >
   </div>
