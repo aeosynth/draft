@@ -35,28 +35,27 @@
   </form>
   <div class="container" ng-show="end">
     <h1>land</h1>
-    <img ng-repeat="card in land" ng-src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={{ card.id }}&type=card"
-      ng-src=""
+    <img ng-repeat="card in land" ng-src="{{ card.imgURL }}"
       ng-click="toMain(card)"
       >
   </div>
   <div class="container" ng-hide="end">
     <h1>pack</h1>
     <div ng-show="pack.show">
-      <img ng-repeat="card in pack.cards" ng-src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={{ card.id }}&type=card"
+      <img ng-repeat="card in pack.cards" ng-src="{{ card.imgURL }}"
         ng-click="pick(card)"
         >
     </div>
   </div>
   <div class="container">
     <h1>main</h1>
-    <img ng-repeat="card in main" ng-src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={{ card.id }}&type=card"
+    <img ng-repeat="card in main" ng-src="{{ card.imgURL }}"
       ng-click="toSide(card)"
       >
   </div>
   <div class="container">
     <h1>side</h1>
-    <img ng-repeat="card in side" ng-src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={{ card.id }}&type=card"
+    <img ng-repeat="card in side" ng-src="{{ card.imgURL }}"
       ng-click="toMain(card)"
       >
   </div>

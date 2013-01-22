@@ -58,11 +58,12 @@ function CreateCtrl($scope, $http, $location) {
     'Innistrad',
     'Dark Ascension',
     'Avacyn Restored',
-    'Return to Ravnica'
+    'Return to Ravnica',
+    'Gatecrash'
   ];
-  $scope.set1 = 'Return to Ravnica';
-  $scope.set2 = 'Return to Ravnica';
-  $scope.set3 = 'Return to Ravnica';
+  $scope.set1 = 'Gatecrash';
+  $scope.set2 = 'Gatecrash';
+  $scope.set3 = 'Gatecrash';
   $scope.create = function() {
     var sets = [$scope.set1, $scope.set2, $scope.set3];
     $http.post('/create', { sets: sets })
@@ -77,11 +78,11 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
   $scope.main = [];
   $scope.side = [];
   $scope.land = [
-  { land: true, id: 73946, name: 'Forest' },
-  { land: true, id: 73951, name: 'Island' },
-  { land: true, id: 73958, name: 'Mountain' },
-  { land: true, id: 73963, name: 'Plains' },
-  { land: true, id: 73973, name: 'Swamp' }
+  { land: true, name: 'Forest',   imgURL: 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=73946&type=card' },
+  { land: true, name: 'Island',   imgURL: 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=73951&type=card' },
+  { land: true, name: 'Mountain', imgURL: 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=73958&type=card' },
+  { land: true, name: 'Plains',   imgURL: 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=73963&type=card' },
+  { land: true, name: 'Swamp',    imgURL: 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=73973&type=card' }
   ];
 
   localStorage.pid || (localStorage.pid = Math.floor(Math.random() * 1e8));
@@ -128,15 +129,25 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
       pack.show = true;
       if (pack.cards.length && $scope.beep)
         document.querySelector('audio').play();
+      angular.forEach(pack.cards, function(card) {
+        if (!card.imgURL)
+          card.imgURL = "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=" + card.id + "&type=card";
+      });
     }
     $scope.pack = pack;
     $scope.$apply();
   });
   ws.on('pick', function(card) {
+    if (!card.imgURL)
+      card.imgURL = "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=" + card.id + "&type=card";
     $scope.main.push(card);
     $scope.$apply();
   });
   ws.on('picks', function(cards) {
+    angular.forEach(cards, function(card) {
+      if (!card.imgURL)
+        card.imgURL = "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=" + card.id + "&type=card";
+    });
     $scope.main = cards;
     $scope.$apply();
   });
