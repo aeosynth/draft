@@ -15,7 +15,7 @@
     <div>
       <form method="post" action="/deck">
         <input type="text" name="deck" hidden ng-model="deck">
-        <button ng-disabled="!end" ng-click="download()">download</button>
+        <button ng-click="download()">download</button>
         <select name="type">
           <option value="cod">cod</option>
           <option value="dec">dec</option>
@@ -45,6 +45,14 @@
       ng-click="toMain(card)"
       >
   </div>
+  <div class="container" ng-hide="end">
+    <h1>pack</h1>
+    <div ng-show="pack.show">
+      <img ng-repeat="card in pack.cards" ng-src="{{ card.imgURL }}"
+        ng-click="pick(card)"
+        >
+    </div>
+  </div>
   <div class="container">
     <h1>main {{ main.length }}</h1>
     <img ng-repeat="card in main | orderBy:'name'" ng-src="{{ card.imgURL }}"
@@ -56,13 +64,5 @@
     <img ng-repeat="card in side | orderBy:'name'" ng-src="{{ card.imgURL }}"
       ng-click="toMain(card)"
       >
-  </div>
-  <div class="container" ng-hide="end">
-    <h1>pack</h1>
-    <div ng-show="pack.show">
-      <img ng-repeat="card in pack.cards" ng-src="{{ card.imgURL }}"
-        ng-click="pick(card)"
-        >
-    </div>
   </div>
 </div>
