@@ -15,6 +15,7 @@ sets = [
   'Dark Ascension'
   'Avacyn Restored'
   'Return to Ravnica'
+  'Gatecrash'
 ]
 
 Sets = {}
