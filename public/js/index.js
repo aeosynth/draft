@@ -1,4 +1,5 @@
-angular.module('app', [], function($provide, $routeProvider, $locationProvider, $compileProvider) {
+angular
+.module('app', [], function($routeProvider, $locationProvider) {
   $locationProvider.html5Mode(true);
 
   $routeProvider
@@ -11,44 +12,45 @@ angular.module('app', [], function($provide, $routeProvider, $locationProvider, 
       controller: QCtrl
     })
     ;
-  $provide.factory('ws', function() {
-    var ws = new WebSocket('ws://' + location.host);
-    ws.cb = {};
-    ws.onopen = function() {
-      ws._emit('connect');
-    };
-    ws.onerror = function(error) {
-      ws._emit('error', error);
-    };
-    ws.onclose = function() {
-      ws._emit('disconnect');
-    };
-    ws.onmessage = function(msg) {
-      var data = JSON.parse(msg.data);
-      ws._emit(data.name, data.args);
-    };
-    ws.on = function(event, cb) {
-      ws.cb[event] || (ws.cb[event] = []);
-      ws.cb[event].push(cb);
-    };
-    ws._emit = function(event, arg) {
-      angular.forEach(ws.cb[event], function(cb) {
-        cb(arg);
-      });
-    };
-    ws.emit = function() {
-      var args = Array.prototype.slice.call(arguments);
-      ws.send(JSON.stringify(args));
-    };
-    return ws;
-  });
-  $compileProvider.directive('card', function() {
-    return {
-      restrict: 'E',
-      template: '<img ng-src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={{ card.id }}&type=card">'
-    };
-  });
-});
+})
+.factory('ws', function() {
+  var ws = new WebSocket('ws://' + location.host);
+  ws.cb = {};
+  ws.onopen = function() {
+    ws._emit('connect');
+  };
+  ws.onerror = function(error) {
+    ws._emit('error', error);
+  };
+  ws.onclose = function() {
+    ws._emit('disconnect');
+  };
+  ws.onmessage = function(msg) {
+    var data = JSON.parse(msg.data);
+    ws._emit(data.name, data.args);
+  };
+  ws.on = function(event, cb) {
+    ws.cb[event] || (ws.cb[event] = []);
+    ws.cb[event].push(cb);
+  };
+  ws._emit = function(event, arg) {
+    angular.forEach(ws.cb[event], function(cb) {
+      cb(arg);
+    });
+  };
+  ws.emit = function() {
+    var args = Array.prototype.slice.call(arguments);
+    ws.send(JSON.stringify(args));
+  };
+  return ws;
+})
+.directive('card', function() {
+  return {
+    restrict: 'E',
+    template: '<img ng-src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={{ card.id }}&type=card">'
+  };
+})
+;
 
 function CreateCtrl($scope, $http, $location) {
   $scope.sets = [
