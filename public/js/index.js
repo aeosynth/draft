@@ -1,4 +1,4 @@
-angular.module('app', [], function($provide, $routeProvider, $locationProvider) {
+angular.module('app', [], function($provide, $routeProvider, $locationProvider, $compileProvider) {
   $locationProvider.html5Mode(true);
 
   $routeProvider
@@ -42,6 +42,12 @@ angular.module('app', [], function($provide, $routeProvider, $locationProvider) 
     };
     return ws;
   });
+  $compileProvider.directive('card', function() {
+    return {
+      restrict: 'E',
+      template: '<img ng-src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={{ card.id }}&type=card">'
+    };
+  });
 });
 
 function CreateCtrl($scope, $http, $location) {
@@ -78,11 +84,11 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
   $scope.main = [];
   $scope.side = [];
   $scope.land = [
-  { land: true, name: 'Forest',   imgURL: 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=73946&type=card' },
-  { land: true, name: 'Island',   imgURL: 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=73951&type=card' },
-  { land: true, name: 'Mountain', imgURL: 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=73958&type=card' },
-  { land: true, name: 'Plains',   imgURL: 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=73963&type=card' },
-  { land: true, name: 'Swamp',    imgURL: 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=73973&type=card' }
+  { land: true, id: 73946, name: 'Forest'   },
+  { land: true, id: 73951, name: 'Island'   },
+  { land: true, id: 73958, name: 'Mountain' },
+  { land: true, id: 73963, name: 'Plains'   },
+  { land: true, id: 73973, name: 'Swamp'    }
   ];
 
   localStorage.pid || (localStorage.pid = Math.floor(Math.random() * 1e8));
