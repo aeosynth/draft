@@ -29,7 +29,8 @@ app.post('/deck', function(req, res) {
     , type = body.type
     ;
   deck = genDeck(deck, type);
-  res.attachment('draft.' + type);
+  if (deck)
+    res.attachment('draft.' + type);
   res.send(deck);
 });
 
