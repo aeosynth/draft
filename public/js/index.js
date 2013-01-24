@@ -124,10 +124,10 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
       ;
     $scope.players = players;
     $scope.self = $scope.players[index];
-    $scope.self.class = 'self';
+    $scope.self.self = true;
     var opp = players[oppIndex];
     if (opp)
-      opp.class = 'opponent';
+      opp.opponent = true;
     if (!$scope.self.name)
       $scope.self.edit = true;
     $scope.$apply();

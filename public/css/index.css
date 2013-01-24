@@ -7,7 +7,7 @@ img {
 }
 
 .opponent::after {
-  content: "<-- opponent";
+  content: '<-- opponent';
 }
 
 .container {
@@ -21,4 +21,8 @@ img {
 .pull-right {
   text-align: right;
   float: right;
+}
+
+.disconnected::after {
+  content: '<-- disconnected';
 }
