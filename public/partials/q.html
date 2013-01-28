@@ -14,18 +14,19 @@
     </div>
     <div>
       <form method="post" action="/deck">
-        <input type="text" name="deck" hidden ng-model="deck">
-        <button ng-click="download()">download</button>
+        <input type="text" name="deck" hidden ng-model="deckJSON">
+        <button ng-click="generateDeck()">download</button>
         <select name="type">
           <option value="cod">cod</option>
           <option value="dec">dec</option>
         </select>
       </form>
     </div>
+    <div>register deck<button ng-click="hash()">generate hash</button></div>
   </div>
 
   <table>
-    <tr><th>#</th><th>name</th><th>time</th><th>packs</th></tr>
+    <tr><th>#</th><th>name</th><th>time</th><th>packs</th><th>hash</th></tr>
     <tr ng-repeat="player in players" ng-class="{ self: player.self, opponent: player.opponent, disconnected: player.disconnected, dropped: player.dropped }">
       <td>{{ $index + 1 }}</td>
       <td ng-switch on="player.edit">
@@ -35,7 +36,9 @@
         </form>
         <span ng-switch-default>{{ player.name }}</span>
       </td>
-      <td>{{ player.time }}</td><td>{{ player.packs }}</td>
+      <td>{{ player.time }}</td>
+      <td>{{ player.packs }}</td>
+      <td>{{ player.hash }}</td>
     </tr>
   </table>
 

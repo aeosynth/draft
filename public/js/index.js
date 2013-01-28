@@ -185,7 +185,7 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
       side.splice(side.indexOf(card), 1);
     $scope.main.push(card);
   };
-  $scope.download = function() {
+  $scope.generateDeck = function() {
     var main = {}
       , side = {}
       ;
@@ -199,9 +199,14 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
       side[name] || (side[name] = 0);
       side[name] += 1;
     });
-    $scope.deck = JSON.stringify({
+    $scope.deck = {
       main: main,
       side: side
-    });
+    };
+    $scope.deckJSON = JSON.stringify($scope.deck);
+  };
+  $scope.hash = function() {
+    $scope.generateDeck();
+    ws.emit('hash', $scope.deck);
   };
 }
