@@ -19,7 +19,11 @@ app.get('/q/:qid', function(req, res) {
 });
 
 app.post('/create', function(req, res) {
-  var id = router.create(req.body.sets);
+  var body = req.body
+    , sets = body.sets
+    , sealed = body.sealed
+    , id = router.create(sets, sealed);
+    ;
   res.send({ id: id });
 });
 

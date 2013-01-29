@@ -72,9 +72,12 @@ function CreateCtrl($scope, $http, $location) {
   $scope.set1 = 'Gatecrash';
   $scope.set2 = 'Gatecrash';
   $scope.set3 = 'Gatecrash';
+  $scope.set4 = 'Gatecrash';
+  $scope.set5 = 'Gatecrash';
+  $scope.set6 = 'Gatecrash';
   $scope.create = function() {
-    var sets = [$scope.set1, $scope.set2, $scope.set3];
-    $http.post('/create', { sets: sets })
+    var sets = [$scope.set1, $scope.set2, $scope.set3, $scope.set4, $scope.set5, $scope.set6];
+    $http.post('/create', { sets: sets, sealed: $scope.sealed })
       .success(function(data, status) {
         $location.path('/q/' + data.id);
       })
@@ -120,8 +123,10 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
   ws.on('meta', function(meta) {
     var players = meta.players
       , index = meta.index
+      , ended = meta.ended
       , oppIndex = (index + 4) % 8;// XXX magic
       ;
+    $scope.end = ended;
     $scope.players = players;
     $scope.self = $scope.players[index];
     $scope.self.self = true;
