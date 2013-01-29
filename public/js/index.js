@@ -60,12 +60,15 @@ function CreateCtrl($scope, $http, $location) {
     'Zendikar',
     'Worldwake',
     'Rise of the Eldrazi',
+    'Magic 2011',
     'Scars of Mirrodin',
     'Mirrodin Besieged',
     'New Phyrexia',
+    'Magic 2012',
     'Innistrad',
     'Dark Ascension',
     'Avacyn Restored',
+    'Magic 2013',
     'Return to Ravnica',
     'Gatecrash'
   ];
