@@ -22,12 +22,14 @@ sets = [
 ]
 
 Sets = {}
+Cards = {}
 
 process = ->
   if set = sets.pop()
     scrape set
   else
-    fs.write 'cards/data.json', JSON.stringify(Sets), 'w'
+    fs.write 'cards/sets.json' , JSON.stringify(Sets) , 'w'
+    fs.write 'cards/cards.json', JSON.stringify(Cards), 'w'
     phantom.exit()
 
 scrape = (SET) ->
@@ -38,19 +40,14 @@ scrape = (SET) ->
     console.log "page: #{msg}"
   page.open url, (status) ->
     console.log SET, status
-    set = page.evaluate ->
-      set =
-        Land: []
-        Common: []
-        Uncommon: []
-        Rare: []
-        'Mythic Rare': []
+    cards = page.evaluate ->
+      cards = []
       for row, i in document.querySelectorAll '.textspoiler tr'
         [keyCell, valCell] = row.cells
         key = keyCell.textContent.trim()
 
         unless key
-          set[obj.rarity].push obj
+          cards.push obj
           continue
 
         val = valCell.textContent.trim()
@@ -73,12 +70,20 @@ scrape = (SET) ->
             rarity = split.pop()
             if (rarity is 'Rare') and (split[split.length-1] is 'Mythic')
               rarity = 'Mythic Rare'
-              split.pop()
-            obj.set = split.join ' '
             obj.rarity = rarity
           else
             obj[key] = val
-      set
+      cards
+    set =
+      Land: []
+      Common: []
+      Uncommon: []
+      Rare: []
+      'Mythic Rare': []
+    for card in cards
+      set[card.rarity].push card.name
+      Cards[card.name] = card
+    delete set.Land
     Sets[SET] = set
     page.close()
     process()
