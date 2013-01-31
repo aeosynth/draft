@@ -1,3 +1,5 @@
 node_modules
 *.swp
-data.json
+cards.json
+sets.json
+cube.json

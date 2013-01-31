@@ -2,6 +2,64 @@ fs = require 'fs'
 webpage = require 'webpage'
 
 sets = [
+  'Limited Edition Alpha'
+  'Limited Edition Beta'
+  'Unlimited Edition'
+  'Revised Edition'
+  'Fourth Edition'
+  'Fifth Edition'
+  'Classic Sixth Edition'
+  'Seventh Edition'
+  'Eighth Edition'
+  'Ninth Edition'
+  'Tenth Edition'
+  'Magic 2010'
+  'Arabian Nights'
+  'Anitiquities'
+  'Legends'
+  'The Dark'
+  'Fallen Empires'
+  'Homelands'
+  'Ice Age'
+  'Alliances'
+  'Coldsnap'
+  'Mirage'
+  'Visions'
+  'Weatherlight'
+  'Tempest'
+  'Stronghold'
+  'Exodus'
+  'Urza\'s Saga'
+  'Urza\'s Legacy'
+  'Urza\'s Destiny'
+  'Mercadian Masques'
+  'Nemesis'
+  'Prophecy'
+  'Invasion'
+  'Planeshift'
+  'Apocalypse'
+  'Odyssey'
+  'Torment'
+  'Judgment'
+  'Onslaught'
+  'Legions'
+  'Scourge'
+  'Mirrodin'
+  'Darksteel'
+  'Fifth Dawn'
+  'Champions of Kamigawa'
+  'Betrayers of Kamigawa'
+  'Saviors of Kamigawa'
+  'Ravnica: City of Guilds'
+  'Guildpact'
+  'Dissension'
+  'Time Spiral'
+  'Planar Chaos'
+  'Future Sight'
+  'Lorwyn'
+  'Morningtide'
+  'Shadowmoor'
+  'Eventide'
   'Shards of Alara'
   'Conflux'
   'Alara Reborn'
@@ -40,8 +98,9 @@ scrape = (SET) ->
     console.log "page: #{msg}"
   page.open url, (status) ->
     console.log SET, status
-    cards = page.evaluate ->
+    cards = page.evaluate (SET) ->
       cards = []
+      rarityRE = new RegExp "(?:^|, )#{SET} (Land|Common|Uncommon|Rare|Mythic Rare)"
       for row, i in document.querySelectorAll '.textspoiler tr'
         [keyCell, valCell] = row.cells
         key = keyCell.textContent.trim()
@@ -63,17 +122,16 @@ scrape = (SET) ->
             [_, val] = val.match /\((.+)\)/
             obj[key] = val
           when 'set/rarity'
-            # XXX cards can be in multiple sets, with different rarities
-            # this only looks at most recent set / rarity
-            [val] = val.split ', '
-            split = val.split ' '
-            rarity = split.pop()
-            if (rarity is 'Rare') and (split[split.length-1] is 'Mythic')
-              rarity = 'Mythic Rare'
-            obj.rarity = rarity
+            try
+              obj.rarity = val.match(rarityRE)[1]
+            catch err
+              console.log "#{obj.name} not in #{SET}"
+              # wtf '9th edition' sea eagle
+              obj.rarity = 'Land'
           else
             obj[key] = val
       cards
+    , SET
     set =
       Land: []
       Common: []
