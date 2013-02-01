@@ -23,10 +23,6 @@ img, label {
   float: right;
 }
 
-.disconnected::after {
-  content: '<-- disconnected';
-}
-
 .dropped::after {
   content: '<-- dropped';
 }
