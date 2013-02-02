@@ -5,6 +5,20 @@
 <div ng-hide="error">
   <div class="pull-right">
     <div>
+      <form method="post" action="/deck">
+        <input type="text" name="deck" hidden ng-model="deckJSON">
+        generates a hash on the FIRST
+        <button ng-disabled="!end" ng-click="generateDeck()">download</button>
+        <select name="type">
+          <option value="cod">cod</option>
+          <option value="dec">dec</option>
+        </select>
+      </form>
+    </div>
+    <div>
+      add lands directly to side by shift clicking
+    </div>
+    <div>
       <label>beep when receiving packs<input type="checkbox" ng-model="beep"></label>
       <!--
       http://freesound.org/people/pierrecartoons1979/sounds/90112/
@@ -13,25 +27,11 @@
       <audio src="/media/beep.wav"></audio>
     </div>
     <div>
-      <form method="post" action="/deck">
-        <input type="text" name="deck" hidden ng-model="deckJSON">
-        <button ng-click="generateDeck()">download</button>
-        <select name="type">
-          <option value="cod">cod</option>
-          <option value="dec">dec</option>
-        </select>
-      </form>
-    </div>
-    <div>register deck<button ng-click="hash()">generate hash</button></div>
-    <div>
       order by
       <select ng-model="order">
         <option>cmc</option>
         <option>name</option>
       </select>
-    </div>
-    <div>
-      add lands directly to side by shift clicking
     </div>
   </div>
 

@@ -209,6 +209,7 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
   $scope.generateDeck = function() {
     var main = {}
       , side = {}
+      , deck
       ;
     angular.forEach($scope.main, function(card) {
       var name = card.name;
@@ -220,14 +221,11 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
       side[name] || (side[name] = 0);
       side[name] += 1;
     });
-    $scope.deck = {
+    deck = {
       main: main,
       side: side
     };
-    $scope.deckJSON = JSON.stringify($scope.deck);
-  };
-  $scope.hash = function() {
-    $scope.generateDeck();
-    ws.emit('hash', $scope.deck);
+    $scope.deckJSON = JSON.stringify(deck);
+    ws.emit('hash', deck);
   };
 }
