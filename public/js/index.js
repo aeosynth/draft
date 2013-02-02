@@ -55,23 +55,23 @@ angular
 function CreateCtrl($scope, $http, $location) {
   $scope.size = 8;
   $scope.sets = [
-    'Shards of Alara',
-    'Conflux',
-    'Alara Reborn',
-    'Zendikar',
-    'Worldwake',
-    'Rise of the Eldrazi',
-    'Magic 2011',
-    'Scars of Mirrodin',
-    'Mirrodin Besieged',
-    'New Phyrexia',
-    'Magic 2012',
-    'Innistrad',
-    'Dark Ascension',
-    'Avacyn Restored',
-    'Magic 2013',
+    'Gatecrash',
     'Return to Ravnica',
-    'Gatecrash'
+    'Magic 2013',
+    'Avacyn Restored',
+    'Dark Ascension',
+    'Innistrad',
+    'Magic 2012',
+    'New Phyrexia',
+    'Mirrodin Besieged',
+    'Scars of Mirrodin',
+    'Magic 2011',
+    'Rise of the Eldrazi',
+    'Worldwake',
+    'Zendikar',
+    'Alara Reborn',
+    'Conflux',
+    'Shards of Alara'
   ];
   $scope.set1 = 'Gatecrash';
   $scope.set2 = 'Gatecrash';
