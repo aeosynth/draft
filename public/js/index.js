@@ -53,6 +53,7 @@ angular
 ;
 
 function CreateCtrl($scope, $http, $location) {
+  $scope.size = 8;
   $scope.sets = [
     'Shards of Alara',
     'Conflux',
@@ -80,7 +81,7 @@ function CreateCtrl($scope, $http, $location) {
   $scope.set6 = 'Gatecrash';
   $scope.create = function() {
     var sets = [$scope.set1, $scope.set2, $scope.set3, $scope.set4, $scope.set5, $scope.set6];
-    $http.post('/create', { sets: sets, sealed: $scope.sealed })
+    $http.post('/create', { sets: sets, sealed: $scope.sealed, size: $scope.size })
       .success(function(data, status) {
         $location.path('/q/' + data.id);
       })
@@ -127,8 +128,11 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
     var players = meta.players
       , index = meta.index
       , ended = meta.ended
-      , oppIndex = (index + 4) % 8;// XXX magic
+      , size = meta.size
+      , oppIndex
       ;
+    if (size === 8)// XXX magic
+      oppIndex = (index + (size/2)) % size;
     $scope.end = ended;
     $scope.players = players;
     $scope.self = $scope.players[index];
