@@ -30,6 +30,9 @@
         <option>name</option>
       </select>
     </div>
+    <div>
+      add lands directly to side by shift clicking
+    </div>
   </div>
 
   <table>
@@ -57,7 +60,7 @@
   </div>
   <div class="container">
     <h1>land</h1>
-    <card ng-repeat="card in land" ng-click="toMain(card)">
+    <card ng-repeat="card in land" ng-click="addLand(card, $event)">
   </div>
   <div class="container">
     <h1>main {{ main.length }}</h1>

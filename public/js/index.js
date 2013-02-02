@@ -196,9 +196,15 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
   };
   $scope.toMain = function(card) {
     var side = $scope.side;
+    side.splice(side.indexOf(card), 1);
     if (!card.land)
-      side.splice(side.indexOf(card), 1);
-    $scope.main.push(card);
+      $scope.main.push(card);
+  };
+  $scope.addLand = function(card, e) {
+    if (e.shiftKey)
+      $scope.side.push(card);
+    else
+      $scope.main.push(card);
   };
   $scope.generateDeck = function() {
     var main = {}
