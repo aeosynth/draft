@@ -133,6 +133,8 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
       ;
     if (size === 8)// XXX magic
       oppIndex = (index + (size/2)) % size;
+    while(size > players.length)
+      players.push({});
     $scope.end = ended;
     $scope.players = players;
     $scope.self = $scope.players[index];
