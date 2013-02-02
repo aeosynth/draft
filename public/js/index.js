@@ -90,14 +90,15 @@ function CreateCtrl($scope, $http, $location) {
 }
 
 function QCtrl($scope, $timeout, $http, $routeParams, ws) {
+  $scope.sort = 'name';
   $scope.main = [];
   $scope.side = [];
   $scope.land = [
-  { land: true, id: 73946, name: 'Forest'   },
-  { land: true, id: 73951, name: 'Island'   },
-  { land: true, id: 73958, name: 'Mountain' },
-  { land: true, id: 73963, name: 'Plains'   },
-  { land: true, id: 73973, name: 'Swamp'    }
+  { land: true, cmc: 0, id: 73946, name: 'Forest'   },
+  { land: true, cmc: 0, id: 73951, name: 'Island'   },
+  { land: true, cmc: 0, id: 73958, name: 'Mountain' },
+  { land: true, cmc: 0, id: 73963, name: 'Plains'   },
+  { land: true, cmc: 0, id: 73973, name: 'Swamp'    }
   ];
 
   localStorage.pid || (localStorage.pid = Math.floor(Math.random() * 1e8));

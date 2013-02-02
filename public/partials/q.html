@@ -23,6 +23,13 @@
       </form>
     </div>
     <div>register deck<button ng-click="hash()">generate hash</button></div>
+    <div>
+      order by
+      <select ng-model="order">
+        <option>cmc</option>
+        <option>name</option>
+      </select>
+    </div>
   </div>
 
   <table>
@@ -54,10 +61,10 @@
   </div>
   <div class="container">
     <h1>main {{ main.length }}</h1>
-    <card ng-repeat="card in main | orderBy:'name'" ng-click="toSide(card)">
+    <card ng-repeat="card in main | orderBy:order" ng-click="toSide(card)">
   </div>
   <div class="container">
     <h1>side</h1>
-    <card ng-repeat="card in side | orderBy:'name'" ng-click="toMain(card)">
+    <card ng-repeat="card in side | orderBy:order" ng-click="toMain(card)">
   </div>
 </div>
