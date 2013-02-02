@@ -90,7 +90,7 @@ function CreateCtrl($scope, $http, $location) {
 }
 
 function QCtrl($scope, $timeout, $http, $routeParams, ws) {
-  $scope.sort = 'name';
+  $scope.order = 'name';
   $scope.main = [];
   $scope.side = [];
   $scope.land = [
