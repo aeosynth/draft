@@ -152,25 +152,15 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
       pack.show = true;
       if (pack.cards.length && $scope.beep)
         document.querySelector('audio').play();
-      angular.forEach(pack.cards, function(card) {
-        if (!card.imgURL)
-          card.imgURL = "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=" + card.id + "&type=card";
-      });
     }
     $scope.pack = pack;
     $scope.$apply();
   });
   ws.on('pick', function(card) {
-    if (!card.imgURL)
-      card.imgURL = "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=" + card.id + "&type=card";
     $scope.main.push(card);
     $scope.$apply();
   });
   ws.on('picks', function(cards) {
-    angular.forEach(cards, function(card) {
-      if (!card.imgURL)
-        card.imgURL = "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=" + card.id + "&type=card";
-    });
     $scope.main = cards;
     $scope.$apply();
   });
