@@ -116,6 +116,23 @@ scrape = (SET) ->
           when 'name'
             [id] = valCell.firstElementChild.search.match /\d+/
             obj = { id }
+            val = val.replace 'Æ', 'AE' # cockatrice, mws both replace; must match for hash
+            obj[key] = val
+          when 'cost'
+            cmc = parseInt(val) or 0
+            [colored] = val.match /\D*$/g
+            stripped = colored.replace(/[^RGBUW]/g, '') or 'L' # colorLess
+            mono = /^(.)\1*$/.test stripped
+            color = if mono then stripped[0] else 'Y' # yellow
+            cmc += (colored.match(/[RGBUW]|\(.+?\)/g) || '').length # XXX mono-color hybrid
+            obj.cmc = cmc
+            obj.color = color
+            obj[key] = val
+          when 'color' # eg pact of negation
+            if val is 'Blue'
+              val = 'U'
+            else
+              val = val[...1]
             obj[key] = val
           when 'pow/tgh', 'loyalty'
             continue unless val
