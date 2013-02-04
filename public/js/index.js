@@ -90,6 +90,7 @@ function CreateCtrl($scope, $http, $location) {
 }
 
 function QCtrl($scope, $timeout, $http, $routeParams, ws) {
+  $scope.deckType = 'cod';
   $scope.order = 'name';
   $scope.main = [];
   $scope.side = [];
@@ -217,5 +218,9 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
     };
     $scope.deckJSON = JSON.stringify(deck);
     ws.emit('hash', deck);
+  };
+  $scope.hash = function(player) {
+    var hash = player.hash;
+    return hash ? hash[$scope.deckType] : '';
   };
 }

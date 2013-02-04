@@ -9,7 +9,7 @@
         <input type="text" name="deck" hidden ng-model="deckJSON">
         generates a hash on the FIRST
         <button ng-disabled="!end" ng-click="generateDeck()">download</button>
-        <select name="type">
+        <select name="type" ng-model="deckType">
           <option value="cod">cod</option>
           <option value="dec">dec</option>
         </select>
@@ -37,7 +37,7 @@
   </div>
 
   <table>
-    <tr><th>#</th><th>name</th><th>time</th><th>packs</th><th>hash</th></tr>
+    <tr><th>#</th><th>name</th><th>time</th><th>packs</th><th>{{ deckType }} hash</th></tr>
     <tr ng-repeat="player in players" ng-class="{ self: player.self, opponent: player.opponent, dropped: player.dropped }">
       <td>{{ $index + 1 }}</td>
       <td ng-switch on="player.edit">
@@ -49,7 +49,7 @@
       </td>
       <td>{{ player.time }}</td>
       <td>{{ player.packs }}</td>
-      <td>{{ player.hash }}</td>
+      <td>{{ hash(player) }}</td>
     </tr>
   </table>
 
