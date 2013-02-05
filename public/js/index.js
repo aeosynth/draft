@@ -90,7 +90,7 @@ function CreateCtrl($scope, $http, $location) {
 }
 
 function QCtrl($scope, $timeout, $http, $routeParams, ws) {
-  $scope.deckType = 'cod';
+  $scope.deckType = 'dec';
   $scope.order = 'name';
   $scope.main = [];
   $scope.side = [];
