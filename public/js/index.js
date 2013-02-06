@@ -68,7 +68,7 @@ angular
     return [].concat(colors.L, colors.B, colors.G, colors.R, colors.U, colors.W, colors.Y);;
   }
   function cmcFilter(cards) {
-    var cmc = {}
+    var cmc = []
       , cmcArr = []
       ;
     angular.forEach(cards, function(card) {
