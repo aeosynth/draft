@@ -91,6 +91,7 @@ angular
 ;
 
 function CreateCtrl($scope, $http, $location) {
+  $scope.type = 'draft';
   $scope.size = 8;
   $scope.sets = [
     'Gatecrash',
