@@ -50,6 +50,44 @@ angular
     template: '<img ng-src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={{ card.id }}&type=card">'
   };
 })
+.filter('stableSort', function() {
+  // there is probably a much better way of doing this
+  function colorFilter(cards) {
+    var colors = {
+      L: [],
+      B: [],
+      G: [],
+      R: [],
+      U: [],
+      W: [],
+      Y: []
+    }
+    angular.forEach(cards, function(card) {
+      colors[card.color].push(card);
+    });
+    return [].concat(colors.L, colors.B, colors.G, colors.R, colors.U, colors.W, colors.Y);;
+  }
+  function cmcFilter(cards) {
+    var cmc = {}
+      , cmcArr = []
+      ;
+    angular.forEach(cards, function(card) {
+      cmc[card.cmc] || (cmc[card.cmc] = []);
+      cmc[card.cmc].push(card);
+    });
+    angular.forEach(cmc, function(arr) {
+      cmcArr.push.apply(cmcArr, arr);
+    });
+    return cmcArr;
+  }
+  return function(cards, order) {
+    switch (order) {
+      case 'cmc': return cmcFilter(cards);
+      case 'color': return colorFilter(cards);
+      case 'name': return cards;// already sorted by name
+    }
+  };
+})
 ;
 
 function CreateCtrl($scope, $http, $location) {
@@ -91,15 +129,15 @@ function CreateCtrl($scope, $http, $location) {
 
 function QCtrl($scope, $timeout, $http, $routeParams, ws) {
   $scope.deckType = 'dec';
-  $scope.order = 'name';
+  $scope.order = 'color';
   $scope.main = [];
   $scope.side = [];
   $scope.land = [
-  { land: true, cmc: 0, id: 73946, name: 'Forest'   },
-  { land: true, cmc: 0, id: 73951, name: 'Island'   },
-  { land: true, cmc: 0, id: 73958, name: 'Mountain' },
-  { land: true, cmc: 0, id: 73963, name: 'Plains'   },
-  { land: true, cmc: 0, id: 73973, name: 'Swamp'    }
+  { land: true, cmc: 0, color: 'L', id: 73946, name: 'Forest'   },
+  { land: true, cmc: 0, color: 'L', id: 73951, name: 'Island'   },
+  { land: true, cmc: 0, color: 'L', id: 73958, name: 'Mountain' },
+  { land: true, cmc: 0, color: 'L', id: 73963, name: 'Plains'   },
+  { land: true, cmc: 0, color: 'L', id: 73973, name: 'Swamp'    }
   ];
 
   localStorage.pid || (localStorage.pid = Math.floor(Math.random() * 1e8));
