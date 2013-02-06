@@ -17,14 +17,19 @@
   <option>cube</option>
 </select>
 <div>
-  <select ng-model="set1" ng-options="set for set in sets"></select>
-  <select ng-model="set2" ng-options="set for set in sets"></select>
-  <select ng-model="set3" ng-options="set for set in sets"></select>
+  <select ng-disabled="type == 'cube'" ng-model="set1" ng-options="set for set in sets"></select>
+  <select ng-disabled="type == 'cube'" ng-model="set2" ng-options="set for set in sets"></select>
+  <select ng-disabled="type == 'cube'" ng-model="set3" ng-options="set for set in sets"></select>
 </div>
 <div>
   <select ng-disabled="type != 'sealed'" ng-model="set4" ng-options="set for set in sets"></select>
   <select ng-disabled="type != 'sealed'" ng-model="set5" ng-options="set for set in sets"></select>
   <select ng-disabled="type != 'sealed'" ng-model="set6" ng-options="set for set in sets"></select>
+</div>
+<div>
+  <select ng-disabled="type != 'cube'" ng-model="cube">
+    <option>mtgo holiday</option>
+  </select>
 </div>
 
 <div>
