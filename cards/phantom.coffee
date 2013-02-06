@@ -1,6 +1,8 @@
 fs = require 'fs'
 webpage = require 'webpage'
 
+# XXX split cards (eg Fire // Ice) need massaging
+
 sets = [
   'Gatecrash'
   'Return to Ravnica'
@@ -77,6 +79,12 @@ sets = [
   'Unlimited Edition'
   'Limited Edition Beta'
   'Limited Edition Alpha'
+  'Portal Three Kingdoms'
+  'Portal Second Age'
+  'Portal'
+  'Unhinged'
+  'Unglued'
+  'Magic: The Gathering-Commander'
 ]
 
 Sets = {}
@@ -86,6 +94,17 @@ process = ->
   if set = sets.pop()
     scrape set
   else
+    # WTF
+    od = sets.Odyssey.Rare
+    bad = 'XXCall of the Herd (Call of the Herd)'
+    good = 'Call of the Herd'
+    i = od.indexOf(bad)
+    if ~i
+      od[i] = good
+      Cards[good] = Cards[bad]
+      Cards[good].name = good
+      delete Cards[bad]
+
     fs.write 'cards/sets.json' , JSON.stringify(Sets) , 'w'
     fs.write 'cards/cards.json', JSON.stringify(Cards), 'w'
     phantom.exit()
