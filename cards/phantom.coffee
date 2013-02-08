@@ -1,5 +1,6 @@
 fs = require 'fs'
 webpage = require 'webpage'
+EXTEND = require('system').args[1]
 
 # XXX split cards (eg Fire // Ice) need massaging
 
@@ -74,7 +75,7 @@ sets = [
   'The Dark'
   'Legends'
   'Revised Edition'
-  'Anitiquities'
+  'Antiquities'
   'Arabian Nights'
   'Unlimited Edition'
   'Limited Edition Beta'
@@ -85,6 +86,8 @@ sets = [
   'Unhinged'
   'Unglued'
   'Magic: The Gathering-Commander'
+  'Planechase 2012 Edition' # baleful strix
+  'Masters Edition II' # mana crypt. also in set 'Promo set for Gatherer'
 ]
 
 Sets = {}
@@ -93,21 +96,33 @@ Cards = {}
 process = ->
   if set = sets.pop()
     scrape set
-  else
+    return
+
+  if od = sets.Odyssey?.Rare
     # WTF
-    od = sets.Odyssey.Rare
     bad = 'XXCall of the Herd (Call of the Herd)'
     good = 'Call of the Herd'
     i = od.indexOf(bad)
-    if ~i
-      od[i] = good
-      Cards[good] = Cards[bad]
-      Cards[good].name = good
-      delete Cards[bad]
+    od[i] = good
+    Cards[good] = Cards[bad]
+    Cards[good].name = good
+    delete Cards[bad]
 
-    fs.write 'cards/sets.json' , JSON.stringify(Sets) , 'w'
-    fs.write 'cards/cards.json', JSON.stringify(Cards), 'w'
-    phantom.exit()
+  if EXTEND
+    # phantomjs cannot `require` json
+    # http://code.google.com/p/phantomjs/issues/detail?id=1057&sort=-id
+    sets  = JSON.parse fs.read 'cards/sets.json'
+    cards = JSON.parse fs.read 'cards/cards.json'
+    for key, val of Sets
+      sets[key] = val
+    for key, val of Cards
+      cards[key] = val
+    Sets = sets
+    Cards = cards
+
+  fs.write 'cards/sets.json' , JSON.stringify(Sets) , 'w'
+  fs.write 'cards/cards.json', JSON.stringify(Cards), 'w'
+  phantom.exit()
 
 scrape = (SET) ->
   url = "http://gatherer.wizards.com/Pages/Search/Default.aspx?output=spoiler&method=text&action=advanced&set=%5b%22#{SET}%22%5d"
