@@ -1,20 +1,30 @@
-# build
+# draft
 
-to build the card database, first install [phantomjs](http://phantomjs.org/),
-then run
+this project is a draft simulator client / server for the card game
+[magic: the gathering](http://en.wikipedia.org/wiki/Magic:_The_Gathering)
+
+this project is unafilliated with wizards of the coast
+
+# run
+
+install [phantomjs](http://phantomjs.org), then build the card database with
 
     phantomjs cards/phantom.coffee
 
-to run the server, install [node.js](http://nodejs.org/), then install the dependencies with
+install [nodejs](http://nodejs.org), then install dependencies with
 
     npm install
 
-and actually run the server with
+actually run the server with
 
     ./app.js
 
+open [http://localhost:1337](http://localhost:1337) to play
+
 # hack
 
-this project uses raw [websockets](http://en.wikipedia.org/wiki/WebSocket)
+this project uses
 
-client-side framework: [angularjs](http://angularjs.org/)
+- [websockets](http://en.wikipedia.org/wiki/WebSocket)
+
+- [angularjs](http://angularjs.org/)
