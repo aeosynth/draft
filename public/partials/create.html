@@ -15,7 +15,17 @@
   <option>draft</option>
   <option>sealed</option>
   <option>cube</option>
-</select>
+</select> with
+<select ng-model="bots">
+  <option>0</option>
+  <option>1</option>
+  <option>2</option>
+  <option>3</option>
+  <option>4</option>
+  <option>5</option>
+  <option>6</option>
+  <option>7</option>
+</select> bots
 <div>
   <select ng-disabled="type == 'cube'" ng-model="set1" ng-options="set for set in sets"></select>
   <select ng-disabled="type == 'cube'" ng-model="set2" ng-options="set for set in sets"></select>

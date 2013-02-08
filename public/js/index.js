@@ -91,6 +91,7 @@ angular
 ;
 
 function CreateCtrl($scope, $http, $location) {
+  $scope.bots = 0;
   $scope.cube = 'mtgo holiday';
   $scope.type = 'draft';
   $scope.size = 8;
@@ -187,7 +188,7 @@ function CreateCtrl($scope, $http, $location) {
   $scope.set6 = 'Gatecrash';
   $scope.create = function() {
     var sets = [$scope.set1, $scope.set2, $scope.set3, $scope.set4, $scope.set5, $scope.set6];
-    $http.post('/create', { sets: sets, type: $scope.type, size: $scope.size })
+    $http.post('/create', { sets: sets, type: $scope.type, size: $scope.size, bots: $scope.bots })
       .success(function(data, status) {
         $location.path('/q/' + data.id);
       })
