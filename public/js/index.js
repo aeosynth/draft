@@ -289,6 +289,10 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
     ws.emit('pick', $scope.pack.id, card.id);
     $scope.pack.show = false;
   };
+  $scope.editName = function(player) {
+    if (!player.self) return;
+    player.edit = true;
+  };
   $scope.name = function(name) {
     $scope.self.edit = false;
     ws.emit('name', name);

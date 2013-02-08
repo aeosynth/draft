@@ -6,6 +6,15 @@ img, label {
   background-color: rgba(0, 255, 0, .3);
 }
 
+.self td:nth-of-type(2) {
+  cursor: pointer;
+  color: blue;
+}
+
+.opponent td:nth-of-type(2) {
+  color: red;
+}
+
 .opponent::after {
   content: '<-- opponent';
 }
