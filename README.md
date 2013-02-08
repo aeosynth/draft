@@ -19,7 +19,7 @@ actually run the server with
 
     ./app.js
 
-open [http://localhost:1337](http://localhost:1337) to play
+open [http://localhost:1337](http://localhost:1337) to connect
 
 # hack
 
