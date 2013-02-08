@@ -25,6 +25,6 @@ open [http://localhost:1337](http://localhost:1337) to connect
 
 this project uses
 
-- [websockets](http://en.wikipedia.org/wiki/WebSocket)
+- [websockets](http://en.wikipedia.org/wiki/WebSocket) via [einaros/ws](https://github.com/einaros/ws)
 
 - [angularjs](http://angularjs.org/)
