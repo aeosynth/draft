@@ -91,7 +91,7 @@ angular
 ;
 
 function CreateCtrl($scope, $http, $location) {
-  $scope.cube = 'mtgo unpowered';
+  $scope.cube = 'mtgo holiday';
   $scope.type = 'draft';
   $scope.size = 8;
 
