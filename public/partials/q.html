@@ -19,6 +19,9 @@
       add lands directly to side by shift clicking
     </div>
     <div>
+      move cards to jank by shift clicking
+    </div>
+    <div>
       <select ng-model="beep" dir="rtl">
         <option>never</option>
         <option>always</option>
@@ -71,10 +74,14 @@
   </div>
   <div class="container">
     <h1>main {{ main.length }}</h1>
-    <card ng-repeat="card in main | orderBy:'name' | stableSort:order" ng-click="toSide(card)">
+    <card ng-repeat="card in main | orderBy:'name' | stableSort:order" ng-click="fromMain(card, $event)">
   </div>
   <div class="container">
     <h1>side</h1>
-    <card ng-repeat="card in side | orderBy:'name' | stableSort:order" ng-click="toMain(card)">
+    <card ng-repeat="card in side | orderBy:'name' | stableSort:order" ng-click="fromSide(card, $event)">
+  </div>
+  <div class="container">
+    <h1>jank</h1>
+    <card ng-repeat="card in jank | orderBy:'name' | stableSort:order" ng-click="fromJank(card, $event)">
   </div>
 </div>

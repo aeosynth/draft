@@ -200,6 +200,7 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
   $scope.order = 'color';
   $scope.main = [];
   $scope.side = [];
+  $scope.jank = [];
   $scope.land = [
   { land: true, cmc: 0, color: 'L', id: 73946, name: 'Forest'   },
   { land: true, cmc: 0, color: 'L', id: 73951, name: 'Island'   },
@@ -292,17 +293,31 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
     ws.emit('name', name);
     localStorage.name = name;
   };
-  $scope.toSide = function(card) {
+  $scope.fromMain = function(card, e) {
     var main = $scope.main;
     main.splice(main.indexOf(card), 1);
-    if (!card.land)
+    if (card.land) return;
+    if (e.shiftKey)
+      $scope.jank.push(card);
+    else
       $scope.side.push(card);
   };
-  $scope.toMain = function(card) {
+  $scope.fromSide = function(card, e) {
     var side = $scope.side;
     side.splice(side.indexOf(card), 1);
-    if (!card.land)
+    if (card.land) return;
+    if (e.shiftKey)
+      $scope.jank.push(card);
+    else
       $scope.main.push(card);
+  };
+  $scope.fromJank = function(card, e) {
+    var jank = $scope.jank;
+    jank.splice(jank.indexOf(card), 1);
+    if (e.shiftKey)
+      $scope.main.push(card);
+    else
+      $scope.side.push(card);
   };
   $scope.addLand = function(card, e) {
     if (e.shiftKey)
