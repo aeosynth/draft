@@ -178,6 +178,8 @@ scrape = (SET) ->
       set[card.rarity].push card.name
       Cards[card.name] = card
     delete set.Land
+    if set['Mythic Rare'].length is 0
+      delete set['Mythic Rare']
     Sets[SET] = set
     page.close()
     process()
