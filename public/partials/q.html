@@ -19,7 +19,12 @@
       add lands directly to side by shift clicking
     </div>
     <div>
-      <label>beep when receiving packs<input type="checkbox" ng-model="beep"></label>
+      <select ng-model="beep" dir="rtl">
+        <option>never</option>
+        <option>always</option>
+        <option>if tab is hidden</option>
+      </select>
+      beep when receiving packs
       <!--
       http://freesound.org/people/pierrecartoons1979/sounds/90112/
       cc-by-nc-3.0

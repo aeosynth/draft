@@ -196,6 +196,7 @@ function CreateCtrl($scope, $http, $location) {
 }
 
 function QCtrl($scope, $timeout, $http, $routeParams, ws) {
+  $scope.beep = 'never';
   $scope.order = 'color';
   $scope.main = [];
   $scope.side = [];
@@ -254,10 +255,17 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
     $scope.$apply();
   });
   ws.on('pack', function(pack) {
+    var d = document
+      , audio = d.querySelector('audio')
+      , beep = $scope.beep
+      , hidden = d.hidden || d.msHidden || d.mozHidden || d.webkitHidden
+      ;
     if (pack) {
       pack.show = true;
-      if (pack.cards.length && $scope.beep)
-        document.querySelector('audio').play();
+      if (pack.cards.length && (
+        (beep === 'always') ||
+        ((beep === 'if tab is hidden') && hidden)))
+          audio.play();
     }
     $scope.pack = pack;
     $scope.$apply();
