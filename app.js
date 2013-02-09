@@ -20,7 +20,7 @@ app.get('/q/:qid', function(req, res) {
 
 app.post('/create', function(req, res) {
   var body = req.body
-    , id = router.create(body.sets, body.type, body.size, body.bots)
+    , id = router.create(body.sets, body.type, body.size, body.bots, body.cube)
     ;
   res.send({ id: id });
 });
