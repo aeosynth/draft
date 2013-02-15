@@ -50,7 +50,7 @@
       <td>{{ $index + 1 }}</td>
       <td ng-switch on="player.edit" ng-click="editName(player)">
         <form ng-submit="name(player.name)" ng-switch-when="true">
-          <input type="text" placeholder="username" autofocus ng-model="player.name">
+          <input type="text" placeholder="username" autofocus required ng-model="player.name">
           <button>save</button>
         </form>
         <span ng-switch-default>{{ player.name }}</span>

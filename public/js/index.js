@@ -297,6 +297,7 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
   };
   $scope.name = function(name) {
     $scope.self.edit = false;
+    name = name.slice(0, 15);
     ws.emit('name', name);
     localStorage.name = name;
   };
