@@ -35,3 +35,20 @@ img, label {
 .dropped::after {
   content: '<-- dropped';
 }
+
+#chat {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: white;
+}
+#messages {
+  height: 300px;
+  overflow: auto;
+}
+#chat input {
+  width: 100%;
+  padding: 0;
+  border-left: 0;
+  border-right: 0;
+}

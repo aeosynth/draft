@@ -199,6 +199,7 @@ function CreateCtrl($scope, $http, $location) {
 }
 
 function QCtrl($scope, $timeout, $http, $routeParams, ws) {
+  document.getElementById('chat').style.display = 'none';
   $scope.beep = 'never';
   $scope.order = 'color';
   $scope.main = [];

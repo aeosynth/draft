@@ -12,10 +12,39 @@
   <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.0.3/angular.min.js"></script>
   -->
   <script src="/vendor/angular.js"></script>
+  <script src='https://cdn.firebase.com/v0/firebase.js'></script>
   <script src="/js/index.js"></script>
 </head>
 <body ng-app="app" ng-cloak>
   <ng-view></ng-view>
+  <div id="chat">
+    <div id="messages"></div>
+    <input id="message" placeholder="message">
+  </div>
+  <script>
+    function pushMessage(e) {
+      if (e.keyCode !== 13) return;
+      var text = this.value.slice(0, 1023);
+      if (!text) return;
+      var name = localStorage.name;
+      fire.push({ name: name, text: text });
+      this.value = '';
+    }
+    function displayMessage(snapshot) {
+      var val = snapshot.val();
+      var div = d.createElement('div');
+      div.textContent = val.name + ': ' + val.text;
+      messages.appendChild(div);
+      messages.scrollByPages(999);
+    }
+
+    var fire = new Firebase('https://draft.firebaseio.com/');
+    var query = fire.limit(10);
+    query.on('child_added', displayMessage);
+    document.getElementById('message').addEventListener('keypress', pushMessage);
+    var d = document;
+    var messages = d.getElementById('messages');
+  </script>
   <script type="text/javascript">
 
     var _gaq = _gaq || [];
