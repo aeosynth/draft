@@ -39,7 +39,7 @@
     }
 
     var fire = new Firebase('https://draft.firebaseio.com/');
-    var query = fire.limit(10);
+    var query = fire.limit(15);
     query.on('child_added', displayMessage);
     document.getElementById('message').addEventListener('keypress', pushMessage);
     var d = document;
