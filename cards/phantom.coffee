@@ -88,6 +88,7 @@ sets = [
   'Magic: The Gathering-Commander'
   'Planechase 2012 Edition' # baleful strix
   'Masters Edition II' # mana crypt. also in set 'Promo set for Gatherer'
+  'Starter 1999'
 ]
 
 Sets = {}
@@ -109,6 +110,7 @@ process = ->
     delete Cards[bad]
 
   if EXTEND
+    console.log 'extend'
     # phantomjs cannot `require` json
     # http://code.google.com/p/phantomjs/issues/detail?id=1057&sort=-id
     sets  = JSON.parse fs.read 'cards/sets.json'
