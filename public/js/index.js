@@ -50,42 +50,23 @@ angular
     template: '<img ng-src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={{ card.id }}&type=card">'
   };
 })
-.filter('stableSort', function() {
-  // there is probably a much better way of doing this
-  function colorFilter(cards) {
-    var colors = {
-      L: [],
-      B: [],
-      G: [],
-      R: [],
-      U: [],
-      W: [],
-      Y: []
-    }
-    angular.forEach(cards, function(card) {
-      colors[card.color].push(card);
+.filter('sortBy', function() {
+  /*
+  // based on _.sortBy
+  // http://underscorejs.org/
+  */
+  return function(cards, sort) {
+    cards.sort(function(left, right) {
+      var a = left[sort]
+        , b = right[sort]
+        ;
+      if (a !== b) {
+        if (a > b) return 1;
+        if (a < b) return -1;
+      }
+      return left.name < right.name ? -1 : 1;
     });
-    return [].concat(colors.L, colors.B, colors.G, colors.R, colors.U, colors.W, colors.Y);;
-  }
-  function cmcFilter(cards) {
-    var cmc = []
-      , cmcArr = []
-      ;
-    angular.forEach(cards, function(card) {
-      cmc[card.cmc] || (cmc[card.cmc] = []);
-      cmc[card.cmc].push(card);
-    });
-    angular.forEach(cmc, function(arr) {
-      cmcArr.push.apply(cmcArr, arr);
-    });
-    return cmcArr;
-  }
-  return function(cards, order) {
-    switch (order) {
-      case 'cmc': return cmcFilter(cards);
-      case 'color': return colorFilter(cards);
-      case 'name': return cards;// already sorted by name
-    }
+    return cards;
   };
 })
 ;
@@ -201,7 +182,7 @@ function CreateCtrl($scope, $http, $location) {
 function QCtrl($scope, $timeout, $http, $routeParams, ws) {
   document.getElementById('chat').style.display = 'none';
   $scope.beep = 'never';
-  $scope.order = 'color';
+  $scope.sort = 'color';
   $scope.main = [];
   $scope.side = [];
   $scope.jank = [];
