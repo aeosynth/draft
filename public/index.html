@@ -35,7 +35,7 @@
       var div = d.createElement('div');
       div.textContent = val.name + ': ' + val.text;
       messages.appendChild(div);
-      messages.scrollByPages(999);
+      div.scrollIntoView();
     }
 
     var fire = new Firebase('https://draft.firebaseio.com/');
