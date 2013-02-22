@@ -175,9 +175,12 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
     ;
     ws.json('init', qid, pid, name);
   });
-  ws.on('error', function(error) {
+  ws.on('apperror', function(error) {
     $scope.error = error;
     $scope.$apply();
+  });
+  ws.on('error', function(error) {
+    console.error(error);
   });
 
   ws.on('meta', function(meta) {
