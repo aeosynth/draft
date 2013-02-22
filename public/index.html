@@ -12,6 +12,7 @@
   <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.0.3/angular.min.js"></script>
   -->
   <script src="/vendor/angular.js"></script>
+  <script src="/vendor/engine.io.js"></script>
   <script src='https://cdn.firebase.com/v0/firebase.js'></script>
   <script src="/js/index.js"></script>
 </head>
@@ -38,12 +39,14 @@
       div.scrollIntoView();
     }
 
-    var fire = new Firebase('https://draft.firebaseio.com/');
-    var query = fire.limit(15);
-    query.on('child_added', displayMessage);
-    document.getElementById('message').addEventListener('keypress', pushMessage);
-    var d = document;
-    var messages = d.getElementById('messages');
+    if (location.pathname === '/') {
+      var fire = new Firebase('https://draft.firebaseio.com/');
+      var query = fire.limit(15);
+      query.on('child_added', displayMessage);
+      document.getElementById('message').addEventListener('keypress', pushMessage);
+      var d = document;
+      var messages = d.getElementById('messages');
+    }
   </script>
   <script type="text/javascript">
 

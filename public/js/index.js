@@ -14,31 +14,12 @@ angular
     ;
 })
 .factory('ws', function() {
-  var ws = new WebSocket('ws://' + location.host);
-  ws.cb = {};
-  ws.onopen = function() {
-    ws._emit('connect');
-  };
-  ws.onerror = function(error) {
-    ws._emit('error', error);
-  };
-  ws.onclose = function() {
-    ws._emit('disconnect');
-  };
-  ws.onmessage = function(msg) {
-    var data = JSON.parse(msg.data);
-    ws._emit(data.name, data.args);
-  };
-  ws.on = function(event, cb) {
-    ws.cb[event] || (ws.cb[event] = []);
-    ws.cb[event].push(cb);
-  };
-  ws._emit = function(event, arg) {
-    angular.forEach(ws.cb[event], function(cb) {
-      cb(arg);
-    });
-  };
-  ws.emit = function() {
+  var ws = eio('ws://' + location.host);
+  ws.on('message', function(msg) {
+    var data = JSON.parse(msg);
+    ws.emit(data.name, data.args);
+  });
+  ws.json = function() {
     var args = Array.prototype.slice.call(arguments);
     ws.send(JSON.stringify(args));
   };
@@ -187,12 +168,12 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
 
   $timeout(decrement, 1000);
 
-  ws.on('connect', function() {
+  ws.on('open', function() {
     var qid = $routeParams.qid
     , pid = localStorage.pid
     , name = localStorage.name
     ;
-    ws.emit('init', qid, pid, name);
+    ws.json('init', qid, pid, name);
   });
   ws.on('error', function(error) {
     $scope.error = error;
@@ -245,13 +226,13 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
     $scope.main = cards;
     $scope.$apply();
   });
-  ws.on('disconnect', function() {
+  ws.on('close', function() {
     $scope.end = true;
     $scope.$apply();
   });
 
   $scope.pick = function(card) {
-    ws.emit('pick', $scope.pack.id, card.id);
+    ws.json('pick', $scope.pack.id, card.id);
     $scope.pack.show = false;
   };
   $scope.editName = function(player) {
@@ -261,7 +242,7 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
   $scope.name = function(name) {
     $scope.self.edit = false;
     name = name.slice(0, 15);
-    ws.emit('name', name);
+    ws.json('name', name);
     localStorage.name = name;
   };
   $scope.fromMain = function(card, e) {
@@ -316,6 +297,6 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
       side: side
     };
     $scope.deckJSON = JSON.stringify(deck);
-    ws.emit('hash', deck);
+    ws.json('hash', deck);
   };
 }
