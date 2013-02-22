@@ -50,25 +50,6 @@ angular
     template: '<img ng-src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={{ card.id }}&type=card">'
   };
 })
-.filter('sortBy', function() {
-  /*
-  // based on _.sortBy
-  // http://underscorejs.org/
-  */
-  return function(cards, sort) {
-    cards.sort(function(left, right) {
-      var a = left[sort]
-        , b = right[sort]
-        ;
-      if (a !== b) {
-        if (a > b) return 1;
-        if (a < b) return -1;
-      }
-      return left.name < right.name ? -1 : 1;
-    });
-    return cards;
-  };
-})
 ;
 
 function CreateCtrl($scope, $http, $location) {
@@ -182,7 +163,7 @@ function CreateCtrl($scope, $http, $location) {
 function QCtrl($scope, $timeout, $http, $routeParams, ws) {
   document.getElementById('chat').style.display = 'none';
   $scope.beep = 'never';
-  $scope.sort = 'color';
+  $scope.order = 'color';
   $scope.main = [];
   $scope.side = [];
   $scope.jank = [];

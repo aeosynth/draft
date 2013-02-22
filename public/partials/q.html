@@ -35,8 +35,8 @@
       <audio src="/media/beep.wav"></audio>
     </div>
     <div>
-      sort by
-      <select ng-model="sort">
+      order by
+      <select ng-model="order">
         <option>cmc</option>
         <option>color</option>
         <option>name</option>
@@ -75,14 +75,14 @@
   </div>
   <div class="container">
     <h1>main {{ main.length }}</h1>
-    <card ng-repeat="card in main | sortBy:sort" ng-click="fromMain(card, $event)">
+    <card ng-repeat="card in main | orderBy:[order, 'name']" ng-click="fromMain(card, $event)">
   </div>
   <div class="container">
     <h1>side</h1>
-    <card ng-repeat="card in side | sortBy:sort" ng-click="fromSide(card, $event)">
+    <card ng-repeat="card in side | orderBy:[order, 'name']" ng-click="fromSide(card, $event)">
   </div>
   <div class="container">
     <h1>jank</h1>
-    <card ng-repeat="card in jank | sortBy:sort" ng-click="fromJank(card, $event)">
+    <card ng-repeat="card in jank | orderBy:[order, 'name']" ng-click="fromJank(card, $event)">
   </div>
 </div>
