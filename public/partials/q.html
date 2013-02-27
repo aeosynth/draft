@@ -16,6 +16,12 @@
       </form>
     </div>
     <div>
+      double click to pick cards from a pack
+    </div>
+    <div>
+      single click to toggle between main / side
+    </div>
+    <div>
       add lands directly to side by shift clicking
     </div>
     <div>
@@ -66,7 +72,7 @@
   <div class="container" ng-hide="end">
     <h1>pack</h1>
     <div ng-show="pack.show">
-      <card ng-repeat="card in pack.cards" ng-click="pick(card)">
+      <card ng-repeat="card in pack.cards" ng-dblclick="pick(card)">
     </div>
   </div>
   <div class="container">
