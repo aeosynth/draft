@@ -16,7 +16,7 @@
       </form>
     </div>
     <div>
-      double click to pick cards from a pack
+      click on a card twice to pick it from a pack
     </div>
     <div>
       single click to toggle between main / side
@@ -72,7 +72,7 @@
   <div class="container" ng-hide="end">
     <h1>pack</h1>
     <div ng-show="pack.show">
-      <card ng-repeat="card in pack.cards" ng-dblclick="pick(card)">
+      <card ng-repeat="card in pack.cards" ng-click="pick(card)">
     </div>
   </div>
   <div class="container">

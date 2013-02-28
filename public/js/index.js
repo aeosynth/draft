@@ -142,6 +142,8 @@ function CreateCtrl($scope, $http, $location) {
 }
 
 function QCtrl($scope, $timeout, $http, $routeParams, ws) {
+  var selected = null
+
   document.getElementById('chat').style.display = 'none';
   $scope.beep = 'never';
   $scope.order = 'color';
@@ -235,8 +237,13 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
   });
 
   $scope.pick = function(card) {
+    if (selected !== card) {
+      selected = card
+      return
+    }
     ws.json('pick', $scope.pack.id, card.id);
     $scope.pack.show = false;
+    selected = null
   };
   $scope.editName = function(player) {
     if (!player.self) return;
