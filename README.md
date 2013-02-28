@@ -19,12 +19,12 @@ actually run the server with
 
     ./app.js
 
-open [http://localhost:1337](http://localhost:1337) to connect
+open <http://localhost:1337> to connect
 
 # hack
 
 this project uses
 
-- [websockets](http://en.wikipedia.org/wiki/WebSocket) via [einaros/ws](https://github.com/einaros/ws)
+- [engine.io](https://github.com/LearnBoost/engine.io) for realtime communication
 
-- [angularjs](http://angularjs.org/)
+- [angularjs](http://angularjs.org/) for data binding
