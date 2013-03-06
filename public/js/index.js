@@ -110,7 +110,7 @@ function CreateCtrl($scope, $http, $location) {
     'The Dark',
     'Legends',
     'Revised Edition',
-    'Anitiquities',
+    'Antiquities',
     'Arabian Nights',
     'Unlimited Edition',
     'Limited Edition Beta',
