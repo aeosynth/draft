@@ -30,8 +30,15 @@ app.post('/deck', function(req, res) {
     , deck = body.deck
     , type = body.type
     ;
-  deck = genDeck(deck, type);
-  if (deck)
+  try {
+    // AJAX can't initiate downloads, and forms can't json encode
+    deck = JSON.parse(deck)
+  } catch(err) {
+    console.log('error parsing deck', deck)
+    res.end()
+    return
+  }
+  if (deck = genDeck(deck, type))
     res.attachment('draft.' + type);
   res.send(deck);
 });
