@@ -2,6 +2,11 @@ img, label {
   cursor: pointer;
 }
 
+.container img {
+  width: 223px;
+  height: 310px;
+}
+
 .self {
   background-color: rgba(0, 255, 0, .3);
 }
