@@ -25,12 +25,6 @@ angular
   };
   return ws;
 })
-.directive('card', function() {
-  return {
-    restrict: 'E',
-    template: '<img ng-src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={{ card.id }}&type=card">'
-  };
-})
 ;
 
 function CreateCtrl($scope, $http, $location) {
@@ -40,6 +34,7 @@ function CreateCtrl($scope, $http, $location) {
   $scope.size = 8;
 
   $scope.sets = [
+    "Dragon's Maze",
     'Gatecrash',
     'Return to Ravnica',
     'Magic 2013',
@@ -123,12 +118,12 @@ function CreateCtrl($scope, $http, $location) {
     'Magic: The Gathering-Commander'
   ]
 
-  $scope.set1 = 'Gatecrash';
+  $scope.set1 = "Dragon's Maze";
   $scope.set2 = 'Gatecrash';
-  $scope.set3 = 'Gatecrash';
-  $scope.set4 = 'Gatecrash';
+  $scope.set3 = 'Return to Ravnica';
+  $scope.set4 = "Dragon's Maze";
   $scope.set5 = 'Gatecrash';
-  $scope.set6 = 'Gatecrash';
+  $scope.set6 = 'Return to Ravnica';
   $scope.create = function() {
     var sets = [$scope.set1, $scope.set2, $scope.set3, $scope.set4, $scope.set5, $scope.set6];
     $http.post('/create', {
@@ -241,7 +236,7 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
       selected = card
       return
     }
-    ws.json('pick', $scope.pack.id, card.id);
+    ws.json('pick', $scope.pack.id, card.name);
     $scope.pack.show = false;
     selected = null
   };
