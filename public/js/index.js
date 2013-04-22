@@ -146,11 +146,11 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
   $scope.side = [];
   $scope.jank = [];
   $scope.land = [
-  { land: true, cmc: 0, color: 'L', id: 73946, name: 'Forest'   },
-  { land: true, cmc: 0, color: 'L', id: 73951, name: 'Island'   },
-  { land: true, cmc: 0, color: 'L', id: 73958, name: 'Mountain' },
-  { land: true, cmc: 0, color: 'L', id: 73963, name: 'Plains'   },
-  { land: true, cmc: 0, color: 'L', id: 73973, name: 'Swamp'    }
+  { land: true, cmc: 0, color: 'L', url: 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=73946', name: 'Forest'   },
+  { land: true, cmc: 0, color: 'L', url: 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=73951', name: 'Island'   },
+  { land: true, cmc: 0, color: 'L', url: 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=73958', name: 'Mountain' },
+  { land: true, cmc: 0, color: 'L', url: 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=73963', name: 'Plains'   },
+  { land: true, cmc: 0, color: 'L', url: 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=73973', name: 'Swamp'    }
   ];
 
   localStorage.pid || (localStorage.pid = Math.floor(Math.random() * 1e8));
