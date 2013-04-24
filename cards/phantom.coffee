@@ -5,6 +5,7 @@ EXTEND = require('system').args[1]
 # XXX split cards (eg Fire // Ice) need massaging
 
 sets = [
+  "Dragon's Maze"
   'Gatecrash'
   'Return to Ravnica'
   'Magic 2013'
@@ -122,6 +123,32 @@ process = ->
     Sets = sets
     Cards = cards
 
+  Sets["Dragon's Maze"].Special =
+    gate: [
+      'Azorius Guildgate'
+      'Boros Guildgate'
+      'Dimir Guildgate'
+      'Golgari Guildgate'
+      'Gruul Guildgate'
+      'Izzet Guildgate'
+      'Orzhov Guildgate'
+      'Rakdos Guildgate'
+      'Selesnya Guildgate'
+      'Simic Guildgate'
+    ]
+    shock: [
+      'Blood Crypt'
+      'Breeding Pool'
+      'Godless Shrine'
+      'Hallowed Fountain'
+      'Overgrown Tomb'
+      'Sacred Foundry'
+      'Steam Vents'
+      'Stomping Ground'
+      'Temple Garden'
+      'Watery Grave'
+    ]
+
   fs.write 'cards/sets.json' , JSON.stringify(Sets) , 'w'
   fs.write 'cards/cards.json', JSON.stringify(Cards), 'w'
   phantom.exit()
@@ -151,9 +178,11 @@ scrape = (SET) ->
         switch key
           when 'name'
             [id] = valCell.firstElementChild.search.match /\d+/
-            obj = { id }
-            val = val.replace 'Æ', 'AE' # cockatrice, mws both replace; must match for hash
-            obj[key] = val
+            name = val.replace 'Æ', 'AE' # cockatrice, mws both replace; must match for hash
+            if ~name.indexOf '//' # some valid card names have parens
+              name = name.replace /\ \(.+/, ''
+            url = "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=#{id}&type=card"
+            obj = { name, url }
           when 'cost'
             cmc = parseInt(val) or 0
             [colored] = val.match /\D*$/g
