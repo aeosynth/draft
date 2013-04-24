@@ -146,7 +146,7 @@ scrape = (SET) ->
           continue
 
         val = valCell.textContent.trim()
-        key = key[0...-1].toLowerCase()
+        key = key.replace(':', '').toLowerCase()
 
         switch key
           when 'name'
