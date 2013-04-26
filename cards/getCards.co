@@ -56,10 +56,10 @@ parse = (html, setName) ->
       card.color = if val is 'Blue'
         'U'
       else
-        val = val.0
+        val.0
     case \set/rarity
       if match = val.match rarityRE
-        rarity = match[1]
+        rarity = match.1
         if rarity is 'Mythic Rare'
           rarity = \mythic
       else
@@ -94,7 +94,7 @@ parse = (html, setName) ->
       continue
 
     card.color = if /^(.)\1*$/.test colors * ''
-      colors[0]
+      colors.0
     else
       \Y # yellow
 
