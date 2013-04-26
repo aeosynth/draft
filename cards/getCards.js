@@ -52,6 +52,7 @@ parse = function(html, setName){
         var ref$, _, left, right;
         ref$ = it.match(/(\w)\/(\w)/), _ = ref$[0], left = ref$[1], right = ref$[2];
         if (left === 2) {
+          card.cmc += 1;
           return right;
         }
         if (right === 'P') {
@@ -60,11 +61,11 @@ parse = function(html, setName){
         return 'Y';
       });
       ref$ = cost.match(/(\d*)(\w*)/), _ = ref$[0], colorless = ref$[1], colored = ref$[2];
-      return card.cmc = parseInt(colorless || 0) + colored.length;
+      return card.cmc += parseInt(colorless || 0) + colored.length;
     case 'color':
       return card.color = val === 'Blue'
         ? 'U'
-        : val = val[0];
+        : val[0];
     case 'set/rarity':
       if (match = val.match(rarityRE)) {
         rarity = match[1];

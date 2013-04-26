@@ -45,13 +45,14 @@ parse = (html, setName) ->
       cost = val.replace \X '' .replace /\(\w\/\w\)/g ->
         [_, left, right] = it.match /(\w)\/(\w)/
         if left is 2
+          card.cmc += 1
           return right
         if right is \P
           return left
         return \Y
 
       [_, colorless, colored] = cost.match /(\d*)(\w*)/
-      card.cmc = parseInt(colorless or 0) + colored.length
+      card.cmc += parseInt(colorless or 0) + colored.length
     case \color # eg pact of negation
       card.color = if val is 'Blue'
         'U'
