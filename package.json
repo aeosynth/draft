@@ -5,7 +5,9 @@
   "dependencies": {
     "express": "~3.0.5",
     "underscore": "~1.4.3",
-    "engine.io": "~0.4.3"
+    "engine.io": "~0.4.3",
+    "request": "~2.20.0",
+    "cheerio": "~0.11.0"
   },
   "subdomain": "drafts.in",
   "domains": [

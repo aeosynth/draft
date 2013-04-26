@@ -7,13 +7,13 @@ this project is unafilliated with wizards of the coast
 
 # run
 
-install [phantomjs](http://phantomjs.org), then build the card database with
-
-    phantomjs cards/phantom.coffee
-
 install [nodejs](http://nodejs.org), then install dependencies with
 
     npm install
+
+build the card database with
+
+    node cards/scrape.js
 
 actually run the server with
 
