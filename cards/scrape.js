@@ -69,25 +69,39 @@ replace = function(setName, rarity, bad){
   }
 };
 write = function(){
-  var ref$, i$, ref1$, len$, setName, rarity, set, res$, j$, ref2$, len1$, name, card, tst;
-  if ((ref$ = Sets["Dragon's Maze"]) != null) {
-    ref$.special = {
-      gate: ['Azorius Guildgate', 'Boros Guildgate', 'Dimir Guildgate', 'Golgari Guildgate', 'Gruul Guildgate', 'Izzet Guildgate', 'Orzhov Guildgate', 'Rakdos Guildgate', 'Selesnya Guildgate', 'Simic Guildgate'],
-      shock: ['Blood Crypt', 'Breeding Pool', 'Godless Shrine', 'Hallowed Fountain', 'Overgrown Tomb', 'Sacred Foundry', 'Steam Vents', 'Stomping Ground', 'Temple Garden', 'Watery Grave']
-    };
+  var dgm, res$, i$, ref$, len$, name, j$, ref1$, len1$, setName, rarity, set, res1$, k$, ref2$, len2$, card, tst;
+  Cards['Mana Crypt'] = {
+    cmc: 0,
+    color: 'A',
+    name: 'Mana Crypt',
+    rarity: 'rare',
+    url: 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=97048&type=card'
+  };
+  dgm = Sets["Dragon's Maze"];
+  dgm.special = {
+    gate: ['Azorius Guildgate', 'Boros Guildgate', 'Dimir Guildgate', 'Golgari Guildgate', 'Gruul Guildgate', 'Izzet Guildgate', 'Orzhov Guildgate', 'Rakdos Guildgate', 'Selesnya Guildgate', 'Simic Guildgate'],
+    shock: ['Blood Crypt', 'Breeding Pool', 'Godless Shrine', 'Hallowed Fountain', 'Overgrown Tomb', 'Sacred Foundry', 'Steam Vents', 'Stomping Ground', 'Temple Garden', 'Watery Grave']
+  };
+  res$ = [];
+  for (i$ = 0, len$ = (ref$ = dgm.common).length; i$ < len$; ++i$) {
+    name = ref$[i$];
+    if (!~dgm.special.gate.indexOf(name)) {
+      res$.push(name);
+    }
   }
-  for (i$ = 0, len$ = (ref1$ = ['Innistrad', 'Dark Ascension']).length; i$ < len$; ++i$) {
-    setName = ref1$[i$];
+  dgm.common = res$;
+  for (j$ = 0, len1$ = (ref1$ = ['Innistrad', 'Dark Ascension']).length; j$ < len1$; ++j$) {
+    setName = ref1$[j$];
     for (rarity in set = Sets[setName]) {
-      res$ = [];
-      for (j$ = 0, len1$ = (ref2$ = set[rarity]).length; j$ < len1$; ++j$) {
-        name = ref2$[j$];
+      res1$ = [];
+      for (k$ = 0, len2$ = (ref2$ = set[rarity]).length; k$ < len2$; ++k$) {
+        name = ref2$[k$];
         card = Cards[name];
         if (card.cost || card.type === 'land') {
-          res$.push(name);
+          res1$.push(name);
         }
       }
-      set[rarity] = res$;
+      set[rarity] = res1$;
     }
   }
   tst = 'Time Spiral "Timeshifted"';
