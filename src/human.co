@@ -1,0 +1,28 @@
+Player = require \./player
+
+class Human extends Player
+  (sock) ->
+    super!
+    @attach sock
+
+  isBot: false
+
+  attach: (sock) ->
+    {@name} = sock
+    @send = sock~send
+    @send \set { @main, pack: @packs.0 }
+    sock.on \pick @~pick
+
+  sendPack: ->
+    pack = @packs.0
+
+    if pack.length is 1
+      @pick 0 true
+    else
+      @send \set { pack }
+
+  pick: (index) ->
+    super index
+    @send \add @main[* - 1]
+
+module.exports = Human

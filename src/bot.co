@@ -1,0 +1,21 @@
+Player = require \./player
+
+nop = ->
+
+class Bot extends Player
+  ->
+    super!
+
+  isBot: true
+  name: \bot
+  send: nop
+
+  sendPack: ->
+    [pack] = @packs
+
+    if pack.length is 1
+      @pick 0 true
+    else
+      process.nextTick @~autopick
+
+module.exports = Bot

@@ -1,0 +1,16 @@
+request = require \request
+{rand} = require \./_
+couch = require \../data/couch
+
+module.exports = (data) ->
+  options = {} <<<< couch
+
+  # sequential ids for extreme performance
+  data._id = data.end + rand 1e9 .toString 16 .slice -6
+  options.uri += data._id
+  options.json = data
+
+  console.log options.uri
+  request options, (err, res, body) ->
+    throw err if err
+    console.log body

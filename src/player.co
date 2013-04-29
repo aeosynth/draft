@@ -1,0 +1,39 @@
+{EventEmitter} = require \events
+{rand} = require \./_
+genPack = require \./genPack
+
+class Player extends EventEmitter
+  ->
+    @ <<<<
+      picks: []
+      packs: []
+      main: []
+
+  time: 0
+
+  start: (set) ->
+    @picks.push @round = []
+    @receive genPack set
+
+  receive: (pack) ->
+    @packs.push pack
+
+    if @packs.length is 1
+      @sendPack!
+
+  autopick: ->
+    index = rand @packs.0.length
+    @pick index, true
+
+  pick: (index, autopick) ->
+    pack = @packs.shift!
+    [pick] = pack.splice index, 1
+    @main.push pick
+    @round.push { pick.name, autopick }
+
+    if @packs.length
+      @sendPack!
+
+    @emit \pass pack, @index
+
+module.exports = Player

@@ -1,0 +1,18 @@
+rand = -> Math.random! * it | 0
+
+module.exports = _ =
+  next: (arr, delta, index) ->
+    length = arr.length
+    index = (index + delta + length) % length # negative modulo
+    arr[index]
+  rand: rand
+  shuffle: (arr) ->
+    # shuffling is the special case where all items are chosen
+    _.choose arr.length, arr
+  choose: (n, arr) ->
+    i = arr.length
+    end = i - n or 1
+    while i > end
+      j = rand i--
+      arr[i, j] = arr[j, i]
+    arr.slice -n

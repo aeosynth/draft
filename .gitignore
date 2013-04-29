@@ -1,6 +1,4 @@
 node_modules
 .DS_Store
 *.swp
-cards.json
-sets.json
-cube.json
+data

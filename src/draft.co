@@ -1,0 +1,90 @@
+{EventEmitter} = require \events
+Bot = require \./bot
+Human = require \./human
+db = require \./db
+{next, rand, shuffle} = require \./_
+
+class Draft extends EventEmitter
+  (opts) ->
+    @ <<<< opts
+    @ <<<<
+      delta: -1
+      id: rand 1e9 .toString 16
+      players: []
+      round: 0
+      startTime: Date.now! / 1e3 | 0
+
+  join: (sock) ->
+    {name} = sock
+    for p of @players
+      if p.name is name
+        return p.attach sock
+
+    if @players.length is @seats
+      return p.send \error 'draft full'
+
+    h = new Human sock
+    h.isHost = sock.id is @host
+    @add h
+
+  add: (p) ->
+    @players.push p
+    p.on \pass @~pass
+
+    return if p.isBot
+
+    @meta!
+
+    if p.isHost
+      p.once \start @~start
+      p.emit \start
+
+  meta: ->
+    players = for p of @players
+      { p.name, p.time, packs: p.packs.length }
+    for p of @players
+      p.send \set { players }
+
+  start: ->
+    if @addBots
+      while @players.length < @seats
+        @add new Bot
+
+    shuffle @players
+
+    for p, i of @players
+      p.index = i
+
+    @startRound!
+
+  startRound: ->
+    unless set = @sets[@round++]
+      return @end!
+
+    @delta *= -1
+    @activePacks = @players.length
+
+    for p of @players
+      p.start set
+
+  pass: (pack, index) ->
+    player = next @players, @delta, index
+
+    if pack.length
+      player.receive pack
+    else if !--@activePacks
+      @startRound!
+
+    @meta!
+
+  end: ->
+    console.log \end @id
+
+    data = @{ sets, start: startTime }
+    data.end = Date.now! / 1e3 | 0
+    data.players = for p of @players
+      p{ isBot, picks }
+
+    db data
+
+module.exports = Draft

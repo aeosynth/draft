@@ -1,0 +1,13 @@
+{EventEmitter} = require \events
+
+class Sock extends EventEmitter
+  (@ws) ->
+    @ <<<< ws.request.query{ id, name, room }
+    ws.on \message @~message
+
+  message: -> @emit ...JSON.parse it
+
+  send: (name, args) ->
+    @ws.send JSON.stringify { name, args }
+
+module.exports = Sock

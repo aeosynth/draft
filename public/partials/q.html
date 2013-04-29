@@ -71,8 +71,8 @@
 
   <div class="container" ng-hide="end">
     <h1>pack</h1>
-    <div ng-show="pack.show">
-      <img ng-src="{{ card.url }}" ng-repeat="card in pack.cards" ng-click="pick(card)">
+    <div ng-show="pack">
+      <img ng-src="{{ card.url }}" ng-repeat="card in pack" ng-click="pick($index)">
     </div>
   </div>
   <div class="container">

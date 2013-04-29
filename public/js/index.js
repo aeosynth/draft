@@ -14,7 +14,10 @@ angular
     ;
 })
 .factory('ws', function() {
-  var ws = eio('ws://' + location.host);
+  var id = localStorage.pid || (localStorage.id = Math.floor(Math.random() * 1e8));
+  var name = localStorage.name;
+  var room = location.pathname.split('/').pop();
+  var ws = eio('ws://' + location.host, { query: { id: id, name: name, room: room }});
   ws.on('message', function(msg) {
     var data = JSON.parse(msg);
     ws.emit(data.name, data.args);
@@ -28,10 +31,9 @@ angular
 ;
 
 function CreateCtrl($scope, $http, $location) {
-  $scope.bots = 0;
   $scope.cube = 'mtgo holiday';
   $scope.type = 'draft';
-  $scope.size = 8;
+  $scope.seats = 8;
 
   $scope.sets = [
     'Alara Reborn',
@@ -132,12 +134,23 @@ function CreateCtrl($scope, $http, $location) {
   $scope.set5 = 'Gatecrash';
   $scope.set6 = 'Return to Ravnica';
   $scope.create = function() {
-    var sets = [$scope.set1, $scope.set2, $scope.set3, $scope.set4, $scope.set5, $scope.set6];
-    $http.post('/create', {
-      sets: sets, type: $scope.type, size: $scope.size, bots: $scope.bots, cube: $scope.cube
-    })
-      .success(function(data, status) {
-        $location.path('/q/' + data.id);
+    var id = localStorage.pid || (localStorage.id = Math.floor(Math.random() * 1e8));
+    var data = {
+      type: $scope.type, seats: $scope.seats, host: id
+    };
+    switch(data.type) {
+      case 'draft':
+        data.sets = [$scope.set1, $scope.set2, $scope.set3];
+        break;
+      case 'sealed':
+        data.sets = [$scope.set1, $scope.set2, $scope.set3, $scope.set4, $scope.set5, $scope.set6];
+        break;
+      case 'cube':
+        data.cube = $scope.cube;
+    }
+    $http.post('/create', data)
+      .success(function(qid, status) {
+        $location.path('/q/' + qid);
       })
       ;
   };
@@ -160,8 +173,6 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
   { land: true, cmc: 0, color: 'L', url: 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=73973', name: 'Swamp'    }
   ];
 
-  localStorage.pid || (localStorage.pid = Math.floor(Math.random() * 1e8));
-
   function decrement() {
     angular.forEach($scope.players, function(player) {
       if (player.time)
@@ -173,30 +184,30 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
   $timeout(decrement, 1000);
 
   ws.on('open', function() {
-    var qid = $routeParams.qid
-    , pid = localStorage.pid
-    , name = localStorage.name
-    ;
-    ws.json('init', qid, pid, name);
-  });
-  ws.on('apperror', function(error) {
-    $scope.error = error;
-    $scope.$apply();
+    var qid = $routeParams.qid;
+    ws.json('join', qid);
   });
   ws.on('error', function(error) {
     console.error(error);
   });
+  ws.on('set', function(data) {
+    angular.extend($scope, data);
+  });
+  ws.on('add', function(card) {
+    $scope.main.push(card);
+  });
 
+  /*
   ws.on('meta', function(meta) {
     var players = meta.players
       , index = meta.index
       , ended = meta.ended
-      , size = meta.size
+      , seats = meta.seats
       , oppIndex
       ;
-    if (size === 8)// XXX magic
-      oppIndex = (index + (size/2)) % size;
-    while(size > players.length)
+    if (seats === 8)// XXX magic
+      oppIndex = (index + (seats/2)) % seats;
+    while(seats > players.length)
       players.push({});
     $scope.end = ended;
     $scope.players = players;
@@ -233,19 +244,20 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
     $scope.main = cards;
     $scope.$apply();
   });
+  */
   ws.on('close', function() {
     $scope.end = true;
     $scope.$apply();
   });
 
-  $scope.pick = function(card) {
-    if (selected !== card) {
-      selected = card
+  $scope.pick = function(index) {
+    if (selected !== index) {
+      selected = index
       return
     }
-    ws.json('pick', $scope.pack.id, card.name);
-    $scope.pack.show = false;
-    selected = null
+    ws.json('pick', index);
+    $scope.pack = null;
+    selected = null;
   };
   $scope.editName = function(player) {
     if (!player.self) return;
