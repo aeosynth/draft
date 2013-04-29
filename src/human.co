@@ -5,8 +5,6 @@ class Human extends Player
     super!
     @attach sock
 
-  isBot: false
-
   attach: (sock) ->
     {@name} = sock
     @send = sock~send

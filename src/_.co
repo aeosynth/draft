@@ -2,7 +2,7 @@ rand = -> Math.random! * it | 0
 
 module.exports = _ =
   next: (arr, delta, index) ->
-    length = arr.length
+    {length} = arr
     index = (index + delta + length) % length # negative modulo
     arr[index]
   rand: rand

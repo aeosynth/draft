@@ -10,7 +10,6 @@ module.exports = (data) ->
   options.uri += data._id
   options.json = data
 
-  console.log options.uri
   request options, (err, res, body) ->
     throw err if err
     console.log body

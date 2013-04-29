@@ -8,16 +8,17 @@ class Draft extends EventEmitter
   (opts) ->
     @ <<<< opts
     @ <<<<
-      delta: -1
       id: rand 1e9 .toString 16
       players: []
-      round: 0
       startTime: Date.now! / 1e3 | 0
 
+  delta: -1
+  round: 0
+
   join: (sock) ->
-    {name} = sock
+    {id} = sock
     for p of @players
-      if p.name is name
+      if p.id is id
         return p.attach sock
 
     if @players.length is @seats
@@ -39,7 +40,7 @@ class Draft extends EventEmitter
       p.once \start @~start
       p.emit \start
 
-  meta: ->
+  meta: !->
     players = for p of @players
       { p.name, p.time, packs: p.packs.length }
     for p of @players

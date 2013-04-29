@@ -10,15 +10,15 @@ rm = ->
 router =
   create: (opts) ->
     draft = new Draft opts
-    drafts[draft.id] = draft
-    draft.on \end rm
+      &on \end rm
+      drafts[&id] = &
     draft.id
   connect: (ws) ->
     sock = new Sock ws
     {room} = sock
 
-    if draft = drafts[room]
-      draft.join sock
+    if drafts[room]
+      that.join sock
     else
       sock.send \error 'room not found'
 

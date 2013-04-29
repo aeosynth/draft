@@ -8,11 +8,10 @@ genPack = (setName) ->
   unless rand 8
     rare = mythic
 
-  pack = [].concat(
+  pack = [].concat do
     choose 10 common
     choose  3 uncommon
     choose  1 rare
-  )
 
   switch setName
   case "Dragon's Maze"

@@ -11,7 +11,7 @@ class Bot extends Player
   send: nop
 
   sendPack: ->
-    [pack] = @packs
+    pack = @packs.0
 
     if pack.length is 1
       @pick 0 true
