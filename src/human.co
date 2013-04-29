@@ -1,15 +1,23 @@
 Player = require \./player
 
 class Human extends Player
-  (sock) ->
+  (sock, @isHost) ->
     super!
     @attach sock
 
   attach: (sock) ->
     {@name} = sock
     @send = sock~send
-    @send \set { @main, pack: @packs.0 }
+    @send \set { @isHost, @main, pack: @packs.0 }
     sock.on \pick @~pick
+
+    if @isHost
+      # i want events to bubble
+      sock.on \start ~> @emit \start it
+
+  start: (set, round) ->
+    super set
+    @send \set { round }
 
   sendPack: ->
     pack = @packs.0

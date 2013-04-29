@@ -323,4 +323,8 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
     $scope.deckJSON = JSON.stringify(deck);
     ws.json('hash', deck);
   };
+  $scope.start = function() {
+    if (!$scope.isHost) return;
+    ws.json('start', $scope.addBots);
+  };
 }

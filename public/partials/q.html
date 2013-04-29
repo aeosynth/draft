@@ -51,6 +51,10 @@
     </div>
   </div>
 
+  <div ng-show="isHost && !round">
+    <button ng-click="start()">start</button>
+    <label>add bots<input type="checkbox" ng-model="addBots"></label>
+  </div>
   <table>
     <tr><th>#</th><th>name</th><th>time</th><th>packs</th><th>cockatrice</th><th>mws</th></tr>
     <tr ng-repeat="player in players" ng-class="{ self: player.self, opponent: player.opponent, dropped: player.dropped }">
