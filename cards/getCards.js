@@ -72,6 +72,8 @@ parse = function(html, setName){
         if (rarity === 'Mythic Rare') {
           rarity = 'mythic';
         }
+      } else if(card.name === "Sea Eagle") {
+        rarity = 'common';
       } else {
         rarity = 'land';
         console.log("rarity not found: [" + card.name + "] [" + val + "]");
