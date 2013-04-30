@@ -1,5 +1,5 @@
 Player = require \./player
-genHash = require \./genHash
+genHash = require \./generate/hash
 
 class Human extends Player
   (@sock, @isHost) ->

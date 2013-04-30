@@ -3,7 +3,7 @@ Bot = require \./bot
 Human = require \./human
 db = require \./db
 _ = require \./_
-genPack = require \./genPack
+genPack = require \./generate/pack
 
 class Draft extends EventEmitter
   (opts) ->
