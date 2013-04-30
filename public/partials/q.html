@@ -57,10 +57,10 @@
   </div>
   <table>
     <tr><th>#</th><th>name</th><th>time</th><th>packs</th><th>cockatrice</th><th>mws</th></tr>
-    <tr ng-repeat="player in players" ng-class="{ self: player.self, opponent: player.opponent, dropped: player.dropped }">
+    <tr ng-repeat="player in players" ng-class="{ self: self == $index }">
       <td>{{ $index + 1 }}</td>
-      <td ng-switch on="player.edit" ng-click="editName(player)">
-        <form ng-submit="name(player.name)" ng-switch-when="true">
+      <td ng-switch on="player.edit" ng-click="editName(player, $index)">
+        <form ng-submit="name(player)" ng-switch-when="true">
           <input type="text" placeholder="username" autofocus required ng-model="player.name">
           <button>save</button>
         </form>

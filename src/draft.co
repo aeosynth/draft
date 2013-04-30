@@ -33,16 +33,18 @@ class Draft extends EventEmitter
 
     return if p.isBot
 
-    @meta!
+    p.on \name @~meta
 
     if p.isHost
       p.once \start @~start
 
+    @meta!
+
   meta: !->
     players = for p of @players
       { p.name, p.time, packs: p.packs.length }
-    for p of @players
-      p.send \set { players }
+    for p, i of @players
+      p.send \set { players, self: i }
 
   start: (addBots) ->
     if addBots

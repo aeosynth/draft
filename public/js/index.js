@@ -250,13 +250,13 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
     $scope.pack = null;
     selected = null;
   };
-  $scope.editName = function(player) {
-    if (!player.self) return;
-    player.edit = true;
+  $scope.editName = function(p, index) {
+    if ($scope.self === index)
+      p.edit = true;
   };
-  $scope.name = function(name) {
-    $scope.self.edit = false;
-    name = name.slice(0, 15);
+  $scope.name = function(p) {
+    p.edit = false;
+    name = p.name.slice(0, 15);
     ws.json('name', name);
     localStorage.name = name;
   };
