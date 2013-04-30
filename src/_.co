@@ -5,6 +5,7 @@ module.exports = _ =
     {length} = arr
     index = (index + length) % length # negative modulo
     arr[index]
+  flat: -> [].concat.apply [] it
   rand: rand
   shuffle: (arr) ->
     # shuffling is the special case where all items are chosen
