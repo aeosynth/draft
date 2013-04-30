@@ -1,0 +1,27 @@
+Cards = require \../../data/cards
+Sets  = require \../../data/sets
+{choose, rand} = require \../_
+
+genPack = (setName) ->
+  {common, uncommon, rare, mythic, special} = Sets[setName]
+  mythic or= rare
+  unless rand 8
+    rare = mythic
+
+  pack = [].concat do
+    choose 10 common
+    choose  3 uncommon
+    choose  1 rare
+
+  switch setName
+  case "Dragon's Maze"
+    special = if rand 22 then <>gate else <>shock
+    fallthrough
+  case 'Time Spiral'
+    index = rand special.length
+    pack.push special[index]
+
+  for name of pack
+    Cards[name]
+
+module.exports = genPack

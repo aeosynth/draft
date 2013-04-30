@@ -1,0 +1,104 @@
+request = require \request
+cheerio = require \cheerio
+
+getCards = (setName, cb) ->
+  url = "http://gatherer.wizards.com/Pages/Search/Default.aspx?output=spoiler&set=[%22#{setName}%22]"
+  request url, (err, res, html) ->
+    if err
+      cb err
+      return
+    cards = parse html, setName
+    cb null, cards
+
+parse = (html, setName) ->
+  var card
+  cards = []
+  split = []
+  rarityRE = new RegExp "(?:^|, )#{setName} (Land|Common|Uncommon|Rare|Mythic Rare|Special)"
+
+  $ = cheerio.load html
+
+  $ '.textspoiler tr' .each ->
+    cells = $ @ .find \td
+
+    return unless key = $ cells.0 .text!.trim!
+    key .= replace \: '' .toLowerCase!
+
+    $val = $ cells.1
+    val = $val.text!.trim!
+
+    return unless val
+
+    switch key
+    case \name
+      [id] = $($val.find \a).attr \href .match /\d+/
+      card :=
+        cmc: 0
+        url: "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=#{id}&type=card"
+        name: val.replace \Æ \AE
+      if ~val.indexOf \//
+        split.push card
+      else
+        cards.push card
+    case \cost
+      card.cost = val
+      cost = val.replace \X '' .replace /\(\w\/\w\)/g ->
+        [_, left, right] = it.match /(\w)\/(\w)/
+        if left is 2
+          card.cmc += 1
+          return right
+        if right is \P
+          return left
+        return \Y
+
+      [_, colorless, colored] = cost.match /(\d*)(\w*)/
+      card.cmc += parseInt(colorless or 0) + colored.length
+    case \color # eg pact of negation
+      card.color = if val is 'Blue'
+        'U'
+      else
+        val.0
+    case \set/rarity
+      if match = val.match rarityRE
+        rarity = match.1
+        if rarity is 'Mythic Rare'
+          rarity = \mythic
+      else
+        rarity = \land
+        console.log "rarity not found: [#{card.name}] [#val]"
+      card.rarity = rarity.toLowerCase!
+    default
+      card[key] = val
+
+  joined = {}
+  for card of split
+    name = card.name.replace /\ \(.+/ ''
+
+    half = joined[name] or=
+      cmc: 0
+      cost: ''
+      name: name
+      url: card.url
+      rarity: card.rarity
+
+    half.cmc  += card.cmc
+    half.cost += card.cost
+
+  for name, card in joined
+    cards.push card
+
+  for card of cards
+    continue if card.color # eg pact of negation
+
+    unless (cost = card.cost) and (colors = cost.match /R|G|B|U|W/g)
+      card.color = \A # artifact
+      continue
+
+    card.color = if /^(.)\1*$/.test colors * ''
+      colors.0
+    else
+      \Y # yellow
+
+  cards
+
+module.exports = getCards

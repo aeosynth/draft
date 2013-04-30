@@ -1,0 +1,121 @@
+#!/usr/bin/env coco
+
+fs = require \fs
+getCards = require \./getCards
+getSetNames = require \./getSetNames
+
+Cards = {}
+Sets  = {}
+
+getSetNames (err, setNames) ->
+  throw err if err
+
+  regex = /(Box Set|Duel Deck|From the Vault|Masters Edition|Premium Deck|Promo set|Vanguard)/
+  setNames = for setName of setNames
+    unless regex.test setName
+      setName
+
+  do scrape = ->
+    unless setName = setNames.pop!
+      write!
+      return
+
+    console.log setName
+    getCards setName, (err, cards) ->
+      throw err if err
+
+      set = Sets[setName] =
+        common: []
+        uncommon: []
+        rare: []
+        mythic: []
+        special: []
+
+      for card of cards
+        {name, rarity} = card
+        continue if rarity is \land
+        set[rarity].push name
+        Cards[name] = card
+
+      unless set.special.length
+        delete set.special
+
+      scrape!
+
+replace = (setName, rarity, bad) ->
+  # WTF
+  good = bad.match /\((.+)\)/ .1
+  names = Sets[setName][rarity]
+  index = names.indexOf bad
+
+  if index is -1
+    console.log "#good in #setName doesn't need fixing"
+    return
+
+  names[index] = good
+  if card = delete Cards[bad]
+    Cards[good] = card
+    card.name = good
+
+write = ->
+  # in Promo set for Gatherer, Masters Edition II. i want neither
+  # TODO use davidchambers/tutor
+  Cards['Mana Crypt'] =
+    cmc: 0
+    color: \A
+    name: 'Mana Crypt'
+    rarity: \rare
+    url: \http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=97048&type=card
+
+  dgm = Sets["Dragon's Maze"]
+  dgm.special =
+    gate: [
+      'Azorius Guildgate'
+      'Boros Guildgate'
+      'Dimir Guildgate',
+      'Golgari Guildgate'
+      'Gruul Guildgate'
+      'Izzet Guildgate'
+      'Orzhov Guildgate'
+      'Rakdos Guildgate'
+      'Selesnya Guildgate'
+      'Simic Guildgate'
+    ]
+    shock: [
+      'Blood Crypt'
+      'Breeding Pool'
+      'Godless Shrine'
+      'Hallowed Fountain'
+      'Overgrown Tomb'
+      'Sacred Foundry'
+      'Steam Vents'
+      'Stomping Ground'
+      'Temple Garden'
+      'Watery Grave'
+    ]
+  # filter guildgates
+  dgm.common = for name of dgm.common
+    unless ~dgm.special.gate.indexOf name
+      name
+
+  # filter transformed
+  for setName of ['Innistrad', 'Dark Ascension']
+    for rarity in set = Sets[setName]
+      set[rarity] = for name of set[rarity]
+        card = Cards[name]
+        if card.cost or card.type is \land
+          name
+
+  tst = 'Time Spiral "Timeshifted"'
+  Sets['Time Spiral'].special = Sets[tst].special
+  delete Sets[tst]
+
+  replace \Odyssey      \rare    "XXCall of the Herd (Call of the Herd)"
+  replace "Time Spiral" \special "XXCall of the Herd (Call of the Herd)"
+  replace \Judgment     \uncommon "XXValor (Valor)"
+  replace "Time Spiral" \special  "XXValor (Valor)"
+
+  fs.writeFileSync \cards/cards.json JSON.stringify Cards, null 2
+  fs.writeFileSync \cards/sets.json  JSON.stringify Sets,  null 2
+
+  console.log \done
