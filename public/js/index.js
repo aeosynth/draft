@@ -161,6 +161,7 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
   var selected = null
 
   document.getElementById('chat').style.display = 'none';
+  $scope.addBots = true;
   $scope.beep = 'never';
   $scope.order = 'color';
   $scope.main = [];
@@ -236,8 +237,7 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
   });
   */
   ws.on('close', function() {
-    $scope.end = true;
-    $scope.$apply();
+    console.log('close');
   });
 
   $scope.pick = function(index) {

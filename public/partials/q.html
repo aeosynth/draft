@@ -8,7 +8,7 @@
       <form method="post" action="/deck">
         <input type="text" name="deck" hidden ng-model="deckJSON">
         generates a hash on the FIRST
-        <button ng-disabled="!end" ng-click="generateDeck()">download</button>
+        <button ng-disabled="round != 4" ng-click="generateDeck()">download</button>
         <select name="type">
           <option value="dec">dec</option>
           <option value="cod">cod</option>

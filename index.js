@@ -4,7 +4,9 @@ var http = require('http');
 var express = require('express');
 var engine = require('engine.io');
 var router = require('./lib/router');
+var genDeck = require('./lib/genDeck');
 
+// TODO replace express w/ static file server
 var app = express()
 .use(express.static(__dirname + '/public'))
 .use(express.bodyParser())
@@ -14,6 +16,14 @@ var app = express()
 })
 .get('/q/:qid', function(req, res) {
   res.sendfile(__dirname + '/public/index.html');
+})
+.post('/deck', function(req, res) {
+  var body = req.body;
+  var deck = JSON.parse(body.deck);
+  var type = body.type;
+  deck = genDeck(deck, type);
+  res.attachment('draft.' + type);
+  res.send(deck);
 })
 ;
 

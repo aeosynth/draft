@@ -3,6 +3,7 @@ Bot = require \./bot
 Human = require \./human
 db = require \./db
 _ = require \./_
+genPack = require \./genPack
 
 class Draft extends EventEmitter
   (opts) ->
@@ -20,6 +21,7 @@ class Draft extends EventEmitter
     for p of @players
       if p.id is id
         p.attach sock
+        p.send @{ round, sets }
         @meta!
         return
 
@@ -35,7 +37,7 @@ class Draft extends EventEmitter
 
     return if p.isBot
 
-    p.on \name @~meta
+    p.on \meta @~meta
     p.on \drop @~drop
 
     if p.isHost
@@ -50,9 +52,14 @@ class Draft extends EventEmitter
     @players.splice index, 1
     @meta!
 
+  send: !(name, args) ->
+    for p of @players
+      p.send name, args
+
   meta: !->
+    # TODO only send time + packs
     players = for p of @players
-      { p.name, p.time, packs: p.packs.length }
+      { p.hash, p.name, p.time, packs: p.packs.length }
     for p, i of @players
       p.send \set { players, self: i }
 
@@ -69,14 +76,17 @@ class Draft extends EventEmitter
     @startRound!
 
   startRound: ->
-    unless set = @sets[@round++]
+    r = ++@round
+    @send \set round: r
+    unless set = @sets[r - 1]
       return @end!
 
     @delta *= -1
     @activePacks = @players.length
 
     for p of @players
-      p.start set, @round
+      p.startRound!
+      p.receive genPack set
 
   pass: (pack, index) ->
     player = _.at @players, index + @delta
@@ -86,6 +96,7 @@ class Draft extends EventEmitter
     else if !--@activePacks
       @startRound!
 
+    # TODO ignore bot passes
     @meta!
 
   end: ->

@@ -1,6 +1,5 @@
 {EventEmitter} = require \events
 {rand} = require \./_
-genPack = require \./genPack
 
 class Player extends EventEmitter
   ->
@@ -11,9 +10,8 @@ class Player extends EventEmitter
 
   time: 0
 
-  start: (set) ->
+  startRound: ->
     @picks.push @round = []
-    @receive genPack set
 
   receive: (pack) ->
     @packs.push pack
