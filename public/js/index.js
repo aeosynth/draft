@@ -13,7 +13,7 @@ angular
     })
     ;
 })
-.factory('ws', function() {
+.factory('ws', function($rootScope) {
   var id = localStorage.pid || (localStorage.id = Math.floor(Math.random() * 1e8));
   var name = localStorage.name;
   var room = location.pathname.split('/').pop();
@@ -21,6 +21,7 @@ angular
   ws.on('message', function(msg) {
     var data = JSON.parse(msg);
     ws.emit(data.name, data.args);
+    $rootScope.$apply();
   });
   ws.json = function() {
     var args = Array.prototype.slice.call(arguments);
@@ -218,7 +219,6 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
       opp.opponent = true;
     if (!$scope.self.name)
       $scope.self.edit = true;
-    $scope.$apply();
   });
   ws.on('pack', function(pack) {
     var d = document
@@ -234,15 +234,6 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
           audio.play();
     }
     $scope.pack = pack;
-    $scope.$apply();
-  });
-  ws.on('pick', function(card) {
-    $scope.main.push(card);
-    $scope.$apply();
-  });
-  ws.on('picks', function(cards) {
-    $scope.main = cards;
-    $scope.$apply();
   });
   */
   ws.on('close', function() {
