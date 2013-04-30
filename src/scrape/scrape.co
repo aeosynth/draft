@@ -69,7 +69,7 @@ write = ->
 
   dgm = Sets["Dragon's Maze"]
   dgm.special =
-    gate: [
+    gate:
       'Azorius Guildgate'
       'Boros Guildgate'
       'Dimir Guildgate',
@@ -80,8 +80,7 @@ write = ->
       'Rakdos Guildgate'
       'Selesnya Guildgate'
       'Simic Guildgate'
-    ]
-    shock: [
+    shock:
       'Blood Crypt'
       'Breeding Pool'
       'Godless Shrine'
@@ -92,7 +91,6 @@ write = ->
       'Stomping Ground'
       'Temple Garden'
       'Watery Grave'
-    ]
   # filter guildgates
   dgm.common = for name of dgm.common
     unless ~dgm.special.gate.indexOf name

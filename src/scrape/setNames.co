@@ -13,7 +13,7 @@ parse = (html) ->
   setNames = []
   $ = cheerio.load html
   $ '#ctl00_ctl00_MainContent_Content_SearchControls_setAddText option' .each ->
-    if $(@).text!.trim!
+    if $(@)text!trim!
       setNames.push that
   setNames
 

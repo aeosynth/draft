@@ -1,8 +1,8 @@
 extensions =
-  cod: (deck) ->
-    main = for name, n in deck.main
+  cod: ({main, side}) ->
+    main = for name, n in main
       """<card number="#n" name="#name"/>"""
-    side = for name, n in deck.side
+    side = for name, n in side
       """<card number="#n" name="#name"/>"""
 
     """
@@ -10,17 +10,17 @@ extensions =
     <cockatrice_deck version="1">
       <deckname>draft</deckname>
       <zone name="main">
-        #{main.join ''}
+        #{main * ''}
       </zone>
       <zone name="side">
-        #{side.join ''}
+        #{side * ''}
       </zone>
     </cockatrice_deck>
     """
-  dec: (deck) ->
-    arr = for name, n in deck.main
+  dec: ({main, side}) ->
+    arr = for name, n in main
       "#n #name"
-    for name, n in deck.side
+    for name, n in side
       arr.push "SB: #n #name"
     arr.join \\n
 
