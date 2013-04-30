@@ -2,13 +2,13 @@
 Bot = require \./bot
 Human = require \./human
 db = require \./db
-{next, rand, shuffle} = require \./_
+_ = require \./_
 
 class Draft extends EventEmitter
   (opts) ->
     @ <<<< opts
     @ <<<<
-      id: rand 1e9 .toString 16
+      id: _.rand 1e9 .toString 16
       players: []
       startTime: Date.now! / 1e3 | 0
 
@@ -49,7 +49,7 @@ class Draft extends EventEmitter
       while @players.length < @seats
         @add new Bot
 
-    shuffle @players
+    _.shuffle @players
 
     for p, i of @players
       p.index = i
@@ -67,7 +67,7 @@ class Draft extends EventEmitter
       p.start set, @round
 
   pass: (pack, index) ->
-    player = next @players, @delta, index
+    player = _.at @players, index + @delta
 
     if pack.length
       player.receive pack
