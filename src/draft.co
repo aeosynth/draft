@@ -34,10 +34,18 @@ class Draft extends EventEmitter
     return if p.isBot
 
     p.on \name @~meta
+    p.on \drop @~drop
 
     if p.isHost
       p.once \start @~start
 
+    @meta!
+
+  drop: (p) ->
+    return if @round
+
+    index = @players.indexOf p
+    @players.splice index, 1
     @meta!
 
   meta: !->
