@@ -14,7 +14,7 @@ angular
     ;
 })
 .factory('ws', function($rootScope) {
-  var id = localStorage.pid || (localStorage.id = Math.floor(Math.random() * 1e8));
+  var id = localStorage.id || (localStorage.id = (Math.random() * 1e9 | 0).toString(16));
   var name = localStorage.name;
   var room = location.pathname.split('/').pop();
   var ws = eio('ws://' + location.host, { query: { id: id, name: name, room: room }});
@@ -135,7 +135,7 @@ function CreateCtrl($scope, $http, $location) {
   $scope.set5 = 'Gatecrash';
   $scope.set6 = 'Return to Ravnica';
   $scope.create = function() {
-    var id = localStorage.pid || (localStorage.id = Math.floor(Math.random() * 1e8));
+    var id = localStorage.id || (localStorage.id = (Math.random() * 1e9 | 0).toString(16));
     var data = {
       type: $scope.type, seats: $scope.seats, host: id
     };
@@ -185,8 +185,7 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
   $timeout(decrement, 1000);
 
   ws.on('open', function() {
-    var qid = $routeParams.qid;
-    ws.json('join', qid);
+    console.log('open');
   });
   ws.on('error', function(error) {
     console.error(error);

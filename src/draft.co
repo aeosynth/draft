@@ -19,7 +19,9 @@ class Draft extends EventEmitter
     {id} = sock
     for p of @players
       if p.id is id
-        return p.attach sock
+        p.attach sock
+        @meta!
+        return
 
     if @players.length is @seats
       return p.send \error 'draft full'

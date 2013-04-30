@@ -1,12 +1,15 @@
 Player = require \./player
 
 class Human extends Player
-  (sock, @isHost) ->
+  (@sock, @isHost) ->
     super!
+    @ <<<< sock{ name, id }
     @attach sock
 
   attach: (sock) ->
-    {@name} = sock
+    # TODO auto reconnect, d/c notice
+    @sock.removeAllListeners!
+    @sock = sock
     @send = sock~send
     @send \set { @isHost, @main, pack: @packs.0 }
 
