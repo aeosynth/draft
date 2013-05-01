@@ -57,7 +57,7 @@
   </div>
   <table>
     <tr><th>#</th><th>name</th><th>time</th><th>packs</th><th>cockatrice</th><th>mws</th></tr>
-    <tr ng-repeat="player in players" ng-class="{ self: self == $index, dropped: player.dropped }">
+    <tr ng-repeat="player in players" ng-class="{ self: self == $index, dropped: player.dropped, opponent: $index == ((self + 4) % 8) }">
       <td>{{ $index + 1 }}</td>
       <td ng-switch on="player.edit" ng-click="editName(player, $index)">
         <form ng-submit="name(player)" ng-switch-when="true">
