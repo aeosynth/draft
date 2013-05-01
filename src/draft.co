@@ -43,10 +43,10 @@ class Draft extends EventEmitter
         return
 
     unless @state is \open
-      return p.send \error 'draft started'
+      return sock.send \error 'draft started'
 
     if @players.length is @seats
-      return p.send \error 'draft full'
+      return sock.send \error 'draft full'
 
     h = new Human sock, sock.id is @host
     @add h

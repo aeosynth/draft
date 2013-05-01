@@ -188,7 +188,7 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
     console.log('open');
   });
   ws.on('error', function(error) {
-    console.error(error);
+    $scope.error = error;
   });
   ws.on('set', function(data) {
     angular.extend($scope, data);
