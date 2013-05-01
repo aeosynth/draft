@@ -10,7 +10,7 @@ Sets  = {}
 getSetNames (err, setNames) ->
   throw err if err
 
-  regex = /(Box Set|Duel Deck|From the Vault|Masters Edition|Premium Deck|Promo set|Vanguard)/
+  regex = /Box Set|Duel Deck|From the Vault|Masters Edition|Premium Deck|Promo set|Vanguard/
   setNames = for setName of setNames
     unless regex.test setName
       setName
@@ -58,15 +58,6 @@ replace = (setName, rarity, bad) ->
     card.name = good
 
 write = ->
-  # in Promo set for Gatherer, Masters Edition II. i want neither
-  # TODO use davidchambers/tutor
-  Cards['Mana Crypt'] =
-    cmc: 0
-    color: \A
-    name: 'Mana Crypt'
-    rarity: \rare
-    url: \http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=97048&type=card
-
   dgm = Sets["Dragon's Maze"]
   dgm.special =
     gate:
