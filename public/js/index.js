@@ -32,7 +32,6 @@ angular
 ;
 
 function CreateCtrl($scope, $http, $location) {
-  $scope.cube = 'mtgo holiday';
   $scope.type = 'draft';
   $scope.seats = 8;
 
@@ -315,6 +314,7 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
   };
   $scope.start = function() {
     if (!$scope.isHost) return;
+    $scope.round = 1;
     ws.json('start', $scope.addBots);
   };
 }

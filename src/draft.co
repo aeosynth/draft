@@ -3,6 +3,7 @@ Bot = require \./bot
 Human = require \./human
 db = require \./db
 _ = require \./_
+genCube = require \./generate/cube
 genPack = require \./generate/pack
 
 class Draft extends EventEmitter
@@ -12,9 +13,14 @@ class Draft extends EventEmitter
       id: _.rand 1e9 .toString 16
       players: []
       startTime: Date.now! / 1e3 | 0
+    if delete @cube
+      genCube that, @seats * 3, (@cube) ~>
+        if @state is \started
+          @start!
 
   delta: -1
   round: 0
+  state: \open
 
   join: (sock) ->
     {id} = sock
@@ -24,6 +30,9 @@ class Draft extends EventEmitter
         p.send @{ round, sets }
         @meta!
         return
+
+    unless @state is \open
+      return p.send \error 'draft started'
 
     if @players.length is @seats
       return p.send \error 'draft full'
@@ -41,7 +50,10 @@ class Draft extends EventEmitter
     p.on \drop @~drop
 
     if p.isHost
-      p.once \start @~start
+      p.once \start (@addBots) ~>
+        @state = \started
+        unless @type is \cube and !@cube
+          @start!
 
     @meta!
 
@@ -63,37 +75,45 @@ class Draft extends EventEmitter
     for p, i of @players
       p.send \set { players, self: i }
 
-  start: !(addBots) ->
-    _.shuffle @players
-
-    switch @type
-    case \draft
-      if addBots
-        while @players.length < @seats
-          @add new Bot
-      for p, i of @players
-        p.index = i
-      @startRound!
-    case \sealed
+  start: ->
+    if @type is \sealed
       @round = 4
       for p of @players
         main = for @sets => genPack &
         main = _.flat <>
         p.main = main
         p.send \set { main, @round }
+      return
 
-  startRound: ->
+    if @addBots
+      while @players.length < @seats
+        @add new Bot
+
+    _.shuffle @players
+
+    for p, i of @players
+      p.index = i
+
+    @startRound!
+
+  startRound: !->
     r = ++@round
     @send \set round: r
-    unless set = @sets[r - 1]
+    if r is 4
       return @end!
+
+    if @sets
+      set = that[r - 1]
 
     @delta *= -1
     @activePacks = @players.length
 
     for p of @players
       p.startRound!
-      p.receive genPack set
+      p.receive if @cube
+        that.pop!
+      else
+        genPack set
 
   pass: (pack, index) ->
     player = _.at @players, index + @delta

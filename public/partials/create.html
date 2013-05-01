@@ -27,11 +27,8 @@
   <select ng-disabled="type != 'sealed'" ng-model="set6" ng-options="set for set in sets"></select>
 </div>
 <div>
-  <select ng-disabled="type != 'cube'" ng-model="cube">
-    <option>mtgo holiday</option>
-    <option>mtgo unpowered</option>
-    <option>pata</option>
-  </select>
+  <input ng-disabled="type != 'cube'" ng-model="cube" placeholder="cube">
+  <a target="_blank" ng-href="http://tappedout.net/mtg-cube-drafts/{{ cube }}">http://tappedout.net/mtg-cube-drafts/{{ cube }}</a>
 </div>
 
 <div>

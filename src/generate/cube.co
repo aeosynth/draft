@@ -1,0 +1,34 @@
+request = require \request
+
+color = (colors) ->
+  {length} = colors
+  if length is 0
+    \A
+  else if length is 1
+    colors.0
+  else
+    \Y
+
+normal = (packs) ->
+  for pack, i of packs
+    pack = for card of pack
+      card{
+        url: image_medium
+        name
+        rarity
+      } <<<<
+        color: color card.effective_cost
+        cmc: card.mana_cost_converted or 0
+    pack
+
+module.exports = (cubeName, count, cb) ->
+  options =
+    uri: "http://tappedout.net/api/collection/cube/#cubeName/booster/?count=#count"
+    json: true
+  request options, (err, res, body) ->
+    console.log options.uri
+    throw err if err
+    unless res.statusCode is 200
+      throw res.statusCode
+
+    cb normal body
