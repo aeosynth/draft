@@ -11,11 +11,6 @@ class Bot extends Player
   send: nop
 
   sendPack: ->
-    pack = @packs.0
-
-    if pack.length is 1
-      @pick 0 true
-    else
-      process.nextTick @~autopick
+    process.nextTick @~autopick
 
 module.exports = Bot
