@@ -158,6 +158,7 @@ function CreateCtrl($scope, $http, $location) {
 
 function QCtrl($scope, $timeout, $http, $routeParams, ws) {
   var selected = null
+  var audio = document.querySelector('audio');
 
   document.getElementById('chat').style.display = 'none';
   $scope.addBots = true;
@@ -192,49 +193,19 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
   });
   ws.on('set', function(data) {
     angular.extend($scope, data);
+
+    if (!(data.pack && data.pack.length)) return;
+    var d = document;
+    var hidden = d.hidden || d.webkitHidden;
+    switch ($scope.beep) {
+      case 'if tab is hidden': if (!hidden) return;
+      case 'always': audio.play();
+    }
   });
   ws.on('add', function(card) {
     $scope.main.push(card);
   });
 
-  /*
-  ws.on('meta', function(meta) {
-    var players = meta.players
-      , index = meta.index
-      , ended = meta.ended
-      , seats = meta.seats
-      , oppIndex
-      ;
-    if (seats === 8)// XXX magic
-      oppIndex = (index + (seats/2)) % seats;
-    while(seats > players.length)
-      players.push({});
-    $scope.end = ended;
-    $scope.players = players;
-    $scope.self = $scope.players[index];
-    $scope.self.self = true;
-    var opp = players[oppIndex];
-    if (opp)
-      opp.opponent = true;
-    if (!$scope.self.name)
-      $scope.self.edit = true;
-  });
-  ws.on('pack', function(pack) {
-    var d = document
-      , audio = d.querySelector('audio')
-      , beep = $scope.beep
-      , hidden = d.hidden || d.msHidden || d.mozHidden || d.webkitHidden
-      ;
-    if (pack) {
-      pack.show = true;
-      if (pack.cards.length && (
-        (beep === 'always') ||
-        ((beep === 'if tab is hidden') && hidden)))
-          audio.play();
-    }
-    $scope.pack = pack;
-  });
-  */
   ws.on('close', function() {
     console.log('close');
   });
