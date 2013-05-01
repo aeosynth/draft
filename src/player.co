@@ -24,8 +24,9 @@ class Player extends EventEmitter
     @pick index, true
 
   pick: (index, autopick) ->
-    pack = @packs.shift!
-    [pick] = pack.splice index, 1
+    return unless pack = @packs.shift!
+    return unless pick = pack.splice index, 1 .0
+
     @main.push pick
     @round.push { pick.name, autopick }
 
@@ -33,5 +34,7 @@ class Player extends EventEmitter
       @sendPack!
 
     @emit \pass pack, @index
+
+    true
 
 module.exports = Player

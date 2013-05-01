@@ -6,6 +6,15 @@ _ = require \./_
 genCube = require \./generate/cube
 genPack = require \./generate/pack
 
+drafts = {}
+
+do decrement = ->
+  for id, d in drafts
+    for p of d.players
+      if p.time and !--p.time
+        p.autopick!
+  setTimeout decrement, 1e3
+
 class Draft extends EventEmitter
   (opts) ->
     @ <<<< opts
@@ -71,7 +80,7 @@ class Draft extends EventEmitter
   meta: !->
     # TODO only send time + packs
     players = for p of @players
-      { p.hash, p.name, p.time, packs: p.packs.length }
+      { p.dropped, p.hash, p.name, p.time, packs: p.packs.length }
     for p, i of @players
       p.send \set { players, self: i }
 
@@ -84,6 +93,8 @@ class Draft extends EventEmitter
         p.main = main
         p.send \set { main, @round }
       return
+
+    drafts[@id] = @
 
     if @addBots
       while @players.length < @seats
@@ -123,11 +134,13 @@ class Draft extends EventEmitter
     else if !--@activePacks
       @startRound!
 
-    # TODO ignore bot passes
+    # TODO ignore bot, dropped passes
     @meta!
 
   end: ->
     console.log \end @id
+
+    delete drafts[@id]
 
     data = @{ sets, start: startTime }
     data.end = Date.now! / 1e3 | 0

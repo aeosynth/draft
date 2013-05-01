@@ -7,6 +7,8 @@ class Human extends Player
     @ <<<< sock{ name, id }
     @attach sock
 
+  dropped: false
+
   attach: (sock) ->
     # TODO auto reconnect, d/c notice
     @sock.removeAllListeners!
@@ -29,13 +31,24 @@ class Human extends Player
   sendPack: ->
     pack = @packs.0
 
-    if pack.length is 1
+    @time = pack.length * 5
+
+    if @dropped or pack.length is 1
       process.nextTick ~> @pick 0 true
     else
       @send \set { pack }
 
+  autopick: ->
+    super!
+    @dropped = true
+    @send \set pack: []
+
   pick: (index) ->
-    super index
+    return unless super index
+
+    if !@packs.length
+      @time = 0
+
     @send \add @main[* - 1]
 
 module.exports = Human
