@@ -46,7 +46,8 @@ class Human extends Player
   autopick: ->
     super!
     @dropped = true
-    @send \set pack: []
+    @sock.removeAllListeners!
+    @send \error 'you were dropped'
 
   pick: (index) ->
     return unless super index

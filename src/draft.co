@@ -54,6 +54,9 @@ class Draft extends EventEmitter
     {id} = sock
     for p of @players
       if p.id is id
+        if p.dropped
+          p.send \error 'you were dropped'
+          return
         p.attach sock
         p.send @{ round, sets }
         @meta!
