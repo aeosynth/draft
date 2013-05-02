@@ -25,10 +25,8 @@ module.exports = (cubeName, count, cb) ->
   options =
     uri: "http://tappedout.net/api/collection/cube/#cubeName/booster/?count=#count"
     json: true
-  request options, (err, res, body) ->
-    console.log options.uri
-    throw err if err
-    unless res.statusCode is 200
-      throw res.statusCode
-
-    cb normal body
+  request options, cb
+    if err or res.statusCode is not 200
+      console.log(err or "#{options.uri}: #{res.statusCode}")
+      cb true
+    cb null normal body

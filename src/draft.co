@@ -38,10 +38,12 @@ class Draft extends EventEmitter
       id: _.rand 1e9 .toString 16
       players: []
       startTime: Date.now! / 1e3 | 0
-      timeout: setTimeout @~end, HOUR
+      timeout: setTimeout @end.bind(@, \timeout), HOUR
     if cube
-      genCube that, seats * 3, (@cube) ~>
-        if @state is \started
+      genCube that, seats * 3, (err, @cube) ~>
+        if err
+          @end 'cube error'
+        else if @state is \started
           @start!
 
   delta: -1
@@ -103,7 +105,7 @@ class Draft extends EventEmitter
 
   start: ->
     clearTimeout @timeout
-    @timeout = setTimeout @~end, HOUR
+    @timeout = setTimeout @end.bind(@, \timeout), HOUR
 
     if @type is \sealed
       @round = 4
@@ -157,12 +159,14 @@ class Draft extends EventEmitter
     # TODO ignore bot, dropped passes
     @meta!
 
-  end: ->
-    console.log \end @id
-
+  end: (err) ->
     clearTimeout @timeout
     delete drafts[@id]
     @emit \end
+
+    if err
+      @send \error err
+      return
 
     data = @{ sets, start: startTime }
     data.end = Date.now! / 1e3 | 0
