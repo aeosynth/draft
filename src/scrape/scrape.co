@@ -1,8 +1,8 @@
 #!/usr/bin/env coco
 
 fs = require \fs
-getCards = require \./getCards
-getSetNames = require \./getSetNames
+getCards = require \./cards
+getSetNames = require \./setNames
 
 Cards = {}
 Sets  = {}
@@ -104,7 +104,7 @@ write = ->
   replace \Judgment     \uncommon "XXValor (Valor)"
   replace "Time Spiral" \special  "XXValor (Valor)"
 
-  fs.writeFileSync \cards/cards.json JSON.stringify Cards, null 2
-  fs.writeFileSync \cards/sets.json  JSON.stringify Sets,  null 2
+  fs.writeFileSync \data/cards.json JSON.stringify Cards, null 2
+  fs.writeFileSync \data/sets.json  JSON.stringify Sets,  null 2
 
   console.log \done
