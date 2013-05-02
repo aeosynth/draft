@@ -166,11 +166,13 @@ class Draft extends EventEmitter
   end: (err) ->
     clearTimeout @timeout
     delete drafts[@id]
-    @emit \end
 
     if err
+      @emit \end
       @send \error err
       return
+
+    setTimeout (~> @emit \end), HOUR
 
     data = @{ sets, start: startTime }
     data.end = Date.now! / 1e3 | 0
