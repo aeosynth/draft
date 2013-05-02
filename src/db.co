@@ -1,8 +1,7 @@
 request = require \request
 {rand} = require \./_
-couch = require \../data/couch
 
-module.exports = (data) ->
+db = (data) ->
   options = {} <<<< couch
 
   # sequential ids for extreme performance
@@ -13,3 +12,11 @@ module.exports = (data) ->
   request options, (err, res, body) ->
     throw err if err
     console.log body
+
+try
+  couch = require \../data/couch
+catch
+  console.log 'data/couch.json not found'
+  db = ->
+
+module.exports = db
