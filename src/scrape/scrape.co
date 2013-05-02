@@ -37,11 +37,9 @@ getSetNames (err, setNames) ->
         set[rarity].push name
         Cards[name] = card
 
-      unless set.mythic.length
-        delete set.mythic
-
-      unless set.special.length
-        delete set.special
+      for rarity of <[ mythic special ]>
+        unless set[rarity].length
+          delete set[rarity]
 
       scrape!
 
