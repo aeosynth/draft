@@ -9,7 +9,11 @@ this project is unafilliated with wizards of the coast
 
 install [nodejs](http://nodejs.org), then install dependencies with
 
-    npm install
+    npm install && npm install -g coco
+
+build the js with
+
+    coco -bco lib src
 
 build the card database with
 
@@ -23,18 +27,5 @@ open <http://localhost:1337> to connect
 
 # hack
 
-this project uses
-
-- [coco](https://github.com/satyr/coco) for javascript transpiling
-
-- [engine.io](https://github.com/LearnBoost/engine.io) for realtime communication
-
-- [angularjs](http://angularjs.org/) for data binding
-
-to build the js files, install coco with
-
-    npm install -g coco
-
-then run
-
-    coco -bco lib src
+this project is written in [coco](https://github.com/satyr/coco), which
+transpiles to javascript
