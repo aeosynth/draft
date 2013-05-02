@@ -29,4 +29,5 @@ module.exports = (cubeName, count, cb) ->
     if err or res.statusCode is not 200
       console.log(err or "#{options.uri}: #{res.statusCode}")
       cb true
-    cb null normal body
+    else
+      cb null normal body
