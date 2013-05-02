@@ -32,6 +32,8 @@ class Player extends EventEmitter
 
     if @packs.length
       @sendPack!
+    else
+      @time = 0
 
     @emit \pass pack, @index
 

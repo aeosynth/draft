@@ -51,10 +51,6 @@ class Human extends Player
 
   pick: (index) ->
     return unless super index
-
-    if !@packs.length
-      @time = 0
-
     @send \add @main[* - 1]
 
 module.exports = Human
