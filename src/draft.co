@@ -24,7 +24,10 @@ class Draft extends EventEmitter
     assert 1 <= seats <= 8
     assert typeof host is \string
     if sets
-      assert sets.length is 3
+      if type is \draft
+        assert sets.length is 3
+      else
+        assert sets.length is 6
       for set of sets
         assert set in Sets
     else
