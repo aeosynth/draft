@@ -131,6 +131,7 @@ class Draft extends EventEmitter
       p.index = i
 
     @startRound!
+    @meta!
 
   startRound: !->
     r = ++@round
