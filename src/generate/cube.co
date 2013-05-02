@@ -1,6 +1,6 @@
 request = require \request
 
-color = (colors) ->
+getColor = (colors) ->
   {length} = colors
   if length is 0
     \A
@@ -12,13 +12,19 @@ color = (colors) ->
 normal = (packs) ->
   for pack, i of packs
     pack = for card of pack
-      card{
+      o = card{
         url: image_medium
         name
         rarity
       } <<<<
-        color: color card.effective_cost
         cmc: card.mana_cost_converted or 0
+
+      o.color = if card.effective_cost
+        getColor that
+      else
+        console.log 'no effective_cost' card.name
+        \A
+      o
     pack
 
 module.exports = (cubeName, count, cb) ->
