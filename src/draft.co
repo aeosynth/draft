@@ -58,7 +58,7 @@ class Draft extends EventEmitter
           p.send \error 'you were dropped'
           return
         p.attach sock
-        p.send @{ round, sets }
+        p.send \set @{ round }
         @meta!
         return
 
