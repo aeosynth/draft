@@ -1,3 +1,4 @@
+assert = require \assert
 {EventEmitter} = require \events
 Bot = require \./bot
 Human = require \./human
@@ -5,6 +6,7 @@ db = require \./db
 _ = require \./_
 genCube = require \./generate/cube
 genPack = require \./generate/pack
+Sets = require \../data/sets
 
 HOUR = 1e3 * 60 * 60
 drafts = {}
@@ -17,15 +19,25 @@ do decrement = ->
   setTimeout decrement, 1e3
 
 class Draft extends EventEmitter
-  (opts) ->
-    @ <<<< opts
+  ({cube, host, seats, sets, type}) ->
+    assert type of <[ cube draft sealed ]>
+    assert 1 <= seats <= 8
+    assert typeof host is \string
+    if sets
+      assert sets.length is 3
+      for set of sets
+        assert set in Sets
+    else
+      assert typeof cube is \string
+
+    @ <<<< { host, seats, sets, type }
     @ <<<<
       id: _.rand 1e9 .toString 16
       players: []
       startTime: Date.now! / 1e3 | 0
       timeout: setTimeout @~end, HOUR
-    if delete @cube
-      genCube that, @seats * 3, (@cube) ~>
+    if cube
+      genCube that, seats * 3, (@cube) ~>
         if @state is \started
           @start!
 

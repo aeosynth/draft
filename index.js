@@ -11,7 +11,14 @@ var app = express()
 .use(express.static(__dirname + '/public'))
 .use(express.bodyParser())
 .post('/create', function(req, res) {
-  var id = router.create(req.body);
+  var body = req.body;
+  try {
+    var id = router.create(body);
+  } catch(err) {
+    console.log('error creating draft', body);
+    res.end();
+    return;
+  }
   res.send(id);
 })
 .get('/q/:qid', function(req, res) {
@@ -19,9 +26,15 @@ var app = express()
 })
 .post('/deck', function(req, res) {
   var body = req.body;
-  var deck = JSON.parse(body.deck);
-  var type = body.type;
-  deck = genDeck(deck, type);
+  try {
+    var deck = JSON.parse(body.deck);
+    var type = body.type;
+    deck = genDeck(deck, type);
+  } catch(err) {
+    console.log('error creating deck', body);
+    res.end();
+    return;
+  }
   res.attachment('draft.' + type);
   res.send(deck);
 })

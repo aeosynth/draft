@@ -6,7 +6,6 @@ drafts = {}
 rm = ->
   delete drafts[@id]
 
-
 router =
   create: (opts) ->
     draft = new Draft opts
