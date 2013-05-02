@@ -10,8 +10,7 @@ db = (data) ->
   options.json = data
 
   request options, (err, res, body) ->
-    throw err if err
-    console.log body
+    console.log that if err
 
 try
   couch = require \../data/couch
