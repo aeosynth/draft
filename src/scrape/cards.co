@@ -44,7 +44,7 @@ parse = (html, setName) ->
       card.cost = val
       cost = val.replace \X '' .replace /\(\w\/\w\)/g ->
         [_, left, right] = it.match /(\w)\/(\w)/
-        if left is 2
+        if left is \2
           card.cmc += 1
           return right
         if right is \P
