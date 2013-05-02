@@ -19,7 +19,7 @@ class Human extends Player
     # TODO events hash
     # TODO bubbling, single arg w/ data + src, namespaces
     sock.on \pick @~pick
-    sock.on \name @~name
+    sock.on \name @~setName
     sock.on \drop ~> @emit \drop @
     sock.on \hash (deck) ~>
       @hash = genHash deck
@@ -28,7 +28,7 @@ class Human extends Player
     if @isHost
       sock.on \start ~> @emit \start it
 
-  name: ->
+  setName: ->
     return unless typeof it is \string
     @name = it.slice 0 16
     @emit \meta
