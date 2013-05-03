@@ -174,10 +174,15 @@ class Draft extends EventEmitter
 
     setTimeout (~> @emit \end), HOUR
 
-    data = @{ sets, start: startTime }
-    data.end = Date.now! / 1e3 | 0
+    data =
+      start: @startTime
+      end: Date.now! / 1e3 | 0
     data.players = for p of @players
       p{ isBot, picks }
+    if @sets
+      data.sets = that
+    else
+      data.cube = @cube
 
     db data
 
