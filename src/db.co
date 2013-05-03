@@ -16,7 +16,7 @@ db = (data) ->
 try
   couch = require \../data/couch
 catch
-  console.log 'data/couch.json not found'
+  console.log 'error reading data/couch'
   db = ->
 
 module.exports = db
