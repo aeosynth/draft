@@ -69,24 +69,22 @@ class Draft extends EventEmitter
       return sock.send \error 'draft full'
 
     h = new Human sock, sock.id is @host
-    @add h
 
-  add: (p) ->
-    @players.push p
-    p.on \pass @~pass
+    h.on \meta @~meta
+    h.on \drop @~drop
 
-    return if p.isBot
-
-    p.on \meta @~meta
-    p.on \drop @~drop
-
-    if p.isHost
-      p.once \start (@addBots) ~>
+    if h.isHost
+      h.once \start (@addBots) ~>
         @state = \started
         unless @type is \cube and !@cube
           @start!
 
+    @add h
     @meta!
+
+  add: (p) ->
+    @players.push p
+    p.on \pass @~pass
 
   drop: (p) ->
     return if @round
