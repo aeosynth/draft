@@ -33,7 +33,7 @@ module.exports = (cubeName, count, cb) ->
     json: true
   request options, (err, res, body) ->
     if err or res.statusCode is not 200
-      console.log(err or "#{options.uri}: #{res.statusCode}")
+      console.log 'cube err' (err or "#{options.uri}: #{res.statusCode}")
       cb true
     else
       cb null normal body
