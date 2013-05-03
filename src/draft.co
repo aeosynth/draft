@@ -15,7 +15,7 @@ do decrement = ->
   for id, d in drafts
     for p of d.players
       if p.time and !--p.time
-        p.autopick!
+        p.drop!
   setTimeout decrement, 1e3
 
 class Draft extends EventEmitter

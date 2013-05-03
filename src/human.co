@@ -39,15 +39,15 @@ class Human extends Player
     @time = 20 + pack.length * 5
 
     if @dropped or pack.length is 1
-      process.nextTick ~> @pick 0 true
+      process.nextTick @~autopick
     else
       @send \set { pack }
 
-  autopick: ->
+  drop: ->
     @dropped = true
     @sock.removeAllListeners!
     @send \error 'you were dropped'
-    super!
+    @autopick!
 
   pick: (index) ->
     return unless super index
