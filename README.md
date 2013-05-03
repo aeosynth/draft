@@ -33,5 +33,5 @@ transpiles to javascript
 draft results are stored in
 [iriscouch](https://aeosynth.iriscouch.com:6984/_utils/)
 
-to store results in your own couch, in the `data` directory, create a
-`couch.json` file with your credentials
+to store results in your own couch, create `data/couch.json` with your
+credentials
