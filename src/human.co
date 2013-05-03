@@ -49,8 +49,9 @@ class Human extends Player
     @send \error 'you were dropped'
     @autopick!
 
-  pick: (index) ->
-    return unless super index
+  pick: (index, autopick) ->
+    return unless typeof index is \number
+    return unless super index, autopick
     @send \add @main[* - 1]
 
 module.exports = Human

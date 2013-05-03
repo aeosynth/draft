@@ -24,11 +24,12 @@ class Player extends EventEmitter
     @pick index, true
 
   pick: (index, autopick) ->
-    return unless pack = @packs.shift!
-    return unless pick = pack.splice index, 1 .0
+    return unless card = @packs.0?[index]
+    pack = @packs.shift!
+    pack.splice index, 1
 
-    @main.push pick
-    @round.push { pick.name, autopick }
+    @main.push card
+    @round.push { card.name, autopick }
 
     if @packs.length
       @sendPack!
