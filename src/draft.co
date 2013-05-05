@@ -33,14 +33,14 @@ class Draft extends EventEmitter
     else
       assert typeof cube is \string
 
-    @ <<<< { host, seats, sets, type }
+    @ <<<< { cube, host, seats, sets, type }
     @ <<<<
       id: _.rand 1e9 .toString 16
       players: []
       startTime: Date.now! / 1e3 | 0
       timeout: setTimeout @end.bind(@, \timeout), HOUR
     if cube
-      genCube that, seats * 3, (err, @cube) ~>
+      genCube that, seats * 3, (err, @cubePacks) ~>
         if err
           @end 'cube error'
         else if @state is \started
@@ -76,7 +76,7 @@ class Draft extends EventEmitter
     if h.isHost
       h.once \start (@addBots) ~>
         @state = \started
-        unless @type is \cube and !@cube
+        unless @type is \cube and !@cubePacks
           @start!
 
     @add h
@@ -145,7 +145,7 @@ class Draft extends EventEmitter
 
     for p of @players
       p.startRound!
-      p.receive if @cube
+      p.receive if @cubePacks
         that.pop!
       else
         genPack set
