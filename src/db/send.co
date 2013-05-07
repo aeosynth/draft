@@ -1,26 +1,26 @@
 request = require \request
 {uid} = require \../_
 
-db = (data) ->
-  options = {} <<<< couch
-
+send = (data) ->
   # sequential ids for extreme performance
   data._id = data.end + uid!slice -6
-  options.uri += if data.cube then \cube else \draft
-  options.uri += \/ + data._id
-  options.json = data
+  server = \https://aeosynth.iriscouch.com:6984
+  db = if data.cube then \cube else \draft
+
+  options =
+    auth: auth
+    json: data
+    method: \PUT
+    uri: "#server/#db/#{data._id}"
 
   request options, (err, res, body) ->
     if err
       console.log 'couch err' that
 
 try
-  couch = require \../../data/couch
-  couch <<<<
-    method: \PUT
-    uri: \https://aeosynth.iriscouch.com:6984/
+  auth = require \../../data/auth
 catch
-  console.log 'error reading data/couch'
-  db = ->
+  console.log 'error reading data/auth'
+  send = ->
 
-module.exports = db
+module.exports = send
