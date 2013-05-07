@@ -89,7 +89,7 @@ class Draft extends EventEmitter
   drop: (p) ->
     return if @round
 
-    @players = _.without <>, [p]
+    @players = _.without <>, p
     @meta!
 
   send: !(name, args) ->

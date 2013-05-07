@@ -87,7 +87,7 @@ write = ->
       "Maze's End"
   # filter guildgates
   dgm.common = _.without <>, dgm.special.gate
-  dgm.mythic = _.without <>, ["Maze's End"]
+  dgm.mythic = _.without <>, "Maze's End"
 
   # filter transformed
   for setName of ['Innistrad', 'Dark Ascension']
