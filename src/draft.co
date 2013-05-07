@@ -89,8 +89,7 @@ class Draft extends EventEmitter
   drop: (p) ->
     return if @round
 
-    index = @players.indexOf p
-    @players.splice index, 1
+    @players = _.without <>, [p]
     @meta!
 
   send: !(name, args) ->
