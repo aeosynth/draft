@@ -13,6 +13,7 @@ normal = (packs) ->
   for pack, i of packs
     pack = for card of pack
       o = card{
+        score: cube_average
         url: image_medium
         name
         rarity
