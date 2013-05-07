@@ -6,7 +6,8 @@ db = (data) ->
 
   # sequential ids for extreme performance
   data._id = data.end + uid!slice -6
-  options.uri += data._id
+  options.uri += if data.cube then \cube else \draft
+  options.uri += \/ + data._id
   options.json = data
 
   request options, (err, res, body) ->

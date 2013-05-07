@@ -1,10 +1,11 @@
 fs = require \fs
 request = require \request
 Cards = require \../../data/cards
+Couch = require \../../data/couch
 
 options =
   json: true
-  uri: \https://aeosynth.iriscouch.com:6984/old/_design/old/_view/score?group=true
+  uri: Couch.uri + \old/_design/old/_view/score?group=true
 
 request options, (err, res, data) ->
   throw err if err
