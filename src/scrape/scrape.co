@@ -1,6 +1,7 @@
 #!/usr/bin/env coco
 
 fs = require \fs
+_ = require \../_
 getCards = require \./cards
 getSetNames = require \./setNames
 
@@ -84,9 +85,7 @@ write = ->
       'Temple Garden'
       'Watery Grave'
   # filter guildgates
-  dgm.common = for name of dgm.common
-    unless ~dgm.special.gate.indexOf name
-      name
+  dgm.common = _.without dgm.common, dgm.special.gate
 
   # filter transformed
   for setName of ['Innistrad', 'Dark Ascension']

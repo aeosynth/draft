@@ -13,3 +13,8 @@ module.exports = _ =
   flat: -> [].concat.apply [] it
   rand: -> Math.random! * it | 0
   shuffle: -> _.choose it.length, it
+  uid: -> _.rand 9e9 .toString 16
+  without: (arr, vals) ->
+    for el of arr
+      unless ~vals.indexOf el
+        el

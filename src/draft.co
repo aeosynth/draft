@@ -35,7 +35,7 @@ class Draft extends EventEmitter
 
     @ <<<< { cube, host, seats, sets, type }
     @ <<<<
-      id: _.rand 1e9 .toString 16
+      id: _.uid!
       players: []
       startTime: Date.now! / 1e3 | 0
       timeout: setTimeout @end.bind(@, \timeout), HOUR
