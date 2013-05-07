@@ -2,7 +2,7 @@ assert = require \assert
 {EventEmitter} = require \events
 Bot = require \./bot
 Human = require \./human
-db = require \./db
+send = require \./db/send
 _ = require \./_
 genCube = require \./generate/cube
 genPack = require \./generate/pack
@@ -181,6 +181,6 @@ class Draft extends EventEmitter
     else
       data.cube = @cube
 
-    db data
+    send data
 
 module.exports = Draft

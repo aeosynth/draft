@@ -19,6 +19,10 @@ build the card database with
 
     node lib/scrape/scrape.js
 
+build card scores (used by bots) with
+
+    node lib/db/score.js
+
 actually run the server with
 
     node app.js

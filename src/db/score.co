@@ -1,0 +1,13 @@
+fs = require \fs
+request = require \request
+Cards = require \../../data/cards
+
+options =
+  json: true
+  uri: \https://aeosynth.iriscouch.com:6984/old/_design/old/_view/score?group=true
+
+request options, (err, res, data) ->
+  throw err if err
+  for {key, value} of data.rows
+    Cards[key].score = value.sum / value.count
+  fs.writeFileSync \data/cards.json JSON.stringify Cards, null 2

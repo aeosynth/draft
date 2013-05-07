@@ -11,6 +11,14 @@ class Bot extends Player
   send: nop
 
   sendPack: ->
-    process.nextTick @~autopick
+    process.nextTick @~botpick
+
+  botpick: ->
+    _score = Infinity
+    for {score}, i of @packs.0
+      if score < _score
+        _score = score
+        index = i
+    @pick index
 
 module.exports = Bot

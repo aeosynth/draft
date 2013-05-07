@@ -1,5 +1,5 @@
 request = require \request
-{uid} = require \./_
+{uid} = require \../_
 
 db = (data) ->
   options = {} <<<< couch
@@ -14,7 +14,7 @@ db = (data) ->
       console.log 'couch err' that
 
 try
-  couch = require \../data/couch
+  couch = require \../../data/couch
 catch
   console.log 'error reading data/couch'
   db = ->

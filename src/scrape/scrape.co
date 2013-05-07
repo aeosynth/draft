@@ -36,6 +36,7 @@ getSetNames (err, setNames) ->
         {name, rarity} = card
         continue if rarity is \land
         set[rarity].push name
+        card.score = 99
         Cards[name] = card
 
       for rarity of <[ mythic special ]>
