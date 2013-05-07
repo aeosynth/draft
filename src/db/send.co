@@ -16,6 +16,9 @@ db = (data) ->
 
 try
   couch = require \../../data/couch
+  couch <<<<
+    method: \PUT
+    uri: \https://aeosynth.iriscouch.com:6984/
 catch
   console.log 'error reading data/couch'
   db = ->
