@@ -15,7 +15,7 @@ genPack = (setName) ->
 
   switch setName
   case "Dragon's Maze"
-    special = if rand 22 then <>gate else <>shock
+    special = if rand 20 then <>gate else <>shock
     fallthrough
   case 'Time Spiral'
     index = rand special.length
