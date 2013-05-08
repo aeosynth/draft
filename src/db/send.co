@@ -20,7 +20,7 @@ send = (data) ->
 try
   auth = require \../../data/auth
 catch
-  console.log 'error reading data/auth'
+  console.log 'error reading data/auth; draft results will not be saved'
   send = ->
 
 module.exports = send

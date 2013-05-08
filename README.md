@@ -34,8 +34,5 @@ open <http://localhost:1337> to connect
 this project is written in [coco](https://github.com/satyr/coco), which
 transpiles to javascript
 
-draft results are stored in
+draft results are saved in
 [iriscouch](https://aeosynth.iriscouch.com:6984/_utils/)
-
-to store results in your own couch, create `data/couch.json` with your
-credentials
