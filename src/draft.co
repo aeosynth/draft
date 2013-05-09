@@ -88,7 +88,7 @@ class Draft extends EventEmitter
     p.on \pass @~pass
 
   drop: (h) ->
-    return if @round
+    return unless @state is \open
 
     h.removeAllListeners!
     @players = _.without <>, h
