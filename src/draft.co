@@ -86,11 +86,11 @@ class Draft extends EventEmitter
     @players.push p
     p.on \pass @~pass
 
-  drop: (p) ->
+  drop: (h) ->
     return if @round
 
-    p.removeAllListeners!
-    @players = _.without <>, p
+    h.removeAllListeners!
+    @players = _.without <>, h
     @meta!
 
   send: !(name, args) ->
