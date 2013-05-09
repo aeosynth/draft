@@ -20,6 +20,7 @@ do decrement = ->
 
 class Draft extends EventEmitter
   ({cube, host, seats, sets, type}) ->
+    seats = Number <>
     assert type of <[ cube draft sealed ]>
     assert 1 <= seats <= 8
     assert typeof host is \string
