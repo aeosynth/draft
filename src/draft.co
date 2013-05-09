@@ -24,15 +24,15 @@ class Draft extends EventEmitter
     assert type of <[ cube draft sealed ]>
     assert 1 <= seats <= 8
     assert typeof host is \string
-    if sets
-      if type is \draft
-        assert sets.length is 3
-      else
-        assert sets.length is 6
+    if type is \cube
+      assert !sets
+      assert typeof cube is \string
+    else
+      assert !cube
+      n = if type is \draft then 3 else 6
+      assert sets.length is n
       for set of sets
         assert set in Sets
-    else
-      assert typeof cube is \string
 
     @ <<<< { cube, host, seats, sets, type }
     @ <<<<
