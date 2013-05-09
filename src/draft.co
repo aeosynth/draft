@@ -29,6 +29,7 @@ class Draft extends EventEmitter
       assert typeof cube is \string
     else
       assert !cube
+      assert sets instanceof Array
       n = if type is \draft then 3 else 6
       assert sets.length is n
       for set of sets
