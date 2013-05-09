@@ -146,7 +146,16 @@ function CreateCtrl($scope, $http, $location) {
         data.sets = [$scope.set1, $scope.set2, $scope.set3, $scope.set4, $scope.set5, $scope.set6];
         break;
       case 'cube':
-        data.cube = $scope.cube;
+        var cube = $scope.cube;
+        if (!cube) {
+          alert('please enter a cube name');
+          return;
+        }
+        if (/^http:/.test(cube)) {
+          alert('enter just the cube name, not the full url');
+          return;
+        }
+        data.cube = cube;
     }
     $http.post('/create', data)
       .success(function(qid, status) {
