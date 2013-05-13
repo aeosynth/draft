@@ -3,11 +3,8 @@ cheerio = require \cheerio
 
 getSetNames = (cb) ->
   request \http://gatherer.wizards.com/Pages/Default.aspx (err, res, html) ->
-    if err
-      cb err
-    else
-      setNames = parse html
-      cb null, setNames
+    throw err if err
+    cb parse html
 
 parse = (html) ->
   setNames = []

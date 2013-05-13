@@ -2,13 +2,11 @@ request = require \request
 cheerio = require \cheerio
 
 getCards = (setName, cb) ->
-  url = "http://gatherer.wizards.com/Pages/Search/Default.aspx?output=spoiler&set=[%22#{setName}%22]"
+  url = "http://gatherer.wizards.com/Pages/Search/Default.aspx?
+    output=spoiler&set=[%22#{setName}%22]"
   request url, (err, res, html) ->
-    if err
-      cb err
-      return
-    cards = parse html, setName
-    cb null, cards
+    throw err if err
+    cb parse html, setName
 
 parse = (html, setName) ->
   var card
@@ -19,19 +17,18 @@ parse = (html, setName) ->
   $ = cheerio.load html
 
   $ '.textspoiler tr' .each ->
-    cells = $ @ .find \td
-
-    return unless key = $ cells.0 .text!.trim!
-    key .= replace \: '' .toLowerCase!
+    cells = @children!
 
     $val = $ cells.1
-    val = $val.text!.trim!
+    val = $val.text!trim!
 
     return unless val
 
+    key = $ cells.0 .text!trim!replace \: '' .toLowerCase!
+
     switch key
     case \name
-      [id] = $($val.find \a).attr \href .match /\d+/
+      [id] = $val.find \a .attr \href .match /\d+/
       card :=
         cmc: 0
         url: "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=#{id}&type=card"
@@ -54,8 +51,8 @@ parse = (html, setName) ->
       [_, colorless, colored] = cost.match /(\d*)(\w*)/
       card.cmc += parseInt(colorless or 0) + colored.length
     case \color # eg pact of negation
-      card.color = if val is 'Blue'
-        'U'
+      card.color = if val is \Blue
+        \U
       else
         val.0
     case \set/rarity

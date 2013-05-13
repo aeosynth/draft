@@ -8,9 +8,7 @@ getSetNames = require \./setNames
 Cards = {}
 Sets  = {}
 
-getSetNames (err, setNames) ->
-  throw err if err
-
+getSetNames (setNames) ->
   regex = /Box Set|Duel Deck|From the Vault|Masters Edition|Premium Deck|Promo set|Vanguard/
   setNames = for setName of setNames
     unless regex.test setName
@@ -22,28 +20,28 @@ getSetNames (err, setNames) ->
       return
 
     console.log setName
-    getCards setName, (err, cards) ->
-      throw err if err
 
-      set = Sets[setName] =
-        common: []
-        uncommon: []
-        rare: []
-        mythic: []
-        special: []
+    cards <- getCards setName
 
-      for card of cards
-        {name, rarity} = card
-        continue if rarity is \land
-        set[rarity].push name
-        card.score = 99
-        Cards[name] = card
+    set = Sets[setName] =
+      common: []
+      uncommon: []
+      rare: []
+      mythic: []
+      special: []
 
-      for rarity of <[ mythic special ]>
-        unless set[rarity]length
-          delete set[rarity]
+    for card of cards
+      {name, rarity} = card
+      continue if rarity is \land
+      set[rarity].push name
+      card.score = 99
+      Cards[name] = card
 
-      scrape!
+    for rarity of <[ mythic special ]>
+      unless set[rarity]length
+        delete set[rarity]
+
+    scrape!
 
 replace = (setName, rarity, bad) ->
   # WTF
