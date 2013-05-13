@@ -1,9 +1,10 @@
 request = require \request
 cheerio = require \cheerio
 
+ORIGIN = \http://gatherer.wizards.com
+
 getCards = (setName, cb) ->
-  url = "http://gatherer.wizards.com/Pages/Search/Default.aspx?
-    output=spoiler&set=[%22#{setName}%22]"
+  url = "#ORIGIN/Pages/Search/Default.aspx?output=spoiler&set=[%22#setName%22]"
   request url, (err, res, html) ->
     throw err if err
     cb parse html, setName
@@ -12,7 +13,8 @@ parse = (html, setName) ->
   var card
   cards = []
   split = []
-  rarityRE = new RegExp "(?:^|, )#{setName} (Land|Common|Uncommon|Rare|Mythic Rare|Special)"
+  rarityRE = new RegExp
+    "(?:^|, )#setName (Land|Common|Uncommon|Rare|Mythic Rare|Special)"
 
   $ = cheerio.load html
 
@@ -31,7 +33,7 @@ parse = (html, setName) ->
       [id] = $val.find \a .attr \href .match /\d+/
       card :=
         cmc: 0
-        url: "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=#{id}&type=card"
+        url: "#ORIGIN/Handlers/Image.ashx?type=card&multiverseid=#{id}"
         name: val.replace \Æ \AE
       if ~val.indexOf \//
         split.push card
@@ -57,13 +59,13 @@ parse = (html, setName) ->
         val.0
     case \set/rarity
       if match = val.match rarityRE
-        rarity = match.1
-        if rarity is 'Mythic Rare'
+        rarity = match.1.toLowerCase!
+        if rarity is 'mythic rare'
           rarity = \mythic
       else
-        rarity = \land
         console.log "rarity not found: [#{card.name}] [#val]"
-      card.rarity = rarity.toLowerCase!
+        rarity = \land
+      card.rarity = rarity
     default
       card[key] = val
 
