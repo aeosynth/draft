@@ -134,7 +134,7 @@ function CreateCtrl($scope, $http, $location) {
   $scope.set5 = 'Gatecrash';
   $scope.set6 = 'Return to Ravnica';
   $scope.create = function() {
-    var id = localStorage.id || (localStorage.id = (Math.random() * 1e9 | 0).toString(16));
+    var id = localStorage.id || (localStorage.id = (Math.floor(Math.random() * 9e9)).toString(16));
     var data = {
       type: $scope.type, seats: $scope.seats, host: id
     };
@@ -147,15 +147,11 @@ function CreateCtrl($scope, $http, $location) {
         break;
       case 'cube':
         var cube = $scope.cube;
-        if (!cube) {
-          alert('please enter a cube name');
-          return;
-        }
-        if (/^http:/.test(cube)) {
-          alert('enter just the cube name, not the full url');
-          return;
-        }
-        data.cube = cube;
+        if (cube)
+          var match = cube.match(/([^/]+)\/?$/);
+        if (!match)
+          return alert('which cube are you drafting?');
+        data.cube = $scope.cube = match[1];
     }
     $http.post('/create', data)
       .success(function(qid, status) {
