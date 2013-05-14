@@ -13,7 +13,7 @@ parse = (html, setName) ->
   var card
   cards = []
   split = []
-  rarityRE = new RegExp
+  rarityRE = new RegExp do
     "(?:^|, )#setName (Land|Common|Uncommon|Rare|Mythic Rare|Special)"
 
   $ = cheerio.load html
