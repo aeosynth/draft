@@ -9,7 +9,7 @@ Cards = {}
 Sets  = {}
 
 getSetNames (setNames) ->
-  regex = /Box Set|Duel Deck|From the Vault|Masters Edition|Premium Deck|Promo set|Vanguard/
+  regex = /Box Set|Duel Deck|From the Vault|Masters Edition|Premium Deck|Promo set|Vanguard|Planechase|Archenemy|Commander/
   setNames = for setName of setNames
     unless regex.test setName
       setName
