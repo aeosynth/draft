@@ -19,12 +19,7 @@ normal = (packs) ->
         rarity
       } <<<<
         cmc: card.mana_cost_converted or 0
-
-      o.color = if card.effective_cost
-        getColor that
-      else
-        console.log 'no effective_cost' card.name
-        \A
+        color: getColor card.effective_cost
       o
     pack
 
@@ -36,4 +31,8 @@ module.exports = (cubeName, count, cb) ->
     if err or res.statusCode is not 200
       cb "error fetching #cubeName: #{err?code or res.statusCode}"
     else
-      cb null normal body
+      try
+        normalized = normal body
+      catch
+        err = "error normalizing packs"
+      cb err, normalized
