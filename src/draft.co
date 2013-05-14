@@ -44,7 +44,7 @@ class Draft extends EventEmitter
     if cube
       genCube that, seats * 3, (err, @cubePacks) ~>
         if err
-          @end 'cube error'
+          @end err
         else if @state is \started
           @start!
 
