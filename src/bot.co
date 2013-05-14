@@ -15,10 +15,7 @@ class Bot extends Player
 
   botpick: ->
     _score = Infinity
-    for card, i of @packs.0
-      if card is undefined
-        return @emit \err
-      {score} = card
+    for {score}, i of @packs.0
       if score < _score
         _score = score
         index = i

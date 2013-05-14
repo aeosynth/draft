@@ -52,12 +52,6 @@ class Draft extends EventEmitter
   round: 0
   state: \open
 
-  err: ->
-    console.log @{ cube, host, seats, sets, type, round, state }
-    for p of @players
-      console.log { p.isBot, pack: p.packs.0 }
-    @end 'something went wrong'
-
   join: (sock) ->
     {id} = sock
     for p of @players
@@ -93,8 +87,6 @@ class Draft extends EventEmitter
   add: (p) ->
     @players.push p
     p.on \pass @~pass
-    if p.isBot
-      p.on \err @~err
 
   drop: (h) ->
     return unless @state is \open
