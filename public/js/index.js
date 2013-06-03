@@ -77,6 +77,7 @@ function CreateCtrl($scope, $http, $location) {
     'Magic 2012',
     'Magic 2013',
     'Mercadian Masques',
+    'Modern Masters',
     'Mirage',
     'Mirrodin',
     'Mirrodin Besieged',
