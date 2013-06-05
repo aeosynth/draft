@@ -5,7 +5,7 @@
   "dependencies": {
     "cheerio": "~0.11.0",
     "engine.io": "~0.5.0",
-    "express": "~3.2.1",
+    "express": "~3.2.6",
     "request": "~2.21.0"
   },
   "subdomain": "drafts.in",
