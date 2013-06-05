@@ -18,9 +18,10 @@ angular
   var name = localStorage.name;
   var room = location.pathname.split('/').pop();
   var ws = eio('ws://' + location.host, { query: { id: id, name: name, room: room }});
+  ws.msg = new eio;
   ws.on('message', function(msg) {
     var data = JSON.parse(msg);
-    ws.emit(data.name, data.args);
+    ws.msg.emit(data.name, data.args);
     $rootScope.$apply();
   });
   ws.json = function() {
@@ -190,9 +191,17 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
     console.log('open');
   });
   ws.on('error', function(error) {
+    console.log(error);
+  });
+  ws.on('close', function() {
+    console.log('close');
+  });
+
+  var msg = ws.msg;
+  msg.on('error', function(error) {
     $scope.error = error;
   });
-  ws.on('set', function(data) {
+  msg.on('set', function(data) {
     angular.extend($scope, data);
 
     if (!(data.pack && data.pack.length)) return;
@@ -203,12 +212,8 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
       case 'always': audio.play();
     }
   });
-  ws.on('add', function(card) {
+  msg.on('add', function(card) {
     $scope.main.push(card);
-  });
-
-  ws.on('close', function() {
-    console.log('close');
   });
 
   $scope.pick = function(index) {
