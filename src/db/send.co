@@ -15,7 +15,7 @@ send = (data) ->
 
   request options, (err, res, body) ->
     if err
-      console.log 'couch err' that
+      console.log 'couch err' err.message
 
 try
   auth = require \../../data/auth
