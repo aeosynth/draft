@@ -18,7 +18,7 @@ angular
   var name = localStorage.name;
   var room = location.pathname.split('/').pop();
   var ws = eio('ws://' + location.host, { query: { id: id, name: name, room: room }});
-  ws.msg = new eio;
+  ws.msg = new eio.Emitter;
   ws.on('message', function(msg) {
     var data = JSON.parse(msg);
     ws.msg.emit(data.name, data.args);
