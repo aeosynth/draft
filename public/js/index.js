@@ -270,8 +270,14 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
   $scope.generateDeck = function() {
     var main = {}
       , side = {}
-      , deck
+      , deck, i, j
       ;
+
+    if (!$scope.players[$scope.self].hash)
+      for (i = 0; i < 5; i++)
+        for (j = 0; j < 5; j++)
+          $scope.side.push($scope.land[i]);
+
     angular.forEach($scope.main, function(card) {
       var name = card.name;
       main[name] || (main[name] = 0);
