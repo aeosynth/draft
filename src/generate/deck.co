@@ -22,7 +22,7 @@ extensions =
       "#n #name"
     for name, n in side
       arr.push "SB: #n #name"
-    arr.join \\n
+    arr.join \\r\n
 
 module.exports = (deck, ext) ->
   extensions[ext] deck
