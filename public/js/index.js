@@ -185,11 +185,11 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
   };
 
   var lands = {
-    b: { land: true, cmc: 0, color: 'L', url: 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=73973', name: 'Swamp'    },
-    g: { land: true, cmc: 0, color: 'L', url: 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=73946', name: 'Forest'   },
-    r: { land: true, cmc: 0, color: 'L', url: 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=73958', name: 'Mountain' },
-    u: { land: true, cmc: 0, color: 'L', url: 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=73951', name: 'Island'   },
-    w: { land: true, cmc: 0, color: 'L', url: 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=73963', name: 'Plains'   }
+    b: { land: true, cmc: 0, color: 'L', key: 'b', url: 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=73973', name: 'Swamp'    },
+    g: { land: true, cmc: 0, color: 'L', key: 'g', url: 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=73946', name: 'Forest'   },
+    r: { land: true, cmc: 0, color: 'L', key: 'r', url: 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=73958', name: 'Mountain' },
+    u: { land: true, cmc: 0, color: 'L', key: 'u', url: 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=73951', name: 'Island'   },
+    w: { land: true, cmc: 0, color: 'L', key: 'w', url: 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=73963', name: 'Plains'   }
   };
   function landFactory(zoneName) {
     return function(cur, old) {
@@ -268,7 +268,10 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
   $scope.fromMain = function(card, e) {
     var main = $scope.main;
     main.splice(main.indexOf(card), 1);
-    if (card.land) return;
+    if (card.land) {
+      $scope.mainLand[card.key]--;
+      return;
+    }
     if (e.shiftKey)
       $scope.jank.push(card);
     else
@@ -277,7 +280,10 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
   $scope.fromSide = function(card, e) {
     var side = $scope.side;
     side.splice(side.indexOf(card), 1);
-    if (card.land) return;
+    if (card.land) {
+      $scope.sideLand[card.key]--;
+      return;
+    }
     if (e.shiftKey)
       $scope.jank.push(card);
     else
@@ -290,12 +296,6 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
       $scope.main.push(card);
     else
       $scope.side.push(card);
-  };
-  $scope.addLand = function(card, e) {
-    if (e.shiftKey)
-      $scope.side.push(card);
-    else
-      $scope.main.push(card);
   };
   $scope.generateDeck = function() {
     var main = {}
