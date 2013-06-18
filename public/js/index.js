@@ -169,13 +169,43 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
   $scope.main = [];
   $scope.side = [];
   $scope.jank = [];
-  $scope.land = [
-  { land: true, cmc: 0, color: 'L', url: 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=73946', name: 'Forest'   },
-  { land: true, cmc: 0, color: 'L', url: 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=73951', name: 'Island'   },
-  { land: true, cmc: 0, color: 'L', url: 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=73958', name: 'Mountain' },
-  { land: true, cmc: 0, color: 'L', url: 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=73963', name: 'Plains'   },
-  { land: true, cmc: 0, color: 'L', url: 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=73973', name: 'Swamp'    }
-  ];
+  $scope.mainLand = {
+    b: 0,
+    g: 0,
+    r: 0,
+    u: 0,
+    w: 0
+  };
+  $scope.sideLand = {
+    b: 0,
+    g: 0,
+    r: 0,
+    u: 0,
+    w: 0
+  };
+
+  var lands = {
+    b: { land: true, cmc: 0, color: 'L', url: 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=73973', name: 'Swamp'    },
+    g: { land: true, cmc: 0, color: 'L', url: 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=73946', name: 'Forest'   },
+    r: { land: true, cmc: 0, color: 'L', url: 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=73958', name: 'Mountain' },
+    u: { land: true, cmc: 0, color: 'L', url: 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=73951', name: 'Island'   },
+    w: { land: true, cmc: 0, color: 'L', url: 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=73963', name: 'Plains'   }
+  };
+  function landFactory(zoneName) {
+    return function(cur, old) {
+      var zone = [];
+      angular.forEach($scope.main, function(val) {
+        if (!val.land) zone.push(val);
+      });
+      angular.forEach(cur, function(val, key) {
+        while (val--)
+          zone.push(lands[key]);
+      });
+      $scope[zoneName] = zone;
+    }
+  }
+  $scope.$watch('mainLand', landFactory('main'), true);
+  $scope.$watch('sideLand', landFactory('side'), true);
 
   function decrement() {
     angular.forEach($scope.players, function(player) {
@@ -270,13 +300,8 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
   $scope.generateDeck = function() {
     var main = {}
       , side = {}
-      , deck, i, j
+      , deck
       ;
-
-    if (!$scope.players[$scope.self].hash)
-      for (i = 0; i < 5; i++)
-        for (j = 0; j < 5; j++)
-          $scope.side.push($scope.land[i]);
 
     angular.forEach($scope.main, function(card) {
       var name = card.name;

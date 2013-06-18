@@ -2,6 +2,16 @@ img, label {
   cursor: pointer;
 }
 
+input[type="number"] {
+  width: 3em;
+}
+.pull-right table {
+  margin-left: auto;
+}
+.pull-right th {
+  text-align: left;
+}
+
 .container img {
   width: 223px;
   height: 310px;
