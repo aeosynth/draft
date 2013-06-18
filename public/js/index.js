@@ -194,7 +194,7 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
   function landFactory(zoneName) {
     return function(cur, old) {
       var zone = [];
-      angular.forEach($scope.main, function(val) {
+      angular.forEach($scope[zoneName], function(val) {
         if (!val.land) zone.push(val);
       });
       angular.forEach(cur, function(val, key) {
