@@ -30,6 +30,13 @@ angular
   };
   return ws;
 })
+.directive('autoselect', function() {
+  return function(scope, el, attrs) {
+    el.bind('click', function() {
+      el[0].select();
+    });
+  };
+})
 ;
 
 function CreateCtrl($scope, $http, $location) {
