@@ -1,7 +1,7 @@
 <a href="https://github.com/aeosynth/draft"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
 <h1>drafts.in</h1>
-<button autofocus ng-click="create()">create</button>
-<select ng-model="seats">
+<button ng-click="create()">create</button>
+<select ng-model="seats" save>
   <option>8</option>
   <option>7</option>
   <option>6</option>
@@ -11,23 +11,23 @@
   <option>2</option>
   <option>1</option>
 </select> seat
-<select ng-model="type">
+<select ng-model="type" save>
   <option>draft</option>
   <option>sealed</option>
   <option>cube</option>
 </select>
 <div>
-  <select ng-disabled="type == 'cube'" ng-model="set1" ng-options="set for set in sets"></select>
-  <select ng-disabled="type == 'cube'" ng-model="set2" ng-options="set for set in sets"></select>
-  <select ng-disabled="type == 'cube'" ng-model="set3" ng-options="set for set in sets"></select>
+  <select ng-disabled="type == 'cube'" ng-model="set1" ng-options="set for set in sets" save></select>
+  <select ng-disabled="type == 'cube'" ng-model="set2" ng-options="set for set in sets" save></select>
+  <select ng-disabled="type == 'cube'" ng-model="set3" ng-options="set for set in sets" save></select>
 </div>
 <div>
-  <select ng-disabled="type != 'sealed'" ng-model="set4" ng-options="set for set in sets"></select>
-  <select ng-disabled="type != 'sealed'" ng-model="set5" ng-options="set for set in sets"></select>
-  <select ng-disabled="type != 'sealed'" ng-model="set6" ng-options="set for set in sets"></select>
+  <select ng-disabled="type != 'sealed'" ng-model="set4" ng-options="set for set in sets" save></select>
+  <select ng-disabled="type != 'sealed'" ng-model="set5" ng-options="set for set in sets" save></select>
+  <select ng-disabled="type != 'sealed'" ng-model="set6" ng-options="set for set in sets" save></select>
 </div>
 <div>
-  <input ng-disabled="type != 'cube'" ng-model="cube" placeholder="cube">
+  <input ng-disabled="type != 'cube'" ng-model="cube" placeholder="cube" save>
 </div>
 
 <div>

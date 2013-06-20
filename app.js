@@ -28,14 +28,14 @@ var app = express()
   var body = req.body;
   try {
     var deck = JSON.parse(body.deck);
-    var type = body.type;
-    deck = genDeck(deck, type);
+    var ext = body.extension;
+    deck = genDeck(deck, ext);
   } catch(err) {
     console.log('error creating deck', body);
     res.end();
     return;
   }
-  res.attachment('draft.' + type);
+  res.attachment('draft.' + ext);
   res.send(deck);
 })
 ;

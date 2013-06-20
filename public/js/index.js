@@ -14,7 +14,7 @@ angular
     ;
 })
 .factory('ws', function($rootScope) {
-  var id = localStorage.id || (localStorage.id = (Math.random() * 1e9 | 0).toString(16));
+  var id = localStorage.id || (localStorage.id = (Math.floor(Math.random() * 9e9)).toString(16));
   var name = localStorage.name;
   var room = location.pathname.split('/').pop();
   var ws = eio('ws://' + location.host, { query: { id: id, name: name, room: room }});
@@ -37,6 +37,18 @@ angular
     });
   };
 })
+.directive('save', function() {
+  return function(scope, el, attrs) {
+    var model = attrs.ngModel;
+    var cur = localStorage[model];
+    if (cur)
+      scope[model] = cur;
+    scope.$watch(model, function(cur, old) {
+      if (cur === old) return;
+      localStorage[model] = cur;
+    });
+  };
+});
 ;
 
 function CreateCtrl($scope, $http, $location) {
@@ -170,6 +182,7 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
   var audio = document.querySelector('audio');
 
   document.getElementById('chat').style.display = 'none';
+  $scope.extension = 'dec';
   $scope.addBots = true;
   $scope.beep = 'never';
   $scope.order = 'color';

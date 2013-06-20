@@ -30,7 +30,7 @@
         <input type="text" name="deck" hidden ng-model="deckJSON">
         generates a hash on the FIRST
         <button ng-disabled="round != 4" ng-click="generateDeck()">download</button>
-        <select name="type">
+        <select name="extension" ng-model="extension" save>
           <option value="dec">dec</option>
           <option value="cod">cod</option>
         </select>
@@ -46,7 +46,7 @@
       move cards to jank by shift clicking
     </div>
     <div>
-      <select ng-model="beep" dir="rtl">
+      <select dir="rtl" ng-model="beep" save>
         <option>never</option>
         <option>always</option>
         <option>if tab is hidden</option>
@@ -60,7 +60,7 @@
     </div>
     <div>
       order by
-      <select ng-model="order">
+      <select ng-model="order" save>
         <option>cmc</option>
         <option>color</option>
         <option>name</option>
@@ -71,7 +71,7 @@
 
   <div ng-show="isHost && !round">
     <button ng-click="start()">start</button>
-    <label>add bots<input type="checkbox" ng-model="addBots"></label>
+    <label>add bots<input type="checkbox" ng-model="addBots" save></label>
   </div>
   <table>
     <tr><th>#</th><th>name</th><th>time</th><th>packs</th><th>cockatrice</th><th>mws</th></tr>
