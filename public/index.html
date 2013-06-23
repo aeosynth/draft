@@ -27,7 +27,7 @@
       if (e.keyCode !== 13) return;
       var text = this.value.slice(0, 1023);
       if (!text) return;
-      var name = localStorage.name;
+      var name = localStorage.name || 'undefined';
       fire.push({ name: name, text: text });
       this.value = '';
     }
