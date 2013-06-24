@@ -1,4 +1,4 @@
-img, label {
+.container img, label {
   cursor: pointer;
 }
 
