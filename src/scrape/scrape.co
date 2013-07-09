@@ -96,6 +96,11 @@ write = ->
         if card.cost or card.type is \land
           name
 
+  for card, i of unc = Sets.Unglued.uncommon
+    if /token card/.test card
+      unc.splice i--, 1
+      delete Cards[card]
+
   tst = 'Time Spiral "Timeshifted"'
   Sets['Time Spiral'].special = Sets[tst].special
   delete Sets[tst]
