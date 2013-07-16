@@ -264,7 +264,7 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
     }
   });
   msg.on('add', function(card) {
-    $scope.main.push(card);
+    $scope.side.push(card);
   });
 
   $scope.pick = function(index) {

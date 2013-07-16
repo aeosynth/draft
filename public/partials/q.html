@@ -105,12 +105,12 @@
     </div>
   </div>
   <div class="container">
-    <h1>main {{ main.length }}</h1>
-    <img ng-src="{{ card.url }}" ng-repeat="card in main | orderBy:[order, 'name']" ng-click="fromMain(card, $event)">
-  </div>
-  <div class="container">
     <h1>side</h1>
     <img ng-src="{{ card.url }}" ng-repeat="card in side | orderBy:[order, 'name']" ng-click="fromSide(card, $event)">
+  </div>
+  <div class="container">
+    <h1>main {{ main.length }}</h1>
+    <img ng-src="{{ card.url }}" ng-repeat="card in main | orderBy:[order, 'name']" ng-click="fromMain(card, $event)">
   </div>
   <div class="container">
     <h1>jank</h1>

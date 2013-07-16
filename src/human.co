@@ -14,7 +14,7 @@ class Human extends Player
     @sock.removeAllListeners!
     @sock = sock
     @send = sock~send
-    @send \set { @isHost, @main, pack: @packs.0 }
+    @send \set { @isHost, @side, pack: @packs.0 }
 
     # TODO events hash
     # TODO bubbling, single arg w/ data + src, namespaces
@@ -52,6 +52,6 @@ class Human extends Player
   pick: (index, autopick) ->
     return unless typeof index is \number
     return unless super index, autopick
-    @send \add @main[* - 1]
+    @send \add @side[* - 1]
 
 module.exports = Human
