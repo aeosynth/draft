@@ -7,23 +7,23 @@ this project is unafilliated with wizards of the coast
 
 # run
 
-install [nodejs](http://nodejs.org), then install dependencies with
+install [nodejs](http://nodejs.org), then install dependencies:
 
     npm install && npm install -g coco
 
-build the js with
+build the js:
 
     coco -bco lib src
 
-build the card database with
+build the card database:
 
     node lib/scrape/scrape.js
 
-build card scores (used by bots) with
+build card scores (used by bots, may take minutes):
 
     node lib/db/score.js
 
-actually run the server with
+actually run the server:
 
     node app.js
 
