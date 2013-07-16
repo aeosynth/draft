@@ -59,6 +59,8 @@ replace = (setName, rarity, bad) ->
     card.name = good
 
 write = ->
+  Sets['Magic 2014'] = delete Sets['Magic 2014 Core Set']
+
   dgm = Sets["Dragon's Maze"]
   dgm.special =
     gate:
@@ -105,9 +107,7 @@ write = ->
   Sets['Time Spiral'].special = Sets[tst].special
   delete Sets[tst]
 
-  replace \Odyssey      \rare    "XXCall of the Herd (Call of the Herd)"
   replace "Time Spiral" \special "XXCall of the Herd (Call of the Herd)"
-  replace \Judgment     \uncommon "XXValor (Valor)"
   replace "Time Spiral" \special  "XXValor (Valor)"
 
   fs.writeFileSync \data/cards.json JSON.stringify Cards, null 2
