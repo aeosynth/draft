@@ -4,23 +4,22 @@ request = require \request
 send = (data) ->
   # sequential ids for extreme performance
   data._id = data.end + uid!slice -6
-  server = \https://aeosynth.iriscouch.com:6984
   db = if data.cube then \cube else \draft
 
   options =
-    auth: auth
+    auth: couch.auth
     json: data
     method: \PUT
-    uri: "#server/#db/#{data._id}"
+    uri: "#{couch.origin}/#db/#{data._id}"
 
   request options, (err, res, body) ->
     if err
       console.log 'couch err' err.message
 
 try
-  auth = require \../../data/auth
+  couch = require \../../data/couch
 catch
-  console.log 'error reading data/auth; draft results will not be saved'
+  console.log 'error reading data/couch.json; draft results will not be sent to your couch'
   send = ->
 
 module.exports = send

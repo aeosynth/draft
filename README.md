@@ -29,10 +29,22 @@ actually run the server with
 
 open <http://localhost:1337> to connect
 
+to send draft results to your [couch](http://couchdb.apache.org/),
+create `data/couch.json`:
+
+```json
+{
+  "auth": {
+    "user": "USERNAME",
+    "pass": "PASSWORD"
+  },
+  "origin": "PROTOCOL://HOSTNAME:PORT"
+}
+```
+
+[iriscouch](http://www.iriscouch.com/) provides free hosting
+
 # hack
 
 this project is written in [coco](https://github.com/satyr/coco), which
 transpiles to javascript
-
-draft results are saved in
-[iriscouch](https://aeosynth.iriscouch.com:6984/_utils/)
