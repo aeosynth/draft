@@ -44,6 +44,17 @@ create `data/couch.json`:
 
 [iriscouch](http://www.iriscouch.com/) provides free hosting
 
+# deploy
+
+modify `public/index.html`:
+
+- change the google analytics id to your own
+
+- create your own [firebase](https://www.firebase.com/) (free),
+  then update the firebase url (firebase may be removed in the future, see #37)
+
+- use the commented out, cdn hosted versions of normalize.css and angular.js
+
 # hack
 
 this project is written in [coco](https://github.com/satyr/coco), which
