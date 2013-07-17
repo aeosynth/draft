@@ -4,7 +4,10 @@ genHash = require \./generate/hash
 class Human extends Player
   (@sock, @isHost) ->
     super!
-    @ <<<< sock{ name, id }
+    @<<<< sock{ id, name, zone }
+    @<<<<
+      main: []
+      side: []
     @attach sock
 
   dropped: false
@@ -14,7 +17,7 @@ class Human extends Player
     @sock.removeAllListeners!
     @sock = sock
     @send = sock~send
-    @send \set { @isHost, @side, pack: @packs.0 }
+    @send \set { @isHost, @main, @side, pack: @packs.0 }
 
     # TODO events hash
     # TODO bubbling, single arg w/ data + src, namespaces
@@ -24,6 +27,11 @@ class Human extends Player
     sock.on \hash (deck) ~>
       @hash = genHash deck
       @emit \meta
+    sock.on \zone (@zone) ~>
+      return unless zone of <[ main side ]>
+      old = if zone is \main then \side else \main
+      @[zone] = @[old]
+      @[old] = []
 
     if @isHost
       sock.on \start ~> @emit \start it
@@ -52,6 +60,6 @@ class Human extends Player
   pick: (index, autopick) ->
     return unless typeof index is \number
     return unless super index, autopick
-    @send \add @side[* - 1]
+    @send \add @[@zone][* - 1]
 
 module.exports = Human

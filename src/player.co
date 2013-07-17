@@ -6,7 +6,6 @@ class Player extends EventEmitter
     @ <<<<
       picks: []
       packs: []
-      side: []
 
   time: 0
 
@@ -28,7 +27,8 @@ class Player extends EventEmitter
     pack = @packs.shift!
     pack.splice index, 1
 
-    @side.push card
+    if @name is not \bot
+      @[@zone].push card
     @round.push { card.name, autopick }
 
     if @packs.length

@@ -14,10 +14,15 @@ angular
     ;
 })
 .factory('ws', function($rootScope) {
-  var id = localStorage.id || (localStorage.id = (Math.floor(Math.random() * 9e9)).toString(16));
-  var name = localStorage.name;
-  var room = location.pathname.split('/').pop();
-  var ws = eio('ws://' + location.host, { query: { id: id, name: name, room: room }});
+  var id = localStorage.id ||
+    (localStorage.id = (Math.floor(Math.random() * 9e9)).toString(16));
+  var options = { query: {
+    id: id,
+    name: localStorage.name,
+    zone: localStorage.zone,
+    room: location.pathname.split('/').pop()
+  }};
+  var ws = eio('ws://' + location.host, options);
   ws.msg = new eio.Emitter;
   ws.on('message', function(msg) {
     var data = JSON.parse(msg);
@@ -187,6 +192,7 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
   $scope.addBots = true;
   $scope.beep = 'never';
   $scope.order = 'color';
+  $scope.zone = 'side';
   $scope.main = [];
   $scope.side = [];
   $scope.jank = [];
@@ -228,6 +234,14 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
   $scope.$watch('mainLand', landFactory('main'), true);
   $scope.$watch('sideLand', landFactory('side'), true);
 
+  $scope.$watch('zone', function(cur, old) {
+    if (cur === old) return;
+
+    $scope[cur] = $scope.main.concat($scope.side);
+    $scope[old] = []
+    ws.json('zone', cur);
+  });
+
   function decrement() {
     angular.forEach($scope.players, function(player) {
       if (player.time)
@@ -264,7 +278,7 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
     }
   });
   msg.on('add', function(card) {
-    $scope.side.push(card);
+    $scope[$scope.zone].push(card);
   });
 
   $scope.pick = function(index) {

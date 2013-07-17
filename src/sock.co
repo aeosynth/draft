@@ -2,9 +2,11 @@
 
 class Sock extends EventEmitter
   (@ws) ->
-    {id, name, room} = ws.request.query
+    {id, name, room, zone} = ws.request.query
     name ?.= slice 0 16
-    @ <<<< { id, name, room }
+    unless zone of <[ main side ]>
+      zone = \side
+    @ <<<< { id, name, room, zone }
     ws.on \message @~message
     ws.on \close   ~> @emit \drop
 

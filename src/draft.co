@@ -113,10 +113,10 @@ class Draft extends EventEmitter
     if @type is \sealed
       @round = 4
       for p of @players
-        side = for @sets => genPack &
-        side = _.flat <>
-        p.side = side
-        p.send \set { side, @round }
+        cards = for @sets => genPack &
+        cards = _.flat <>
+        p[p.zone] = cards
+        p.send \set { (p.zone): cards, @round }
       return
 
     drafts[@id] = @

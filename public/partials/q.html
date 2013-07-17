@@ -75,6 +75,11 @@
         <option>type</option>
       </select>
     </div>
+    <div>
+      add cards to:
+      <label><input type="radio" ng-model="zone" save value="main">main</input></label>
+      <label><input type="radio" ng-model="zone" save value="side">side</input></label>
+    </div>
   </div>
 
   <div ng-show="isHost && !round">
