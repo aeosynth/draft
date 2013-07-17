@@ -28,13 +28,17 @@
       var text = this.value.slice(0, 1023);
       if (!text) return;
       var name = localStorage.name || 'undefined';
-      fire.push({ name: name, text: text });
+      var time = Firebase.ServerValue.TIMESTAMP;
+      fire.push({ name: name, text: text, time: time });
       this.value = '';
     }
     function displayMessage(snapshot) {
       var val = snapshot.val();
       var div = d.createElement('div');
-      div.textContent = val.name + ': ' + val.text;
+      var date = new Date(val.time);
+      function pad(n) { return ('0' + n).slice(-2); }
+      var time = pad(date.getHours()) + ':' + pad(date.getMinutes());
+      div.textContent = time + ' ' + val.name + ': ' + val.text;
       messages.appendChild(div);
       div.scrollIntoView();
     }
