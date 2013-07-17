@@ -34,5 +34,5 @@ module.exports = (cubeName, count, cb) ->
       try
         normalized = normal body
       catch
-        err = "error normalizing packs"
+        err = "error with #cubeName: search the tappedout page for 'unknown' and remove those cards, or use a different cube"
       cb err, normalized
