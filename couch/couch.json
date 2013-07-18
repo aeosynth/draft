@@ -1,0 +1,7 @@
+{
+  "auth": {
+    "user": "USERNAME",
+    "pass": "PASSWORD"
+  },
+  "origin": "http://localhost:5984"
+}

@@ -19,32 +19,45 @@ build the card database:
 
     node lib/scrape/scrape.js
 
-build card scores (used by bots, may take minutes):
-
-    node lib/db/score.js
-
 actually run the server:
 
     node app.js
 
 open <http://localhost:1337> to connect
 
-to send draft results to your [couch](http://couchdb.apache.org/),
-create `data/couch.json`:
+# relax
 
-```json
-{
-  "auth": {
-    "user": "USERNAME",
-    "pass": "PASSWORD"
-  },
-  "origin": "PROTOCOL://HOSTNAME:PORT"
-}
-```
+to save draft results, enabling smarter bots, set up a couch:
 
-[iriscouch](http://www.iriscouch.com/) provides free hosting
+- install [couchdb]
+
+- start the server
+
+- create an admin
+
+- create two databases: `cube`, `draft`
+
+- add validation functions to the databases; see `couch/validate_doc_update.js`
+
+- add views: use `couch/map.js` to map, and `_stats` to reduce
+
+- copy `couch/couch.json` into `data/couch.json`, with your credentials
+
+for more details, see the couchdb [guide], especially the chapters on
+[validation] and [security]
+
+build card scores (may take a while):
+
+    node lib/db/score.js
+
+[couchdb]: http://couchdb.apache.org/
+[guide]: http://guide.couchdb.org/draft/index.html
+[validation]: http://guide.couchdb.org/draft/validation.html
+[security]: http://guide.couchdb.org/draft/security.html
 
 # deploy
+
+[iriscouch](http://www.iriscouch.com/) provides free couchdb hosting
 
 modify `public/index.html`:
 
