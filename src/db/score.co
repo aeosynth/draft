@@ -2,10 +2,15 @@ fs = require \fs
 request = require \request
 Cards = require \../../data/cards
 
+try
+  couch = require \../../data/couch
+catch
+  console.log 'error reading data/couch.json, exiting'
+  process.exit 1
+
 options =
   json: true
-  uri: "https://aeosynth.iriscouch.com:6984
-    /draft/_design/draft/_view/score?group=true"
+  uri: "#{couch.origin}/draft/_design/draft/_view/score?group=true"
 
 request options, (err, res, data) ->
   throw err if err
