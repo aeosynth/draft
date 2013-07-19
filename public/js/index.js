@@ -192,7 +192,7 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
   $scope.addBots = true;
   $scope.beep = 'never';
   $scope.order = 'color';
-  $scope.zone = 'side';
+  $scope.zone = 'main';
   $scope.main = [];
   $scope.side = [];
   $scope.jank = [];
@@ -238,7 +238,14 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
     if (cur === old) return;
 
     $scope[cur] = $scope.main.concat($scope.side);
-    $scope[old] = []
+    $scope[old] = [];
+
+    ['b', 'g', 'r', 'u', 'w'].forEach(function(c) {
+      var oldLand = $scope[old + 'Land'];
+      $scope[cur + 'Land'][c] += oldLand[c];
+      oldLand[c] = 0;
+    });
+
     ws.json('zone', cur);
   });
 

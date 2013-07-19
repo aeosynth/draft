@@ -6,8 +6,7 @@ class Human extends Player
     super!
     @<<<< sock{ id, name, zone }
     @<<<<
-      main: []
-      side: []
+      cards: []
     @attach sock
 
   dropped: false
@@ -17,7 +16,7 @@ class Human extends Player
     @sock.removeAllListeners!
     @sock = sock
     @send = sock~send
-    @send \set { @isHost, @main, @side, pack: @packs.0 }
+    @send \set { @isHost, pack: @packs.0, (@zone): @cards }
 
     # TODO events hash
     # TODO bubbling, single arg w/ data + src, namespaces
@@ -27,11 +26,9 @@ class Human extends Player
     sock.on \hash (deck) ~>
       @hash = genHash deck
       @emit \meta
-    sock.on \zone (@zone) ~>
+    sock.on \zone (zone) ~>
       return unless zone of <[ main side ]>
-      old = if zone is \main then \side else \main
-      @[zone] = @[old]
-      @[old] = []
+      @zone = zone
 
     if @isHost
       sock.on \start ~> @emit \start it
