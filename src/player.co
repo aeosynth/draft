@@ -28,7 +28,7 @@ class Player extends EventEmitter
     pack.splice index, 1
 
     if @name is not \bot
-      @[@zone].push card
+      @cards.push card
     @round.push { card.name, autopick }
 
     if @packs.length

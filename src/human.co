@@ -57,6 +57,6 @@ class Human extends Player
   pick: (index, autopick) ->
     return unless typeof index is \number
     return unless super index, autopick
-    @send \add @[@zone][* - 1]
+    @send \add @cards[* - 1]
 
 module.exports = Human
