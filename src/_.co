@@ -10,7 +10,7 @@ module.exports = _ =
       j = _.rand i--
       arr[i, j] = arr[j, i]
     arr.slice -n
-  flat: -> [].concat.apply [] it
+  flat: -> []concat.apply [] it
   rand: -> Math.floor Math.random! * it
   shuffle: -> _.choose it.length, it
   uid: -> _.rand 9e9 .toString 16

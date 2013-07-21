@@ -33,7 +33,7 @@ getSetNames (setNames) ->
     for card of cards
       {name, rarity} = card
       continue if rarity is \land
-      set[rarity].push name
+      set[rarity]push name
       card.score = 99
       Cards[name] = card
 
@@ -104,7 +104,7 @@ write = ->
       delete Cards[card]
 
   tst = 'Time Spiral "Timeshifted"'
-  Sets['Time Spiral'].special = Sets[tst].special
+  Sets['Time Spiral']special = Sets[tst]special
   delete Sets[tst]
 
   replace "Time Spiral" \special "XXCall of the Herd (Call of the Herd)"

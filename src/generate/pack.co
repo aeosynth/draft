@@ -8,7 +8,7 @@ genPack = (setName) ->
   unless rand 8
     rare = mythic
 
-  pack = [].concat do
+  pack = []concat do
     choose 10 common
     choose  3 uncommon
     choose  1 rare
@@ -17,7 +17,7 @@ genPack = (setName) ->
   case "Dragon's Maze"
     special = if rand 20 then <>gate else <>shock
   case 'Modern Masters'
-    special = [].concat common, uncommon, rare
+    special = []concat common, uncommon, rare
 
   if special
     index = rand special.length
