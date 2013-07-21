@@ -184,7 +184,7 @@ function CreateCtrl($scope, $http, $location) {
   };
 }
 
-function QCtrl($scope, $timeout, $http, $routeParams, ws) {
+function QCtrl($scope, $timeout, ws) {
   var selected = null
   var audio = document.querySelector('audio');
 
@@ -291,12 +291,12 @@ function QCtrl($scope, $timeout, $http, $routeParams, ws) {
 
   $scope.pick = function(index) {
     if (selected !== index) {
-      selected = index
-      return
+      selected = index;
+      return;
     }
-    ws.json('pick', index);
     $scope.pack = null;
     selected = null;
+    ws.json('pick', index);
   };
   $scope.editName = function(p, index) {
     if ($scope.self === index)
