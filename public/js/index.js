@@ -44,13 +44,14 @@ angular
 })
 .directive('save', function() {
   return function(scope, el, attrs) {
+    // localStorage stores everything as strings, so use json
     var model = attrs.ngModel;
     var cur = localStorage[model];
     if (cur)
-      scope[model] = cur;
+      scope[model] = JSON.parse(cur);
     scope.$watch(model, function(cur, old) {
       if (cur === old) return;
-      localStorage[model] = cur;
+      localStorage[model] = JSON.stringify(cur);
     });
   };
 });
