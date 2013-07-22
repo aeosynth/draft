@@ -47,8 +47,11 @@ angular
     // localStorage stores everything as strings, so use json
     var model = attrs.ngModel;
     var cur = localStorage[model];
-    if (cur)
-      scope[model] = JSON.parse(cur);
+    if (cur) {
+      try {
+        scope[model] = JSON.parse(cur);
+      } catch (err) { }
+    }
     scope.$watch(model, function(cur, old) {
       if (cur === old) return;
       localStorage[model] = JSON.stringify(cur);
