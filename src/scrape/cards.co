@@ -1,10 +1,9 @@
 request = require \request
 cheerio = require \cheerio
 
-ORIGIN = \http://gatherer.wizards.com
-
 getCards = (setName, cb) ->
-  url = "#ORIGIN/Pages/Search/Default.aspx?output=spoiler&set=[%22#setName%22]"
+  url = "http://gatherer.wizards.com/Pages/Search/Default.aspx
+    ?output=spoiler&set=[%22#setName%22]"
   request url, (err, res, html) ->
     throw err if err
     cb parse html, setName
@@ -30,10 +29,9 @@ parse = (html, setName) ->
 
     switch key
     case \name
-      [id] = $val.find \a .attr \href .match /\d+/
       card :=
         cmc: 0
-        url: "#ORIGIN/Handlers/Image.ashx?type=card&multiverseid=#{id}"
+        id: $val.find \a .attr \href .match /\d+/ .0
         name: val.replace \Æ \AE
       if ~val.indexOf \//
         split.push card

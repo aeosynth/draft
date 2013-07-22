@@ -33,9 +33,14 @@ getSetNames (setNames) ->
     for card of cards
       {name, rarity} = card
       continue if rarity is \land
+
       set[rarity]push name
-      card.score = 99
-      Cards[name] = card
+
+      if not Cards[name]
+        Cards[name] = card
+        card.score = 99
+        card.sets = {}
+      card.sets[setName] = card.id
 
     for rarity of <[ mythic special ]>
       unless set[rarity]length
@@ -59,8 +64,6 @@ replace = (setName, rarity, bad) ->
     card.name = good
 
 write = ->
-  Sets['Magic 2014'] = delete Sets['Magic 2014 Core Set']
-
   dgm = Sets["Dragon's Maze"]
   dgm.special =
     gate:

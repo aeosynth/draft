@@ -102,7 +102,7 @@ function CreateCtrl($scope, $http, $location) {
     'Magic 2011',
     'Magic 2012',
     'Magic 2013',
-    'Magic 2014',
+    'Magic 2014 Core Set',
     'Mercadian Masques',
     'Mirage',
     'Mirrodin',
@@ -150,12 +150,12 @@ function CreateCtrl($scope, $http, $location) {
     'Zendikar'
   ];
 
-  $scope.set1 = 'Magic 2014';
-  $scope.set2 = 'Magic 2014';
-  $scope.set3 = 'Magic 2014';
-  $scope.set4 = 'Magic 2014';
-  $scope.set5 = 'Magic 2014';
-  $scope.set6 = 'Magic 2014';
+  $scope.set1 = 'Magic 2014 Core Set';
+  $scope.set2 = 'Magic 2014 Core Set';
+  $scope.set3 = 'Magic 2014 Core Set';
+  $scope.set4 = 'Magic 2014 Core Set';
+  $scope.set5 = 'Magic 2014 Core Set';
+  $scope.set6 = 'Magic 2014 Core Set';
   $scope.create = function() {
     var id = localStorage.id || (localStorage.id = (Math.floor(Math.random() * 9e9)).toString(16));
     var data = {
