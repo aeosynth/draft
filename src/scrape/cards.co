@@ -74,8 +74,8 @@ parse = (html, setName) ->
     half = joined[name] or=
       cmc: 0
       cost: ''
+      id: card.id
       name: name
-      url: card.url
       rarity: card.rarity
 
     half.cmc  += card.cmc
