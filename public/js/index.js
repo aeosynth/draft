@@ -25,9 +25,10 @@ angular
   var ws = eio('ws://' + location.host, options);
   ws.msg = new eio.Emitter;
   ws.on('message', function(msg) {
-    var data = JSON.parse(msg);
-    ws.msg.emit(data.name, data.args);
-    $rootScope.$apply();
+    $rootScope.$apply(function() {
+      var data = JSON.parse(msg);
+      ws.msg.emit(data.name, data.args);
+    });
   });
   ws.json = function() {
     var args = Array.prototype.slice.call(arguments);
@@ -224,6 +225,8 @@ function QCtrl($scope, $timeout, ws) {
   };
   function landFactory(zoneName) {
     return function(cur, old) {
+      if (cur === old) return;
+
       var zone = [];
       angular.forEach($scope[zoneName], function(val) {
         if (!val.land) zone.push(val);
@@ -233,7 +236,7 @@ function QCtrl($scope, $timeout, ws) {
           zone.push(lands[key]);
       });
       $scope[zoneName] = zone;
-    }
+    };
   }
   $scope.$watch('mainLand', landFactory('main'), true);
   $scope.$watch('sideLand', landFactory('side'), true);
