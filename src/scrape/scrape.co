@@ -40,7 +40,7 @@ getSetNames (setNames) ->
         Cards[name] = card
         card.score = 99
         card.sets = {}
-      Cards[name]sets[setName] = card.id
+      Cards[name]sets[setName] = delete card.id
 
     for rarity of <[ mythic special ]>
       unless set[rarity]length
