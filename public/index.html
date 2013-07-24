@@ -23,11 +23,16 @@
     <input id="message" placeholder="message" autofocus>
   </div>
   <script>
+    // http://stackoverflow.com/questions/16494828/firebase-security-rule-to-restrict-up-to-some-characters-of-a-string
+    // Unfortunately, being able to perform string operations (match, length, etc) are not available at this time.
+    var MAX_NAME = 15;
+    var MAX_TEXT = 1023;
+
     function pushMessage(e) {
       if (e.keyCode !== 13) return;
-      var text = this.value.slice(0, 1023);
+      var text = this.value.slice(0, MAX_TEXT);
       if (!text) return;
-      var name = localStorage.name || 'undefined';
+      var name = (localStorage.name || 'undefined').slice(0, MAX_NAME);
       var time = Firebase.ServerValue.TIMESTAMP;
       fire.push({ name: name, text: text, time: time });
       this.value = '';
@@ -38,7 +43,9 @@
       var date = new Date(val.time);
       function pad(n) { return ('0' + n).slice(-2); }
       var time = pad(date.getHours()) + ':' + pad(date.getMinutes());
-      div.textContent = time + ' ' + val.name + ': ' + val.text;
+      var name = val.name.slice(0, MAX_NAME);
+      var text = val.text.slice(0, MAX_TEXT);
+      div.textContent = time + ' ' + name + ': ' + text;
       messages.appendChild(div);
       div.scrollIntoView();
     }
