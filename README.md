@@ -39,7 +39,7 @@ to save draft results, enabling smarter bots, set up a couch:
 
 - add validation functions to the databases; see `couch/validate_doc_update.js`
 
-- add views: use `couch/map.js` to map, and `_stats` to reduce
+- add views: use `couch/map.js` to map, and `_stats` to reduce. name: `score`
 
 - copy `couch/couch.json` into `data/couch.json`, with your credentials
 
