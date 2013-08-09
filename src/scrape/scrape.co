@@ -5,6 +5,9 @@ _ = require \../_
 getCards = require \./cards
 getSetNames = require \./setNames
 
+TS  = 'Time Spiral'
+TST = 'Time Spiral "Timeshifted"'
+
 Cards = {}
 Sets  = {}
 
@@ -29,6 +32,9 @@ getSetNames (setNames) ->
       rare: []
       mythic: []
       special: []
+
+    if setName is TST
+      setName := TS
 
     for card of cards
       {name, rarity} = card
@@ -106,12 +112,11 @@ write = ->
       unc.splice i--, 1
       delete Cards[card]
 
-  tst = 'Time Spiral "Timeshifted"'
-  Sets['Time Spiral']special = Sets[tst]special
-  delete Sets[tst]
+  Sets[TS]special = Sets[TST]special
+  delete Sets[TST]
 
-  replace "Time Spiral" \special "XXCall of the Herd (Call of the Herd)"
-  replace "Time Spiral" \special  "XXValor (Valor)"
+  replace TS, \special 'XXCall of the Herd (Call of the Herd)'
+  replace TS, \special 'XXValor (Valor)'
 
   fs.writeFileSync \data/cards.json JSON.stringify Cards, null 2
   fs.writeFileSync \data/sets.json  JSON.stringify Sets,  null 2
