@@ -69,6 +69,11 @@ modify `public/index.html`:
 
 - use the commented out, cdn hosted versions of normalize.css and angular.js
 
+redirect traffic from port 80:
+
+    #http://serverfault.com/questions/112795/how-can-i-run-a-server-on-linux-on-port-80-as-a-normal-user
+    iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 1337
+
 # hack
 
 this project is written in [coco](https://github.com/satyr/coco), which
