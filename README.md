@@ -71,7 +71,8 @@ modify `public/index.html`:
 
 redirect traffic from port 80:
 
-    #http://serverfault.com/questions/112795/how-can-i-run-a-server-on-linux-on-port-80-as-a-normal-user
+    # http://serverfault.com/questions/112795/how-can-i-run-a-server-on-linux-on-port-80-as-a-normal-user
+    # run as root:
     iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 1337
 
 # hack
