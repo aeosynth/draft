@@ -8,16 +8,5 @@
     "express": "~3.2.6",
     "request": "~2.21.0",
     "coco": "~0.9.1"
-  },
-  "subdomain": "drafts.in",
-  "domains": [
-    "drafts.in",
-    "www.drafts.in"
-  ],
-  "scripts": {
-    "start": "app.js"
-  },
-  "engines": {
-    "node": "0.8.x"
   }
 }
