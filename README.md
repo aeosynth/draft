@@ -9,15 +9,15 @@ this project is unafilliated with wizards of the coast
 
 install [nodejs](http://nodejs.org), then install dependencies:
 
-    npm install && npm install -g coco
+    npm install
 
 build the js:
 
-    coco -bco lib src
+    make js
 
 build the card database:
 
-    node lib/scrape/scrape.js
+    make cards
 
 actually run the server:
 
@@ -48,7 +48,7 @@ for more details, see the couchdb [guide], especially the chapters on
 
 build card scores (may take a while):
 
-    node lib/db/score.js
+    make bots
 
 [couchdb]: http://couchdb.apache.org/
 [guide]: http://guide.couchdb.org/draft/index.html
