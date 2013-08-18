@@ -118,6 +118,8 @@ write = ->
   replace TS, \special 'XXCall of the Herd (Call of the Herd)'
   replace TS, \special 'XXValor (Valor)'
 
+  if not fs.exists \data
+    fs.mkdirSync \data
   fs.writeFileSync \data/cards.json JSON.stringify Cards, null 2
   fs.writeFileSync \data/sets.json  JSON.stringify Sets,  null 2
 
