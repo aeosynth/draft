@@ -5,8 +5,9 @@ Cards = require \../../data/cards
 try
   couch = require \../../data/couch
 catch
-  console.log 'error reading data/couch.json, exiting'
-  process.exit 1
+  couch = origin: "https://aeosynth.iriscouch.com:6984"
+
+console.log "fetching data from #{couch.origin}"
 
 options =
   json: true

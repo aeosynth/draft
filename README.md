@@ -19,6 +19,10 @@ build the card database:
 
     make cards
 
+build the bots:
+
+    make bots
+
 actually run the server:
 
     node app.js
