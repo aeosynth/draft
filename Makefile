@@ -1,3 +1,8 @@
+all: install js cards bots
+
+install:
+	npm install
+
 js:
 	node_modules/coco/lib/command.js -bco lib src
 

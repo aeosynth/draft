@@ -7,33 +7,19 @@ this project is unafilliated with wizards of the coast
 
 # run
 
-install [nodejs](http://nodejs.org), then install dependencies:
+- [nodejs](http://nodejs.org)
 
-    npm install
+- `make`
 
-build the js:
+- `node app.js`
 
-    make js
+- <http://localhost:1337>
 
-build the card database:
+# etc
 
-    make cards
-
-build the bots:
-
-    make bots
-
-actually run the server:
-
-    node app.js
-
-open <http://localhost:1337> to connect
-
-# more
-
-for more information, check out the [wiki]
+check out the [wiki]
 
 this project is written in [coco], which transpiles to javascript
 
 [wiki]: https://github.com/aeosynth/draft/wiki/_pages
-[coco]: https://github.com/satyr/colo
+[coco]: https://github.com/satyr/coco
