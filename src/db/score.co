@@ -3,15 +3,15 @@ request = require \request
 Cards = require \../../data/cards
 
 try
-  couch = require \../../data/couch
+  {origin} = require \../../data/couch
 catch
-  couch = origin: "https://aeosynth.iriscouch.com:6984"
+  origin = "https://aeosynth.iriscouch.com:6984"
 
-console.log "fetching data from #{couch.origin}"
+console.log "fetching data from #origin"
 
 options =
   json: true
-  uri: "#{couch.origin}/draft/_design/draft/_view/score?group=true"
+  uri: "#origin/draft/_design/draft/_view/score?group=true"
 
 request options, (err, res, data) ->
   throw err if err
