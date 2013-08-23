@@ -3,5 +3,5 @@
     "user": "USERNAME",
     "pass": "PASSWORD"
   },
-  "origin": "http://localhost:5984"
+  "origin": "https://aeosynth.iriscouch.com:6984"
 }

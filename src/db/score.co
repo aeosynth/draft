@@ -5,7 +5,7 @@ Cards = require \../../data/cards
 try
   {origin} = require \../../data/couch
 catch
-  origin = "https://aeosynth.iriscouch.com:6984"
+  {origin} = require \../../couch/couch
 
 console.log "fetching data from #origin"
 
