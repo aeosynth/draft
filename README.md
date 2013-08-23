@@ -57,23 +57,7 @@ build card scores (may take a while):
 
 # deploy
 
-[iriscouch](http://www.iriscouch.com/) provides free couchdb hosting
-
-modify `public/index.html`:
-
-- change the google analytics id to your own
-
-- create your own [firebase](https://www.firebase.com/) (free),
-  then update the firebase url (firebase may be removed in the future, see
-  [#37](https://github.com/aeosynth/draft/issues/37))
-
-- use the commented out, cdn hosted versions of normalize.css and angular.js
-
-redirect traffic from port 80:
-
-    # http://serverfault.com/questions/112795/how-can-i-run-a-server-on-linux-on-port-80-as-a-normal-user
-    # run as root:
-    iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 1337
+for deployment notes, see the [wiki](https://github.com/aeosynth/draft/wiki/deploy)
 
 # hack
 
