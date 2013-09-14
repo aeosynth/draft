@@ -46,7 +46,18 @@ $('table table table table')each ->
 
   cmc = parseInt(colorless || 0) + colored.length
 
-  urlname = name.toLowerCase!replace /[^a-z]/g ''
+  switch name
+  case "Purphoros's Emissary"
+    name = "Purphoros' Emissary"
+
+  switch name
+  case 'Vulpine Goliath'
+    urlname = \vulpinegolaith
+  case 'Soldier of the Pantheon'
+    urlname = \soldierofpantheon
+  default
+    urlname = name.toLowerCase!replace /[^a-z]/g ''
+
   url = "http://mythicspoiler.com/#TLA/cards/#urlname.jpg"
 
   if Cards[name]
