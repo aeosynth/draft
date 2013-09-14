@@ -140,6 +140,7 @@ function CreateCtrl($scope, $http, $location) {
     'Tempest',
     'Tenth Edition',
     'The Dark',
+    'Theros',
     'Time Spiral',
     'Torment',
     'Unglued',
@@ -154,12 +155,12 @@ function CreateCtrl($scope, $http, $location) {
     'Zendikar'
   ];
 
-  $scope.set1 = 'Magic 2014 Core Set';
-  $scope.set2 = 'Magic 2014 Core Set';
-  $scope.set3 = 'Magic 2014 Core Set';
-  $scope.set4 = 'Magic 2014 Core Set';
-  $scope.set5 = 'Magic 2014 Core Set';
-  $scope.set6 = 'Magic 2014 Core Set';
+  $scope.set1 = 'Theros';
+  $scope.set2 = 'Theros';
+  $scope.set3 = 'Theros';
+  $scope.set4 = 'Theros';
+  $scope.set5 = 'Theros';
+  $scope.set6 = 'Theros';
   $scope.create = function() {
     var id = localStorage.id || (localStorage.id = (Math.floor(Math.random() * 9e9)).toString(16));
     var data = {
