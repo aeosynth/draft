@@ -1,0 +1,61 @@
+# XXX duplicate code, hardcoded url, TLA
+# TODO extract function which inserts scraped data into db
+
+fs = require \fs
+cheerio = require \cheerio
+request = require \request
+
+Cards = require \../../data/cards
+Sets  = require \../../data/sets
+
+(err, res, html) <- request 'http://www.mtgsalvation.com/theros-spoiler.html'
+
+$ = cheerio.load html
+
+Setname = $('h2')text!replace(/Spoiler.+$/ '')trim!
+TLA = \ths
+
+Sets[Setname] = Set =
+  common: []
+  uncommon: []
+  rare: []
+  mythic: []
+
+$('table table table table')each ->
+  [first, second, third] = @find \tr
+  name = $(first)text!trim!replace \* ''
+  cost = ''
+  $($(first)children!1).find(\img)each ->
+    cost += @attr(\alt)toUpperCase!
+  type = $(second)text!trim!
+  rarity = $($(second).find(\img))attr(\alt)toLowerCase!
+  if rarity is 'basic land'
+    return
+  if rarity is 'mythic rare'
+    rarity = \mythic
+  rulesText = $(third)text!trim!
+
+  [_, colorless, colored] = cost.match(/(\d*)(\D*)/)
+  color =
+    if colored.length is 0
+      \A
+    else if /^(.)\1*$/test colored
+      colored.0
+    else
+      \Y # yellow
+
+  cmc = parseInt(colorless || 0) + colored.length
+
+  urlname = name.toLowerCase!replace /[^a-z]/g ''
+  url = "http://mythicspoiler.com/#TLA/cards/#urlname.jpg"
+
+  if Cards[name]
+    Cards[name].urls[Setname] = url
+  else
+    Cards[name] =
+      { name, cost, cmc, type, rarity, color,
+      urls: { (Setname): url }, 'rules text': rulesText, score: 99 }
+  Set[rarity]push name
+
+fs.writeFileSync \data/cards.json JSON.stringify Cards, null, 2
+fs.writeFileSync \data/sets.json  JSON.stringify Sets,  null, 2

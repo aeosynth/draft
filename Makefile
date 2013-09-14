@@ -11,3 +11,6 @@ cards:
 
 bots:
 	node lib/db/score.js
+
+spoiler:
+	node lib/scrape/spoiler.js
