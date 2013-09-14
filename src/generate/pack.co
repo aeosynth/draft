@@ -25,8 +25,7 @@ genPack = (setName) ->
 
   for name of pack
     card = {}<<<<Cards[name]
-    card.url = "http://gatherer.wizards.com/Handlers/Image.ashx
-      ?type=card&multiverseid=#{card.sets[setName]}"
+    card.url = card.urls[setName]
     card
 
 module.exports = genPack
