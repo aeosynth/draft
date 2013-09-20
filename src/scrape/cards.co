@@ -2,11 +2,17 @@ request = require \request
 cheerio = require \cheerio
 
 getCards = (setName, cb) ->
-  url = "http://gatherer.wizards.com/Pages/Search/Default.aspx
-    ?output=spoiler&set=[%22#setName%22]"
-  request url, (err, res, html) ->
-    throw err if err
-    cb parse html, setName
+  options =
+    url: "http://gatherer.wizards.com/Pages/Search/Default.aspx
+      ?output=spoiler&set=[%22#setName%22]"
+    timeout: 10_000_ms
+
+  request options, (err, res, html) ->
+    if err
+      console.log err.message
+      getCards setName, cb
+    else
+      cb parse html, setName
 
 parse = (html, setName) ->
   var card
