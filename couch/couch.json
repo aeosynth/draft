@@ -3,5 +3,5 @@
     "user": "USERNAME",
     "pass": "PASSWORD"
   },
-  "origin": "https://aeosynth.iriscouch.com:6984"
+  "origin": "http://aeosynth.iriscouch.com"
 }
