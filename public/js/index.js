@@ -19,7 +19,7 @@ angular
   var options = { query: {
     id: id,
     name: localStorage.name,
-    zone: localStorage.zone,
+    zone: JSON.parse(localStorage.zone || '"main"'),//not even trying anymore
     room: location.pathname.split('/').pop()
   }};
   var ws = eio('ws://' + location.host, options);
