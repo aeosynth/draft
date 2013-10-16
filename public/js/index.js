@@ -16,10 +16,12 @@ angular
 .factory('ws', function($rootScope) {
   var id = localStorage.id ||
     (localStorage.id = (Math.floor(Math.random() * 9e9)).toString(16));
+  try { var zone = JSON.parse(localStorage.zone); }
+  catch (err) { }
   var options = { query: {
     id: id,
     name: localStorage.name,
-    zone: JSON.parse(localStorage.zone || '"main"'),//not even trying anymore
+    zone: zone,
     room: location.pathname.split('/').pop()
   }};
   var ws = eio('ws://' + location.host, options);
