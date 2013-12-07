@@ -3,15 +3,16 @@ Sets  = require \../../data/sets
 {choose, rand} = require \../_
 
 genPack = (setName) ->
-  {common, uncommon, rare, mythic, special} = Sets[setName]
+  {size, common, uncommon, rare, mythic, special} = Sets[setName]
+  size or= 10
   mythic or= rare
   unless rand 8
     rare = mythic
 
   pack = []concat do
-    choose 10 common
-    choose  3 uncommon
-    choose  1 rare
+    choose size, common
+    choose 3 uncommon
+    choose 1 rare
 
   switch setName
   case "Dragon's Maze"

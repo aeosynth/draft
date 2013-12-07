@@ -72,6 +72,63 @@ replace = (setName, rarity, bad) ->
     card.name = good
 
 write = ->
+  # http://wiki.mtgsalvation.com/article/Booster_pack
+  #
+  # from 7th edition / shards, 1 common was replaced by 1 land card
+  # time spiral block is special
+  #
+  # http://en.wikipedia.org/wiki/List_of_Magic:_The_Gathering_sets
+  largeSets =
+    'Fourth Edition'
+    'Fifth Edition'
+    'Classic Sixth Edition'
+    'Portal'
+    'Portal Second Age'
+    'Portal Three Kingdoms'
+    'Starter 1999'
+    'Starter 2000'
+    'Unglued'
+    'Unhinged'
+    'Mirage'
+    'Visions'
+    'Weatherlight'
+    'Tempest'
+    'Stronghold'
+    'Exodus'
+    "Urza's Saga"
+    "Urza's Legacy"
+    "Urza's Destiny"
+    'Mercadian Masques'
+    'Nemesis'
+    'Prophecy'
+    'Invasion'
+    'Planeshift'
+    'Apocalypse'
+    'Odyssey'
+    'Torment'
+    'Judgment'
+    'Onslaught'
+    'Legions'
+    'Scourge'
+    'Mirrodin'
+    'Darksteel'
+    'Fifth Dawn'
+    'Champions of Kamigawa'
+    'Betrayers of Kamigawa'
+    'Saviors of Kamigawa'
+    'Ravnica: City of Guilds'
+    'Guildpact'
+    'Dissension'
+    'Coldsnap'
+    'Planar Chaos'
+    'Future Sight'
+    'Lorwyn'
+    'Morningtide'
+    'Shadowmoor'
+    'Eventide'
+  for set of largeSets
+    Sets[set].size = 11
+
   dgm = Sets["Dragon's Maze"]
   dgm.special =
     gate:
