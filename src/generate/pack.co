@@ -19,6 +19,88 @@ genPack = (setName) ->
     special = if rand 20 then <>gate else <>shock
   case 'Modern Masters'
     special = []concat common, uncommon, rare
+  case 'Portal'
+    special = []concat common
+  case 'Portal Second Age'
+    special = []concat common
+  case 'Fourth Edition'
+    special = []concat common
+  case 'Fifth Edition'
+    special = []concat common
+  case 'Classic Sixth Edition'
+    special = []concat common
+  case 'Mirage'
+    special = []concat common
+  case 'Visions'
+    special = []concat common
+  case 'Weatherlight'
+    special = []concat common
+  case 'Tempest'
+    special = []concat common
+  case 'Stronghold'
+    special = []concat common
+  case 'Exodus'
+    special = []concat common
+  case "Urza's Saga"
+    special = []concat common
+  case "Urza's Legacy"
+    special = []concat common
+  case "Urza's Destiny"
+    special = []concat common
+  case 'Mercadian Masques'
+    special = []concat common
+  case 'Nemesis'
+    special = []concat common
+  case 'Prophecy'
+    special = []concat common
+  case 'Invasion'
+    special = []concat common
+  case 'Planeshift'
+    special = []concat common
+  case 'Apocalypse'
+    special = []concat common
+  case 'Odyssey'
+    special = []concat common
+  case 'Torment'
+    special = []concat common
+  case 'Judgment'
+    special = []concat common
+  case 'Onslaught'
+    special = []concat common
+  case 'Legions'
+    special = []concat common
+  case 'Scourge'
+    special = []concat common
+  case 'Mirrodin'
+    special = []concat common
+  case 'Darksteel'
+    special = []concat common
+  case 'Fifth Dawn'
+    special = []concat common
+  case 'Champions of Kamigawa'
+    special = []concat common
+  case 'Betrayers of Kamigawa'
+    special = []concat common
+  case 'Saviors of Kamigawa'
+    special = []concat common
+  case 'Ravnica: City of Guilds'
+    special = []concat common
+  case 'Guildpact'
+    special = []concat common
+  case 'Dissension'
+    special = []concat common
+  case 'Future Sight'
+    special = []concat common
+  case 'Coldsnap'
+    special = []concat common
+  case 'Lorwyn'
+    special = []concat common
+  case 'Morningtide'
+    special = []concat common
+  case 'Shadowmoor'
+    special = []concat common
+  case 'Eventide'
+    special = []concat common
 
   if special
     index = rand special.length
