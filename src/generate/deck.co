@@ -23,6 +23,8 @@ extensions =
     for name, n in side
       arr.push "SB: #n #name"
     arr.join \\r\n
+  json: (deck) ->
+    JSON.stringify deck, null, 2
 
 module.exports = (deck, ext) ->
   extensions[ext] deck
