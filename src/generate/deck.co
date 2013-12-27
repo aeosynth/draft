@@ -1,19 +1,20 @@
 extensions =
   cod: ({main, side}) ->
-    main = for name, n in main
-      """<card number="#n" name="#name"/>"""
-    side = for name, n in side
-      """<card number="#n" name="#name"/>"""
+    f = ->
+      s = ''
+      for name, n in it
+        s += """<card number="#n" name="#name"/>"""
+      s
 
     """
     <?xml version="1.0" encoding="UTF-8"?>
     <cockatrice_deck version="1">
       <deckname>draft</deckname>
       <zone name="main">
-        #{main * ''}
+        #{f main}
       </zone>
       <zone name="side">
-        #{side * ''}
+        #{f side}
       </zone>
     </cockatrice_deck>
     """

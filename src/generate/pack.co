@@ -5,8 +5,7 @@ Sets  = require \../../data/sets
 genPack = (setName) ->
   {size, common, uncommon, rare, mythic, special} = Sets[setName]
   size or= 10
-  mythic or= rare
-  unless rand 8
+  if mythic and not rand 8
     rare = mythic
 
   pack = []concat do
