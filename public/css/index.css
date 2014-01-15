@@ -1,3 +1,21 @@
+body {
+  padding: 5px;
+}
+
+h1 {
+  margin: 10px 0px;
+}
+
+.draft-table {
+  border: 1px solid #ddd;
+  border-collapse: collapse;
+  margin-bottom: 5px;
+}
+
+.draft-table td, .draft-table th {
+  border: 1px solid #ddd;
+}
+
 .container img, label {
   cursor: pointer;
 }
@@ -5,9 +23,11 @@
 input[type="number"] {
   width: 3em;
 }
+
 .pull-right table {
   margin-left: auto;
 }
+
 .pull-right th {
   text-align: left;
 }
@@ -15,6 +35,29 @@ input[type="number"] {
 .container img {
   width: 223px;
   height: 310px;
+}
+
+.container.deck img {
+  margin-top: -280px;
+  z-index: 1;
+  position: relative;
+}
+
+.container.deck h1 {
+  margin-bottom: 280px;
+}
+
+.container.deck img:hover {
+  z-index: 100;
+}
+
+.container .card_column {
+  max-width: 225px;
+  float: left;
+}
+
+.spacer {
+  clear: both;
 }
 
 .self {
@@ -36,6 +79,7 @@ input[type="number"] {
 
 .container {
   border: 1px solid black;
+  padding: 0px 5px;
 }
 
 .error {
@@ -45,6 +89,47 @@ input[type="number"] {
 .pull-right {
   text-align: right;
   float: right;
+  background: #eee;
+  border: 1px solid #ddd;
+  padding: 2px;
+  position: relative;
+  z-index: 1000;
+}
+
+.toggle-arrow {
+  float: left;
+  background: white;
+  padding: 1px;
+  border: 1px solid #ddd;
+  text-align: center;
+  cursor: pointer;
+}
+
+.arrow-label {
+  font-size: 11px;
+  margin-top: -10px;
+}
+
+.rotate {
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  -o-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+
+  /* also accepts left, right, top, bottom coordinates; not required, but a good idea for styling */
+  -webkit-transform-origin: 50% 50%;
+  -moz-transform-origin: 50% 50%;
+  -ms-transform-origin: 50% 50%;
+  -o-transform-origin: 50% 50%;
+  transform-origin: 50% 50%;
+
+  /* Should be unset in IE9+ I think. */
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}
+
+.controls {
+  float: left;
 }
 
 .dropped::after {
