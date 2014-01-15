@@ -36,19 +36,33 @@ input[type="number"] {
   max-width: 223px;
 }
 
+.container.deck .card-container {
+  position: relative;
+  z-index: 1;
+}
+
+.container.deck .card-container.hover {
+  z-index: 100;
+}
+
 .container.deck img {
   margin-top: -125%;
-  z-index: 1;
-  width: 100%;
   position: relative;
+  width: 100%;
+  z-index: 1;
+}
+
+.container.deck .card-hover {
+  cursor: pointer;
+  height: 100%;
+  margin-top: -125%;
+  position: absolute;
+  width: 100%;
+  z-index: 5;
 }
 
 .container.deck h1 {
   margin-bottom: 18%;
-}
-
-.container.deck img:hover {
-  z-index: 100;
 }
 
 .container .card_column {
