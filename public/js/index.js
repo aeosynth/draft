@@ -76,6 +76,15 @@ angular
       } else if (order == 'rarity') {
         var rarities = ['common', 'uncommon', 'rare', 'mythic'];
         card_bucket = rarities.indexOf(card.rarity);
+      } else if (order == 'type') {
+        var types = ['Land', 'Instant', 'Sorcery', 'Artifact', 'Creature', 'Enchantment', 'Planeswalker'];
+        types.forEach(function (type) {
+          if (!card_bucket) {
+            if (card.type.indexOf(type) != -1) {
+              card_bucket = types.indexOf(type);
+            }
+          }
+        });
       }
 
       /*

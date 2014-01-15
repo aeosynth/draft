@@ -33,18 +33,18 @@ input[type="number"] {
 }
 
 .container img {
-  width: 223px;
-  height: 310px;
+  max-width: 223px;
 }
 
 .container.deck img {
-  margin-top: -280px;
+  margin-top: -125%;
   z-index: 1;
+  width: 100%;
   position: relative;
 }
 
 .container.deck h1 {
-  margin-bottom: 280px;
+  margin-bottom: 18%;
 }
 
 .container.deck img:hover {
@@ -52,8 +52,10 @@ input[type="number"] {
 }
 
 .container .card_column {
+  width: 12.5%;
   max-width: 225px;
   float: left;
+  position: relative;
 }
 
 .spacer {

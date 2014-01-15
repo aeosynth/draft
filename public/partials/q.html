@@ -80,7 +80,6 @@
       <select ng-model="order" save>
         <option>cmc</option>
         <option>color</option>
-        <option>name</option>
         <option>rarity</option>
         <option>type</option>
       </select>
@@ -124,21 +123,21 @@
   <div class="container deck">
     <h1>main {{ main.length }}</h1>
     <div class="card_column" ng-class="bucket{{bucket}}" ng-repeat="bucket in buckets">
-      <img ng-src="{{ card.url }}" ng-repeat="card in main | inBucket:order:bucket | orderBy:[order, 'color', 'cmc', 'name']" ng-click="fromMain(card, $event)">
+      <img ng-src="{{ card.url }}" ng-repeat="card in main | inBucket:order:bucket | orderBy:['color', 'name']" ng-click="fromMain(card, $event)">
     </div>
     <div class="spacer">&nbsp;</div>
   </div>
   <div class="container deck">
     <h1>side</h1>
     <div class="card_column" ng-class="bucket{{bucket}}" ng-repeat="bucket in buckets">
-      <img ng-src="{{ card.url }}" ng-repeat="card in side | inBucket:order:bucket | orderBy:[order, 'color', 'cmc', 'name']" ng-click="fromSide(card, $event)">
+      <img ng-src="{{ card.url }}" ng-repeat="card in side | inBucket:order:bucket | orderBy:['color', 'name']" ng-click="fromSide(card, $event)">
     </div>
     <div class="spacer">&nbsp;</div>
   </div>
   <div class="container deck">
     <h1>jank</h1>
     <div class="card_column" ng-class="bucket{{bucket}}" ng-repeat="bucket in buckets">
-      <img ng-src="{{ card.url }}" ng-repeat="card in jank | inBucket:order:bucket | orderBy:[order, 'color', 'cmc', 'name']" ng-click="fromJank(card, $event)">
+      <img ng-src="{{ card.url }}" ng-repeat="card in jank | inBucket:order:bucket | orderBy:['color', 'name']" ng-click="fromJank(card, $event)">
     </div>
     <div class="spacer">&nbsp;</div>
   </div>
