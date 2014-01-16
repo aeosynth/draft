@@ -231,8 +231,8 @@ function CreateCtrl($scope, $http, $location) {
   };
 }
 
-function QCtrl($scope, $timeout, ws) {
-  var selected = null
+function QCtrl($scope, $timeout, $window, ws) {
+  var selected = null;
   var audio = document.querySelector('audio');
 
   document.getElementById('chat').style.display = 'none';
@@ -242,6 +242,7 @@ function QCtrl($scope, $timeout, ws) {
   $scope.controlsOpen = true;
   $scope.order = 'color';
   $scope.zone = 'main';
+  $scope.smallWindowThreshold = 1200;
   $scope.main = [];
   $scope.side = [];
   $scope.jank = [];
@@ -400,6 +401,12 @@ function QCtrl($scope, $timeout, ws) {
       $scope.main.push(card);
     else
       $scope.side.push(card);
+  };
+  $scope.showPopout = function(highlightclass) {
+    var show =
+      highlightclass == 'hover' &&
+      $window.innerWidth <= $scope.smallWindowThreshold;
+    return show;
   };
   $scope.generateDeck = function() {
     var main = {}

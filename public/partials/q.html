@@ -117,35 +117,38 @@
   <div class="container" ng-hide="end">
     <h1>pack</h1>
     <div ng-show="pack">
-      <img ng-src="{{ card.url }}" ng-repeat="card in pack" ng-click="pick($index)">
+      <img class="card" ng-src="{{ card.url }}" ng-repeat="card in pack" ng-click="pick($index)">
     </div>
   </div>
   <div class="container deck">
     <h1>main {{ main.length }}</h1>
-    <div class="card_column" ng-class="bucket{{bucket}}" ng-repeat="bucket in buckets">
+    <div class="card_column bucket{{bucket}}" ng-repeat="bucket in buckets">
       <div class="card-container" ng-class="highlightclass" ng-repeat="card in main | inBucket:order:bucket | orderBy:['color', 'name']" ng-click="fromMain(card, $event)">
+        <img class="card-popout" ng-src="{{ card.url}}" ng-show="showPopout(highlightclass)" />
         <div class="card-hover" ng-mouseenter="highlightclass = 'hover'" ng-mouseleave="highlightclass = ''"></div>
-        <img ng-src="{{ card.url }}" />
+        <img class="card" ng-src="{{ card.url }}" />
       </div>
     </div>
     <div class="spacer">&nbsp;</div>
   </div>
   <div class="container deck">
     <h1>side</h1>
-    <div class="card_column" ng-class="bucket{{bucket}}" ng-repeat="bucket in buckets">
+    <div class="card_column bucket{{bucket}}" ng-repeat="bucket in buckets">
       <div class="card-container" ng-class="highlightclass" ng-repeat="card in side | inBucket:order:bucket | orderBy:['color', 'name']" ng-click="fromSide(card, $event)">
+        <img class="card-popout" ng-src="{{ card.url}}" ng-show="showPopout(highlightclass)" />
         <div class="card-hover" ng-mouseenter="highlightclass = 'hover'" ng-mouseleave="highlightclass = ''"></div>
-        <img ng-src="{{ card.url }}" />
+        <img class="card" ng-src="{{ card.url }}" />
       </div>
     </div>
     <div class="spacer">&nbsp;</div>
   </div>
   <div class="container deck">
     <h1>jank</h1>
-    <div class="card_column" ng-class="bucket{{bucket}}" ng-repeat="bucket in buckets">
+    <div class="card_column bucket{{bucket}}" ng-repeat="bucket in buckets">
       <div class="card-container" ng-class="highlightclass" ng-repeat="card in jank | inBucket:order:bucket | orderBy:['color', 'name']" ng-click="fromJank(card, $event)">
+        <img class="card-popout" ng-src="{{ card.url}}" ng-show="showPopout(highlightclass)" />
         <div class="card-hover" ng-mouseenter="highlightclass = 'hover'" ng-mouseleave="highlightclass = ''"></div>
-        <img ng-src="{{ card.url }}" />
+        <img class="card" ng-src="{{ card.url }}" />
       </div>
     </div>
     <div class="spacer">&nbsp;</div>
