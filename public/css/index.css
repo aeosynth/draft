@@ -1,3 +1,11 @@
+h1{
+    text-transform: capitalize;
+    background-image: url(/media/h1bg.png);
+    background-repeat: no-repeat;
+    margin-left: 10px;
+    padding: 10px 20px;
+    height: 44px;
+}
 .container img, label {
   cursor: pointer;
 }
