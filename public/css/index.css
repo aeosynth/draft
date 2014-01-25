@@ -67,6 +67,10 @@ input[type="number"] {
 .pull-right {
   text-align: right;
   float: right;
+  background-image: url(http://i.imgur.com/2EAq822.png);
+  background-position: left bottom;
+  box-shadow: 5px 5px 4px rgba(0,0,0,0.2);
+  padding: 6px;
 }
 
 .dropped::after {
