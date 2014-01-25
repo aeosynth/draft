@@ -1,10 +1,20 @@
+@font-face {
+  font-family: 'Crimson Text';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Crimson Text'), local('CrimsonText-Roman'), url(/media/CrimsonText.woff) format('woff');
+}
+body{
+  background-image: url(/media/bg.jpg);
+  font-family: 'Crimson Text', serif;
+}
 h1{
-    text-transform: capitalize;
-    background-image: url(/media/h1bg.png);
-    background-repeat: no-repeat;
-    margin-left: 10px;
-    padding: 10px 20px;
-    height: 44px;
+  text-transform: capitalize;
+  background-image: url(/media/h1bg.png);
+  background-repeat: no-repeat;
+  margin-left: 10px;
+  padding: 10px 20px;
+  height: 44px;
 }
 .container img, label {
   cursor: pointer;
