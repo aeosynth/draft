@@ -159,10 +159,10 @@ function CreateCtrl($scope, $http, $location) {
   ];
 
   $scope.set1 = 'Born of the Gods';
-  $scope.set2 = 'Born of the Gods';
+  $scope.set2 = 'Theros';
   $scope.set3 = 'Theros';
   $scope.set4 = 'Born of the Gods';
-  $scope.set5 = 'Born of the Gods';
+  $scope.set5 = 'Theros';
   $scope.set6 = 'Theros';
   $scope.create = function() {
     var id = localStorage.id || (localStorage.id = (Math.floor(Math.random() * 9e9)).toString(16));
