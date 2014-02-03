@@ -75,6 +75,7 @@ function CreateCtrl($scope, $http, $location) {
     'Arabian Nights',
     'Avacyn Restored',
     'Betrayers of Kamigawa',
+    'Born of the Gods',
     'Champions of Kamigawa',
     'Chronicles',
     'Classic Sixth Edition',
@@ -157,11 +158,11 @@ function CreateCtrl($scope, $http, $location) {
     'Zendikar'
   ];
 
-  $scope.set1 = 'Theros';
-  $scope.set2 = 'Theros';
+  $scope.set1 = 'Born of the Gods';
+  $scope.set2 = 'Born of the Gods';
   $scope.set3 = 'Theros';
-  $scope.set4 = 'Theros';
-  $scope.set5 = 'Theros';
+  $scope.set4 = 'Born of the Gods';
+  $scope.set5 = 'Born of the Gods';
   $scope.set6 = 'Theros';
   $scope.create = function() {
     var id = localStorage.id || (localStorage.id = (Math.floor(Math.random() * 9e9)).toString(16));
