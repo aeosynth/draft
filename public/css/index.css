@@ -1,3 +1,21 @@
+@font-face {
+  font-family: 'Crimson Text';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Crimson Text'), local('CrimsonText-Roman'), url(/media/CrimsonText.woff) format('woff');
+}
+body{
+  background-image: url(/media/bg.jpg);
+  font-family: 'Crimson Text', serif;
+}
+h1{
+  text-transform: capitalize;
+  background-image: url(/media/h1bg.png);
+  background-repeat: no-repeat;
+  margin-left: 10px;
+  padding: 10px 20px;
+  height: 44px;
+}
 .container img, label {
   cursor: pointer;
 }
@@ -15,6 +33,10 @@ input[type="number"] {
 .container img {
   width: 223px;
   height: 310px;
+  border: 1px solid black;
+  border-radius: 15px;
+  margin: 4px;
+  box-shadow: 0px 2px 4px rgba(0,0,0,0.5);
 }
 
 .self {
@@ -45,6 +67,10 @@ input[type="number"] {
 .pull-right {
   text-align: right;
   float: right;
+  background-image: url(http://i.imgur.com/2EAq822.png);
+  background-position: left bottom;
+  box-shadow: 5px 5px 4px rgba(0,0,0,0.2);
+  padding: 6px;
 }
 
 .dropped::after {
