@@ -34,6 +34,8 @@ input[type="number"] {
 
 .container img.card {
   max-width: 223px;
+  border: 1px solid black;
+  border-radius: 10px;
 }
 
 .container.deck .card-container {
@@ -58,6 +60,7 @@ input[type="number"] {
   left: 100%;
   width: 223px;
   height: 310px;
+  border-radius: 10px;
 }
 
 .container.deck .bucket5 img.card-popout,
