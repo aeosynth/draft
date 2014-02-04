@@ -60,8 +60,48 @@ angular
       localStorage[model] = JSON.stringify(cur);
     });
   };
+})
+.filter('inBucket', function() {
+  return function(cards, order, bucket) {
+    var out = [];
+    for (var i = 0; i < cards.length; i++) {
+      var card = cards[i];
+      var value = card[order];
+      var card_bucket = 0;
+      if (order == 'cmc') {
+         card_bucket = value < 8 ? value : 'X';
+      } else if (order == 'color') {
+        var colors = ['L','A','W','U','B','R','G','Y'];
+        card_bucket = colors.indexOf(card.color);
+      } else if (order == 'rarity') {
+        var rarities = ['common', 'uncommon', 'rare', 'mythic'];
+        card_bucket = rarities.indexOf(card.rarity);
+      } else if (order == 'type') {
+        var types = ['Land', 'Instant', 'Sorcery', 'Artifact', 'Creature', 'Enchantment', 'Planeswalker'];
+        types.forEach(function (type) {
+          if (!card_bucket) {
+            if (card.type.indexOf(type) != -1) {
+              card_bucket = types.indexOf(type);
+            }
+          }
+        });
+      }
+
+      /*
+      // If bucketing is borked, stick it in the X bucket
+      if (card_bucket < 0) {
+        card_bucket = 'X';
+      }
+      */
+
+      if (card_bucket == bucket) {
+        out.push(card);
+      }
+    }
+
+    return out;
+  };
 });
-;
 
 function CreateCtrl($scope, $http, $location) {
   $scope.type = 'draft';
@@ -192,16 +232,18 @@ function CreateCtrl($scope, $http, $location) {
   };
 }
 
-function QCtrl($scope, $timeout, ws) {
-  var selected = null
+function QCtrl($scope, $timeout, $window, ws) {
+  var selected = null;
   var audio = document.querySelector('audio');
 
   document.getElementById('chat').style.display = 'none';
   $scope.extension = 'dec';
   $scope.addBots = true;
   $scope.beep = 'never';
+  $scope.controlsOpen = true;
   $scope.order = 'color';
   $scope.zone = 'main';
+  $scope.smallWindowThreshold = 1200;
   $scope.main = [];
   $scope.side = [];
   $scope.jank = [];
@@ -219,6 +261,17 @@ function QCtrl($scope, $timeout, ws) {
     u: 0,
     w: 0
   };
+  $scope.buckets = [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    'X'
+  ];
 
   var lands = {
     b: { land: true, cmc: 0, color: 'L', key: 'b', url: 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=73973', name: 'Swamp'    },
@@ -349,6 +402,12 @@ function QCtrl($scope, $timeout, ws) {
       $scope.main.push(card);
     else
       $scope.side.push(card);
+  };
+  $scope.showPopout = function(highlightclass) {
+    var show =
+      highlightclass == 'hover' &&
+      $window.innerWidth <= $scope.smallWindowThreshold;
+    return show;
   };
   $scope.generateDeck = function() {
     var main = {}

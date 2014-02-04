@@ -4,6 +4,15 @@
 
 <div ng-hide="error">
   <div class="pull-right">
+    <div class="toggle-arrow" ng-click="controlsOpen = !controlsOpen">
+      <img class="arrow" ng-show="controlsOpen" src="/media/arrow_hide.png" />
+      <img class="arrow" ng-hide="controlsOpen" src="/media/arrow_open.png" />
+      <div class="arrow-label rotate">
+        <p ng-show="controlsOpen">Hide</p>
+        <p ng-hide="controlsOpen">Show</p>
+      </div>
+    </div>
+    <div class="controls" ng-show="controlsOpen">
     <div>
       <table>
         <tr>
@@ -71,7 +80,6 @@
       <select ng-model="order" save>
         <option>cmc</option>
         <option>color</option>
-        <option>name</option>
         <option>rarity</option>
         <option>type</option>
       </select>
@@ -82,12 +90,13 @@
       <label><input type="radio" ng-model="zone" save value="side">side</input></label>
     </div>
   </div>
+</div>
 
   <div ng-show="isHost && !round">
     <button ng-click="start()">start</button>
     <label>add bots<input type="checkbox" ng-model="addBots" save></label>
   </div>
-  <table>
+  <table class="draft-table">
     <tr><th>#</th><th>name</th><th>time</th><th>packs</th><th>cockatrice</th><th>mws</th></tr>
     <tr ng-repeat="player in players" ng-class="{ self: self == $index, dropped: player.dropped, opponent: $index == ((self + 4) % 8) }">
       <td>{{ $index + 1 }}</td>
@@ -108,19 +117,40 @@
   <div class="container" ng-hide="end">
     <h1>pack</h1>
     <div ng-show="pack">
-      <img ng-src="{{ card.url }}" ng-repeat="card in pack" ng-click="pick($index)">
+      <img class="card" ng-src="{{ card.url }}" ng-repeat="card in pack" ng-click="pick($index)">
     </div>
   </div>
-  <div class="container">
+  <div class="container deck">
     <h1>main {{ main.length }}</h1>
-    <img ng-src="{{ card.url }}" ng-repeat="card in main | orderBy:[order, 'name']" ng-click="fromMain(card, $event)">
+    <div class="card_column bucket{{bucket}}" ng-repeat="bucket in buckets">
+      <div class="card-container" ng-class="highlightclass" ng-repeat="card in main | inBucket:order:bucket | orderBy:['color', 'name']" ng-click="fromMain(card, $event)">
+        <img class="card-popout" ng-src="{{ card.url}}" ng-show="showPopout(highlightclass)" />
+        <div class="card-hover" ng-mouseenter="highlightclass = 'hover'" ng-mouseleave="highlightclass = ''"></div>
+        <img class="card" ng-src="{{ card.url }}" />
+      </div>
+    </div>
+    <div class="spacer">&nbsp;</div>
   </div>
-  <div class="container">
+  <div class="container deck">
     <h1>side</h1>
-    <img ng-src="{{ card.url }}" ng-repeat="card in side | orderBy:[order, 'name']" ng-click="fromSide(card, $event)">
+    <div class="card_column bucket{{bucket}}" ng-repeat="bucket in buckets">
+      <div class="card-container" ng-class="highlightclass" ng-repeat="card in side | inBucket:order:bucket | orderBy:['color', 'name']" ng-click="fromSide(card, $event)">
+        <img class="card-popout" ng-src="{{ card.url}}" ng-show="showPopout(highlightclass)" />
+        <div class="card-hover" ng-mouseenter="highlightclass = 'hover'" ng-mouseleave="highlightclass = ''"></div>
+        <img class="card" ng-src="{{ card.url }}" />
+      </div>
+    </div>
+    <div class="spacer">&nbsp;</div>
   </div>
-  <div class="container">
+  <div class="container deck">
     <h1>jank</h1>
-    <img ng-src="{{ card.url }}" ng-repeat="card in jank | orderBy:[order, 'name']" ng-click="fromJank(card, $event)">
+    <div class="card_column bucket{{bucket}}" ng-repeat="bucket in buckets">
+      <div class="card-container" ng-class="highlightclass" ng-repeat="card in jank | inBucket:order:bucket | orderBy:['color', 'name']" ng-click="fromJank(card, $event)">
+        <img class="card-popout" ng-src="{{ card.url}}" ng-show="showPopout(highlightclass)" />
+        <div class="card-hover" ng-mouseenter="highlightclass = 'hover'" ng-mouseleave="highlightclass = ''"></div>
+        <img class="card" ng-src="{{ card.url }}" />
+      </div>
+    </div>
+    <div class="spacer">&nbsp;</div>
   </div>
 </div>
