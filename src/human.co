@@ -23,6 +23,7 @@ class Human extends Player
     sock.on \pick @~pick
     sock.on \name @~setName
     sock.on \drop ~> @emit \drop @
+    sock.on \getCap ~> @emit \getCap @
     sock.on \hash (deck) ~>
       @hash = genHash deck
       @emit \meta

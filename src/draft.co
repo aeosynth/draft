@@ -74,6 +74,7 @@ class Draft extends EventEmitter
 
     h.on \meta @~meta
     h.on \drop @~drop
+    h.on \getCap @~getCap
 
     if h.isHost
       h.once \start (@addBots) ~>
@@ -163,9 +164,27 @@ class Draft extends EventEmitter
     # TODO ignore bot, dropped passes
     @meta!
 
+  getCap: (p) ->
+    return unless @state is \done
+    s = ''
+    # regenerate packs by looping over player picks
+    for PACK from 0 to 2
+      for PICK from 0 to p.picks[PACK]length
+        s += "#{PACK + 1}, #{PICK + 1}\n"
+        playerIndex = p.index
+        cardIndex = PICK
+        cards = []
+        while card = _.at(@players, playerIndex++)picks[PACK][cardIndex++]
+          cards.push card.name
+        cards.0 = '* ' + <>
+        s += cards.sort!join \\n
+        s += '\n\n'
+    p.send \set { cap: s }
+
   end: (err) ->
     clearTimeout @timeout
     delete drafts[@id]
+    @state = \done
 
     if err
       @emit \end

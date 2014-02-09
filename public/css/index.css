@@ -1,3 +1,7 @@
+textarea {
+  height: 1em;
+}
+
 .container img, label {
   cursor: pointer;
 }

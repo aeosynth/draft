@@ -378,4 +378,9 @@ function QCtrl($scope, $timeout, ws) {
     $scope.round = 1;
     ws.json('start', $scope.addBots);
   };
+  $scope.getCap = function() {
+    if ($scope.cap) return;
+    $scope.cap = 'loading...';
+    ws.json('getCap');
+  };
 }
