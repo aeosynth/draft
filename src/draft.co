@@ -169,7 +169,7 @@ class Draft extends EventEmitter
     s = ''
     # regenerate packs by looping over player picks
     for PACK from 0 to 2
-      for PICK from 0 to p.picks[PACK]length
+      for PICK from 0 to p.picks[PACK]length - 1
         s += "#{PACK + 1}, #{PICK + 1}\n"
         playerIndex = p.index
         cardIndex = PICK
