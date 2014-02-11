@@ -167,15 +167,18 @@ class Draft extends EventEmitter
   getCap: (p) ->
     return unless @state is \done
     s = ''
+    delta = -1
     # regenerate packs by looping over player picks
     for PACK from 0 to 2
+      delta *= -1
       for PICK from 0 to p.picks[PACK]length - 1
         s += "#{PACK + 1}, #{PICK + 1}\n"
         playerIndex = p.index
         cardIndex = PICK
         cards = []
-        while card = _.at(@players, playerIndex++)picks[PACK][cardIndex++]
+        while card = _.at(@players, playerIndex)picks[PACK][cardIndex++]
           cards.push card.name
+          playerIndex += delta
         cards.0 = '* ' + <>
         s += cards.sort!join \\n
         s += '\n\n'
