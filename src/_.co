@@ -1,7 +1,7 @@
 module.exports = _ =
   at: (arr, index) ->
     {length} = arr
-    index = (index + length) % length # negative modulo
+    index = (index % length + length) % length # fuck js
     arr[index]
   choose: (n, arr) ->
     i = arr.length
