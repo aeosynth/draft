@@ -11,13 +11,10 @@ raw = JSON.parse body
 Cards = {}
 Sets  = {}
 
-SET_BLACKLIST_RE = /Box Set|Duel Deck|From the Vault|Masters Edition|Premium Deck|Promo set|Vanguard|Planechase|Archenemy|Commander/
-
 for tla, rawSet in raw
-  setName = rawSet.name
+  continue unless rawSet.type of <[ core expansion un reprint starter ]>
 
-  if SET_BLACKLIST_RE.test setName
-    continue
+  setName = rawSet.name
 
   if setName is 'Time Spiral "Timeshifted"'
     setName = 'Time Spiral'
