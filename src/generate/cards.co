@@ -1,0 +1,207 @@
+fs = require \fs
+
+request = require \request
+
+(err, res, body) <- request \http://mtgjson.com/json/AllSets.json
+
+throw err if err
+
+raw = JSON.parse body
+
+Cards = {}
+Sets  = {}
+
+SET_BLACKLIST_RE = /Box Set|Duel Deck|From the Vault|Masters Edition|Premium Deck|Promo set|Vanguard|Planechase|Archenemy|Commander/
+
+for tla, rawSet in raw
+  setName = rawSet.name
+
+  if SET_BLACKLIST_RE.test setName
+    continue
+
+  if setName is 'Time Spiral "Timeshifted"'
+    setName = 'Time Spiral'
+    set = Sets['Time Spiral']
+    set.mythic = []
+    set.special = []
+  else
+    set = Sets[setName] =
+      common: []
+      uncommon: []
+      rare: []
+      mythic: []
+      special: []
+
+  split = []
+  prev = null
+
+  for rawCard of rawSet.cards
+    if rawCard.layout of <[ double-faced flip ]>
+    and rawCard.number[* - 1] is \b
+      continue
+
+    {colors, multiverseid, name, rarity} = rawCard
+
+    rarity .= toLowerCase!
+    if rarity is 'basic land'
+      continue
+    if rarity is 'mythic rare'
+      rarity = \mythic
+
+    name .= replace \Æ \AE
+    if name is prev
+      continue # alt art
+    prev = name
+
+    if rawCard.layout is \split
+      name = rawCard.names.join ' // '
+      if rawCard.name is rawCard.names.0
+        set[rarity]push name
+    else
+      set[rarity]push name
+
+    url = "http://mtgimage.com/multiverseid/#{multiverseid}.jpg"
+
+    if Cards[name]
+      that.urls[setName] = url
+      continue
+
+    color =
+      if !colors or !colors.length # https://github.com/Sembiance/mtgjson/issues/7
+        \A
+      else if colors.length > 1
+        \Y
+      else if colors.0 is \Blue
+        \U
+      else
+        colors.0
+
+    card = { color, name, rarity }
+      <<<< rawCard{ cost: manaCost, cmc, text, type }
+    card.cmc or= 0
+    card.urls = { "#setName": url }
+
+    if rawCard.layout is not \split
+      Cards[name] = card
+    else
+      split.push card
+
+  join = {}
+  for splitCard of split
+    {name} = splitCard
+    card = join[name]
+
+    if !card
+      join[name] = splitCard
+      continue
+
+    card.cmc  += splitCard.cmc
+    card.text += "\n\n//\n\n#{splitCard.text}"
+    card.cost += " // #{splitCard.cost}"
+
+    if card.color is not splitCard.color
+      card.color = \Y
+
+    Cards[name] = card
+
+  for rarity of <[ mythic special ]>
+    unless set[rarity]length
+      delete set[rarity]
+
+# smelly
+Sets.Unglued.uncommon = <>filter (name) ->
+  if /token card/.test name 
+    delete Cards[name]
+    return false
+  true
+
+# http://wiki.mtgsalvation.com/article/Booster_pack
+#
+# from 7th edition / shards, 1 common was replaced by 1 land card
+# time spiral block is special
+#
+# http://en.wikipedia.org/wiki/List_of_Magic:_The_Gathering_sets
+largeSets =
+  'Fourth Edition'
+  'Fifth Edition'
+  'Classic Sixth Edition'
+  'Portal'
+  'Portal Second Age'
+  'Portal Three Kingdoms'
+  'Starter 1999'
+  'Starter 2000'
+  'Unglued'
+  'Unhinged'
+  'Mirage'
+  'Visions'
+  'Weatherlight'
+  'Tempest'
+  'Stronghold'
+  'Exodus'
+  "Urza's Saga"
+  "Urza's Legacy"
+  "Urza's Destiny"
+  'Mercadian Masques'
+  'Nemesis'
+  'Prophecy'
+  'Invasion'
+  'Planeshift'
+  'Apocalypse'
+  'Odyssey'
+  'Torment'
+  'Judgment'
+  'Onslaught'
+  'Legions'
+  'Scourge'
+  'Mirrodin'
+  'Darksteel'
+  'Fifth Dawn'
+  'Champions of Kamigawa'
+  'Betrayers of Kamigawa'
+  'Saviors of Kamigawa'
+  'Ravnica: City of Guilds'
+  'Guildpact'
+  'Dissension'
+  'Coldsnap'
+  'Planar Chaos'
+  'Future Sight'
+  'Lorwyn'
+  'Morningtide'
+  'Shadowmoor'
+  'Eventide'
+for setName of largeSets
+  Sets[setName]size = 11
+
+DGM = Sets["Dragon's Maze"]
+DGM.special =
+  gate:
+    'Azorius Guildgate'
+    'Boros Guildgate'
+    'Dimir Guildgate',
+    'Golgari Guildgate'
+    'Gruul Guildgate'
+    'Izzet Guildgate'
+    'Orzhov Guildgate'
+    'Rakdos Guildgate'
+    'Selesnya Guildgate'
+    'Simic Guildgate'
+  shock:
+    'Blood Crypt'
+    'Breeding Pool'
+    'Godless Shrine'
+    'Hallowed Fountain'
+    'Overgrown Tomb'
+    'Sacred Foundry'
+    'Steam Vents'
+    'Stomping Ground'
+    'Temple Garden'
+    'Watery Grave'
+    "Maze's End"
+DGM.common = for name of <> => name unless name of DGM.special.gate
+DGM.mythic = for name of <> => name unless name is "Maze's End"
+
+if not fs.existsSync \data
+  fs.mkdirSync \data
+
+fs.writeFileSync \data/cards.json JSON.stringify Cards, null 2
+fs.writeFileSync \data/sets.json  JSON.stringify Sets,  null 2

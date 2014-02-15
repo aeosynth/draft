@@ -19,7 +19,12 @@ this project is unafilliated with wizards of the coast
 
 check out the [wiki]
 
-this project is written in [coco], which transpiles to javascript
+the server is written in [coco], which transpiles to javascript
+
+uses [mtgimage] and [mtgjson], both by [@Sembiance]
 
 [wiki]: https://github.com/aeosynth/draft/wiki/_pages
 [coco]: https://github.com/satyr/coco
+[mtgimage]: http://mtgimage.com/
+[mtgjson]: http://mtgjson.com/
+[@Sembiance]: https://github.com/Sembiance
