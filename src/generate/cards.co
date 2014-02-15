@@ -110,7 +110,7 @@ for tla, rawSet in raw
 
 # smelly
 Sets.Unglued.uncommon = <>filter (name) ->
-  if /token card/.test name 
+  if /token card/test name 
     delete Cards[name]
     return false
   true
