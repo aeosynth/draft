@@ -64,14 +64,14 @@ for tla, rawSet in raw
       continue
 
     color =
-      if !colors or !colors.length # https://github.com/Sembiance/mtgjson/issues/7
+      if !colors
         \A
       else if colors.length > 1
         \Y
       else if colors.0 is \Blue
         \U
       else
-        colors.0
+        colors.0.0
 
     card = { color, name, rarity }
       <<<< rawCard{ cost: manaCost, cmc, text, type }
