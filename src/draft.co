@@ -18,7 +18,7 @@ transformCube = (cube) ->
     throw Error 'cubes must have at least 360 cards'
   bad = []
   cube = for name of cube
-    name .= trim!replace(\Æ \AE)replace /(1.?)?\s*/ ''
+    name .= trim!replace(/(1.?)?\s*/ '')replace(\Æ \AE)toLowerCase!
     if name not in Cards
       bad.push name
     name

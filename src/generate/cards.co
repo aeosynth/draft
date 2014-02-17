@@ -34,6 +34,7 @@ go = (raw) ->
         mythic: []
         special: []
 
+    cards = []
     split = []
     prev = null
 
@@ -57,16 +58,8 @@ go = (raw) ->
 
       if rawCard.layout is \split
         name = rawCard.names.join ' // '
-        if rawCard.name is rawCard.names.0
-          set[rarity]push name
-      else
-        set[rarity]push name
 
       url = "http://mtgimage.com/multiverseid/#{multiverseid}.jpg"
-
-      if Cards[name]
-        that.urls[setName] = url
-        continue
 
       color =
         if !colors
@@ -78,15 +71,15 @@ go = (raw) ->
         else
           colors.0.0
 
-      card = { color, name, rarity, score: 99 }
+      card = { color, name, rarity, url, score: 99 }
         <<<< rawCard{ cost: manaCost, cmc, text, type }
       card.cmc or= 0
       card.urls = { "#setName": url }
 
-      if rawCard.layout is not \split
-        Cards[name] = card
-      else
+      if rawCard.layout is \split
         split.push card
+      else
+        cards.push card
 
     join = {}
     for splitCard of split
@@ -95,6 +88,7 @@ go = (raw) ->
 
       if !card
         join[name] = splitCard
+        cards.push splitCard
         continue
 
       card.cmc  += splitCard.cmc
@@ -104,7 +98,14 @@ go = (raw) ->
       if card.color is not splitCard.color
         card.color = \Y
 
-      Cards[name] = card
+    for card of cards
+      lc = card.name.toLowerCase!
+      set[card.rarity]push lc
+      if Cards[lc]
+        that.urls[setName] = card.url
+      else
+        Cards[lc] = card
+        delete card.url
 
     for rarity of <[ mythic special ]>
       unless set[rarity]length
