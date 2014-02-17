@@ -33,20 +33,20 @@ do decrement = ->
 class Draft extends EventEmitter
   ({cube, host, seats, sets, type}) ->
     seats = Number <>
-    assert type of <[ cube draft sealed ]>
-    assert 1 <= seats <= 8
-    assert typeof host is \string
+    assert type of <[ cube draft sealed ]>, 'game type'
+    assert 1 <= seats <= 8, \seats
+    assert typeof host is \string, 'typeof host'
     if type is \cube
-      assert !sets
-      assert typeof cube is \string
+      assert !sets, 'cube and not sets'
+      assert typeof cube is \string, 'typeof cube'
       cube = transformCube cube
     else
-      assert !cube
-      assert sets instanceof Array
+      assert !cube, 'draft and not cube'
+      assert sets instanceof Array, 'typeof sets'
       n = if type is \draft then 3 else 6
-      assert sets.length is n
+      assert sets.length is n, 'sets length'
       for set of sets
-        assert set in Sets
+        assert set in Sets, 'set in Sets'
 
     @ <<<< { cube, host, seats, sets, type }
     @ <<<<
