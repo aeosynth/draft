@@ -137,12 +137,11 @@ class Draft extends EventEmitter
     for p, i of @players
       p.index = i
 
-    numPacks = @players.length * 3
     @packs =
       if @cube
-        genCube numPacks, that
+        genCube @players.length, that
       else
-        genPack numPacks, @sets
+        genPack @players.length, @sets
 
     @startRound!
     @meta!
