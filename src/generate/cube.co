@@ -3,8 +3,9 @@ fs = require \fs
 _ = require \../_
 Cards = require \../../data/cards.json
 
-module.exports = (numPacks, cube) ->
-  names = _.choose numPacks * 15, cube
+module.exports = (players, cube) ->
+  numPacks = players * 3
+  names = _.choose packs * 15, cube
   cards = for name of names
     card = Cards[name]
     card.url = card.urls[Object.keys(card.urls).0]
