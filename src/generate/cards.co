@@ -25,6 +25,7 @@ go = (raw) ->
       set = Sets['Time Spiral']
       set.mythic = []
       set.special = []
+      rawSet.booster = true
     else
       set = Sets[setName] =
         common: []
