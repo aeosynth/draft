@@ -180,30 +180,30 @@ go = (raw) ->
   DGM = Sets["Dragon's Maze"]
   DGM.special =
     gate:
-      'Azorius Guildgate'
-      'Boros Guildgate'
-      'Dimir Guildgate',
-      'Golgari Guildgate'
-      'Gruul Guildgate'
-      'Izzet Guildgate'
-      'Orzhov Guildgate'
-      'Rakdos Guildgate'
-      'Selesnya Guildgate'
-      'Simic Guildgate'
+      'azorius guildgate'
+      'boros guildgate'
+      'dimir guildgate',
+      'golgari guildgate'
+      'gruul guildgate'
+      'izzet guildgate'
+      'orzhov guildgate'
+      'rakdos guildgate'
+      'selesnya guildgate'
+      'simic guildgate'
     shock:
-      'Blood Crypt'
-      'Breeding Pool'
-      'Godless Shrine'
-      'Hallowed Fountain'
-      'Overgrown Tomb'
-      'Sacred Foundry'
-      'Steam Vents'
-      'Stomping Ground'
-      'Temple Garden'
-      'Watery Grave'
-      "Maze's End"
+      'blood crypt'
+      'breeding pool'
+      'godless shrine'
+      'hallowed fountain'
+      'overgrown tomb'
+      'sacred foundry'
+      'steam vents'
+      'stomping ground'
+      'temple garden'
+      'watery grave'
+      "maze's end"
   DGM.common = for name of <> => name unless name of DGM.special.gate
-  DGM.mythic = for name of <> => name unless name is "Maze's End"
+  DGM.mythic = for name of <> => name unless name is "maze's end"
 
   if not fs.existsSync \data
     fs.mkdirSync \data
