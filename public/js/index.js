@@ -7,13 +7,17 @@ angular
       templateUrl: '/partials/create.html',
       controller: CreateCtrl
     })
+    .when('/err/:err', {
+      templateUrl: '/partials/err.html',
+      controller: ErrCtrl
+    })
     .when('/q/:qid', {
       templateUrl: '/partials/q.html',
       controller: QCtrl
     })
     ;
 })
-.factory('ws', function($rootScope) {
+.factory('ws', function($rootScope, $routeParams) {
   var id = localStorage.id ||
     (localStorage.id = (Math.floor(Math.random() * 9e9)).toString(16));
   try { var zone = JSON.parse(localStorage.zone); }
@@ -22,7 +26,7 @@ angular
     id: id,
     name: localStorage.name,
     zone: zone,
-    room: location.pathname.split('/').pop()
+    room: $routeParams.qid
   }};
   var ws = eio('ws://' + location.host, options);
   ws.msg = new eio.Emitter;
@@ -62,6 +66,10 @@ angular
   };
 });
 ;
+
+function ErrCtrl($scope, $routeParams) {
+  $scope.err = $routeParams.err;
+}
 
 function CreateCtrl($scope, $http, $location) {
   $scope.type = 'draft';
@@ -138,7 +146,6 @@ function CreateCtrl($scope, $http, $location) {
     'Shadowmoor',
     'Shards of Alara',
     'Starter 1999',
-    'Starter 2000',
     'Stronghold',
     'Tempest',
     'Tenth Edition',
@@ -177,22 +184,23 @@ function CreateCtrl($scope, $http, $location) {
         data.sets = [$scope.set1, $scope.set2, $scope.set3, $scope.set4, $scope.set5, $scope.set6];
         break;
       case 'cube':
-        var cube = $scope.cube;
-        if (cube)
-          var match = cube.match(/([^/]+)\/?$/);
-        if (!match)
-          return alert('which cube are you drafting?');
-        data.cube = $scope.cube = match[1];
+        var cube = $scope.cube.trim();
+        if (!cube)
+          return alert('please enter your cube list');
+        data.cube = cube;
     }
     $http.post('/create', data)
       .success(function(qid, status) {
         $location.path('/q/' + qid);
       })
+      .error(function(err, status) {
+        $location.path('/err/' + err);
+      })
       ;
   };
 }
 
-function QCtrl($scope, $timeout, ws) {
+function QCtrl($scope, $timeout, $location, ws) {
   var selected = null
   var audio = document.querySelector('audio');
 
@@ -282,7 +290,7 @@ function QCtrl($scope, $timeout, ws) {
 
   var msg = ws.msg;
   msg.on('error', function(error) {
-    $scope.error = error;
+    $location.path('/err/' + error);
   });
   msg.on('set', function(data) {
     angular.extend($scope, data);

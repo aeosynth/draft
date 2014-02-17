@@ -1,38 +1,20 @@
-request = require \request
+fs = require \fs
 
-getColor = (colors) ->
-  {length} = colors
-  if length is 0
-    \A
-  else if length is 1
-    colors.0
-  else
-    \Y
+_ = require \../_
+Cards = require \../../data/cards.json
 
-normal = (packs) ->
-  for pack, i of packs
-    pack = for card of pack
-      o = card{
-        score: cube_average
-        url: image_medium
-        name
-        rarity
-      } <<<<
-        cmc: card.mana_cost_converted or 0
-        color: getColor card.effective_cost
-      o
-    pack
+module.exports = (numPacks, cube) ->
+  names = _.choose numPacks * 15, cube
+  cards = for name of names
+    card = Cards[name]
+    card.url = card.urls[Object.keys(card.urls).0]
+    card
+  packs = []
 
-module.exports = (cubeName, count, cb) ->
-  options =
-    uri: "http://tappedout.net/api/collection/cube/#cubeName/booster/?count=#count"
-    json: true
-  request options, (err, res, body) ->
-    if err or res.statusCode is not 200
-      cb "error fetching #cubeName: #{err?code or res.statusCode}"
-    else
-      try
-        normalized = normal body
-      catch
-        err = "error with #cubeName: search the tappedout page for 'unknown' and remove those cards, or use a different cube"
-      cb err, normalized
+  for i from 0 til numPacks
+    pack = []
+    for j from 0 til 15
+      pack.push cards.pop!
+    packs.push pack
+
+  packs

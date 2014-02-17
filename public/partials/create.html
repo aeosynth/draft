@@ -27,12 +27,12 @@
   <select ng-disabled="type != 'sealed'" ng-model="set6" ng-options="set for set in sets" save></select>
 </div>
 <div>
-  <input ng-disabled="type != 'cube'" ng-model="cube" placeholder="cube" save>
+  <textarea ng-disabled="type != 'cube'" ng-model="cube" placeholder="cube" save></textarea>
 </div>
 
 <div>
   <p>
-    <strong>cube</strong>: set game type to <code>cube</code>, find a cube on <a target="_blank" href="http://tappedout.net">tappedout</a>, paste its url into the cube input. you may also use its slug, eg, <a href="http://tappedout.net/mtg-cube-drafts/patawagons-cube-copy/">patawagons-cube-copy</a>
+    <strong>cube</strong>: paste decklist into the text box above
   </p>
   <p>
     <strong>contact</strong>:
@@ -44,6 +44,6 @@
     for more information, see the <a target="_blank" href="https://github.com/aeosynth/draft/wiki/_pages">wiki</a>
   </p>
   <p>
-    <small>this site is unafilliated with wizards of the coast, tappedout</small>
+    <small>this site is unafilliated with wizards of the coast</small>
   </p>
 </div>

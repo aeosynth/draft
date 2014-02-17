@@ -12,7 +12,7 @@ Cards = {}
 Sets  = {}
 
 for tla, rawSet in raw
-  continue unless rawSet.type of <[ core expansion un reprint starter ]>
+  continue if rawSet.type of <[ archenemy vanguard ]>
 
   setName = rawSet.name
 
@@ -73,7 +73,7 @@ for tla, rawSet in raw
       else
         colors.0.0
 
-    card = { color, name, rarity }
+    card = { color, name, rarity, score: 99 }
       <<<< rawCard{ cost: manaCost, cmc, text, type }
     card.cmc or= 0
     card.urls = { "#setName": url }
@@ -104,6 +104,9 @@ for tla, rawSet in raw
   for rarity of <[ mythic special ]>
     unless set[rarity]length
       delete set[rarity]
+
+  if not rawSet.booster
+    delete Sets[setName]
 
 # smelly
 Sets.Unglued.uncommon = <>filter (name) ->

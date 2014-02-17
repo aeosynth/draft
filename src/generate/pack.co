@@ -28,4 +28,11 @@ genPack = (setName) ->
     card.url = card.urls[setName]
     card
 
-module.exports = genPack
+genPacks = (count, sets) ->
+  packs = []
+  while set = sets.pop!
+    for i til count
+      packs.push genPack set
+  packs
+
+module.exports = genPacks

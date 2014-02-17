@@ -6,10 +6,22 @@ send = require \./db/send
 _ = require \./_
 genCube = require \./generate/cube
 genPack = require \./generate/pack
+Cards = require \../data/cards
 Sets = require \../data/sets
 
 HOUR = 1e3 * 60 * 60
 drafts = {}
+
+transformCube = (cube) ->
+  cube .= split \\n
+  if cube.length < 360
+    throw Error 'cubes must have at least 360 cards'
+  cube = for name of cube
+    name .= trim!replace /(1.?)?\s*/ ''
+    if name not in Cards
+      throw Error "invalid card: #name"
+    name
+  cube
 
 do decrement = ->
   for id, d in drafts
@@ -27,6 +39,7 @@ class Draft extends EventEmitter
     if type is \cube
       assert !sets
       assert typeof cube is \string
+      cube = transformCube cube
     else
       assert !cube
       assert sets instanceof Array
@@ -41,12 +54,6 @@ class Draft extends EventEmitter
       players: []
       startTime: Date.now! / 1e3 | 0
       timeout: setTimeout @end.bind(@, \timeout), HOUR
-    if cube
-      genCube that, seats * 3, (err, @cubePacks) ~>
-        if err
-          @end err
-        else if @state is \started
-          @start!
 
   delta: -1
   round: 0
@@ -78,9 +85,7 @@ class Draft extends EventEmitter
 
     if h.isHost
       h.once \start (@addBots) ~>
-        @state = \started
-        unless @type is \cube and !@cubePacks
-          @start!
+        @start!
 
     @add h
     @meta!
@@ -108,6 +113,7 @@ class Draft extends EventEmitter
       p.send \set { players, self: i }
 
   start: ->
+    @state = \started
     clearTimeout @timeout
     @timeout = setTimeout @end.bind(@, \timeout), HOUR
 
@@ -131,6 +137,13 @@ class Draft extends EventEmitter
     for p, i of @players
       p.index = i
 
+    numPacks = @players.length * 3
+    @packs =
+      if @cube
+        genCube numPacks, that
+      else
+        genPack numPacks, @sets
+
     @startRound!
     @meta!
 
@@ -148,10 +161,7 @@ class Draft extends EventEmitter
 
     for p of @players
       p.startRound!
-      p.receive if @cubePacks
-        that.pop!
-      else
-        genPack set
+      p.receive @packs.pop!
 
   pass: (pack, index) ->
     player = _.at @players, index + @delta
@@ -196,15 +206,15 @@ class Draft extends EventEmitter
 
     setTimeout (~> @emit \end), HOUR
 
+    return unless @sets
+
     data =
       start: @startTime
       end: Date.now! / 1e3 | 0
+      sets: @sets
+
     data.players = for p of @players
       p{ isBot, picks }
-    if @sets
-      data.sets = that
-    else
-      data.cube = @cube
 
     send data
 

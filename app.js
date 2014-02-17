@@ -15,8 +15,8 @@ var app = express()
   try {
     var id = router.create(body);
   } catch(err) {
-    console.log('error creating draft', body);
-    res.end();
+    console.log('error creating draft', err);
+    res.send(500, err.message);
     return;
   }
   res.send(id);
@@ -31,7 +31,7 @@ var app = express()
     var ext = body.extension;
     deck = genDeck(deck, ext);
   } catch(err) {
-    console.log('error creating deck', body);
+    console.log('error creating deck', err);
     res.end();
     return;
   }
