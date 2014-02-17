@@ -16,5 +16,6 @@ options =
 request options, (err, res, data) ->
   throw err if err
   for {key, value} of data.rows
-    Cards[key]?score = value.sum / value.count
+    lc = key.toLowerCase!
+    Cards[lc]?score = value.sum / value.count
   fs.writeFileSync \data/cards.json JSON.stringify Cards, null 2
