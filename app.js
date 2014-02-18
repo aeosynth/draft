@@ -24,6 +24,9 @@ var app = express()
 .get('/q/:qid', function(req, res) {
   res.sendfile(__dirname + '/public/index.html');
 })
+.get('/err/:err', function(req, res) {
+  res.sendfile(__dirname + '/public/index.html');
+})
 .post('/deck', function(req, res) {
   var body = req.body;
   try {
