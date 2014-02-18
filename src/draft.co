@@ -14,16 +14,18 @@ drafts = {}
 
 transformCube = (cube) ->
   cube .= split \\n
-  if cube.length < 360
-    throw Error 'cubes must have at least 360 cards'
   bad = []
   cube = for name of cube
     name .= trim!replace(/(1.?)?\s*/ '')replace(\Æ \AE)toLowerCase!
+    if not name
+      continue # skip blank lines
     if name not in Cards
       bad.push name
     name
   if bad.length
     throw Error "invalid cards: #{bad.join '; '}"
+  if cube.length < 360
+    throw Error 'cubes must have at least 360 cards'
   cube
 
 do decrement = ->
