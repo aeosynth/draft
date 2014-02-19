@@ -16,7 +16,11 @@ transformCube = (cube) ->
   cube .= split \\n
   bad = []
   cube = for name of cube
-    name .= trim!replace(/(1.?)?\s*/ '')replace(\Æ \AE)toLowerCase!
+    name .= trim!
+      .replace /(1.?)?\s*/ ''
+      .replace /\s*\/+\s*/ ' // '
+      .replace \Æ \AE
+      .toLowerCase!
     if not name
       continue # skip blank lines
     if name not in Cards
