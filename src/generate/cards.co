@@ -111,7 +111,9 @@ go = (raw) ->
       unless set[rarity]length
         delete set[rarity]
 
-    if not rawSet.booster
+    if rawSet.booster
+      set.size = (x if x is \common for x of that)length
+    else
       delete Sets[setName]
 
   # smelly
@@ -121,61 +123,9 @@ go = (raw) ->
       return false
     true
 
-  # http://wiki.mtgsalvation.com/article/Booster_pack
-  #
-  # from 7th edition / shards, 1 common was replaced by 1 land card
-  # time spiral block is special
-  #
-  # http://en.wikipedia.org/wiki/List_of_Magic:_The_Gathering_sets
-  largeSets =
-    'Fourth Edition'
-    'Fifth Edition'
-    'Classic Sixth Edition'
-    'Portal'
-    'Portal Second Age'
-    'Portal Three Kingdoms'
-    'Starter 1999'
-    'Unglued'
-    'Unhinged'
-    'Mirage'
-    'Visions'
-    'Weatherlight'
-    'Tempest'
-    'Stronghold'
-    'Exodus'
-    "Urza's Saga"
-    "Urza's Legacy"
-    "Urza's Destiny"
-    'Mercadian Masques'
-    'Nemesis'
-    'Prophecy'
-    'Invasion'
-    'Planeshift'
-    'Apocalypse'
-    'Odyssey'
-    'Torment'
-    'Judgment'
-    'Onslaught'
-    'Legions'
-    'Scourge'
-    'Mirrodin'
-    'Darksteel'
-    'Fifth Dawn'
-    'Champions of Kamigawa'
-    'Betrayers of Kamigawa'
-    'Saviors of Kamigawa'
-    'Ravnica: City of Guilds'
-    'Guildpact'
-    'Dissension'
-    'Coldsnap'
-    'Planar Chaos'
-    'Future Sight'
-    'Lorwyn'
-    'Morningtide'
-    'Shadowmoor'
-    'Eventide'
-  for setName of largeSets
-    Sets[setName]size = 11
+  Sets['Time Spiral']size  = 10
+  Sets['Planar Chaos']size = 11
+  Sets['Future Sight']size = 11
 
   DGM = Sets["Dragon's Maze"]
   DGM.special =
