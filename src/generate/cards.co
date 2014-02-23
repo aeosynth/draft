@@ -116,12 +116,11 @@ go = (raw) ->
     else
       delete Sets[setName]
 
-  # smelly
-  Sets.Unglued.uncommon = <>filter (name) ->
-    if /token card/test name 
+  Sets.Unglued.uncommon = for name of <>
+    if /token card/test name
       delete Cards[name]
-      return false
-    true
+      continue
+    name
 
   Sets['Time Spiral']size  = 10
   Sets['Planar Chaos']size = 11
