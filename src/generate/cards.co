@@ -115,6 +115,12 @@ go = (raw) ->
       set.size = (x if x is \common for x of that)length
       Sets[setName] = set
 
+  for card of raw.HHO.cards
+    # these cards have no multiverse id
+    {name} = card
+    lc = (card.names?join(' // ') or name)toLowerCase!
+    Cards[lc].urls['Happy Holidays'] = "http://mtgimage.com/card/#name.jpg"
+
   Sets.Unglued.uncommon = for name of <>
     if /token card/test name
       delete Cards[name]
