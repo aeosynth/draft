@@ -21,10 +21,9 @@ check out the [wiki]
 
 the server is written in [coco], which transpiles to javascript
 
-uses [mtgimage] and [mtgjson], both by [@Sembiance]
+uses [mtgimage] and [mtgjson]
 
 [wiki]: https://github.com/aeosynth/draft/wiki/_pages
 [coco]: https://github.com/satyr/coco
 [mtgimage]: http://mtgimage.com/
 [mtgjson]: http://mtgjson.com/
-[@Sembiance]: https://github.com/Sembiance
