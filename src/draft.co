@@ -18,7 +18,7 @@ transformCube = (cube) ->
   cube = for name of cube
     name .= trim!
       .replace /(1.?)?\s*/ ''
-      .replace /\s*\/+\s*/ ' // '
+      .replace /\s*\/+\s*/g ' // '
       .replace \Æ \AE
       .toLowerCase!
     if not name
