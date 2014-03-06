@@ -29,9 +29,9 @@ genPack = (setName) ->
 
 genPacks = (count, sets) ->
   packs = []
-  while set = sets.pop!
+  for set of sets
     for i til count
       packs.push genPack set
-  packs
+  packs.reverse!
 
 module.exports = genPacks
