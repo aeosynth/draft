@@ -131,7 +131,7 @@ class Draft extends EventEmitter
       for p of @players
         cards = genPack 1, @sets
         cards = _.flat <>
-        p[p.zone] = cards
+        p.cards = cards
         p.send \set { (p.zone): cards, @round }
       return
 
