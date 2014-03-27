@@ -187,6 +187,9 @@ function CreateCtrl($scope, $http, $location) {
         var cube = $scope.cube.trim();
         if (!cube)
           return alert('please enter your cube list');
+        var len = cube.split('\n').length;
+        if (len < 360)
+          return alert('cubes must have at least 360 cards');
         data.cube = cube;
     }
     $http.post('/create', data)
