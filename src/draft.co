@@ -29,7 +29,11 @@ transformCube = (cube) ->
       bad.push name
     name
   if bad.length
-    throw Error "invalid cards: #{bad.join '; '}"
+    joined = bad.splice(-10).join '; '
+    str = "invalid cards: #{joined}"
+    if bad.length
+      str += "; and #{that} more"
+    throw Error str
   if cube.length < 360
     throw Error 'cubes must have at least 360 cards'
   cube
