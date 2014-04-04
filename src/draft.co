@@ -19,7 +19,9 @@ transformCube = (cube) ->
     name .= trim!
       .replace /(1.?)?\s*/ ''
       .replace /\s*\/+\s*/g ' // '
-      .replace \Æ \AE
+      .replace \Æ \ae
+      .replace \ö \o
+      .replace \û \u
       .toLowerCase!
     if not name
       continue # skip blank lines

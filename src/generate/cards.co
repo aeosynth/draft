@@ -51,7 +51,6 @@ go = (raw) ->
       if rarity is 'mythic rare'
         rarity = \mythic
 
-      name .= replace \Æ \AE
       if name is prev
         continue # alt art
       prev = name
@@ -99,12 +98,16 @@ go = (raw) ->
         card.color = \Y
 
     for card of cards
-      lc = card.name.toLowerCase!
-      set[card.rarity]push lc
-      if Cards[lc]
+      name = card.name
+        .replace \Æ \ae
+        .replace \ö \o
+        .replace \û \u
+        .toLowerCase!
+      set[card.rarity]push name
+      if Cards[name]
         that.urls[setName] = card.url
       else
-        Cards[lc] = card
+        Cards[name] = card
         delete card.url
 
     for rarity of <[ mythic special ]>
