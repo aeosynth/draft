@@ -20,6 +20,7 @@ transformCube = (cube) ->
       .replace /(1.?)?\s*/ ''
       .replace /\s*\/+\s*/g ' // '
       .replace \Æ \ae
+      .replace \á \a
       .replace \ö \o
       .replace \û \u
       .toLowerCase!

@@ -100,6 +100,7 @@ go = (raw) ->
     for card of cards
       name = card.name
         .replace \Æ \ae
+        .replace \á \a
         .replace \ö \o
         .replace \û \u
         .toLowerCase!
