@@ -185,11 +185,22 @@ function CreateCtrl($scope, $http, $location) {
         break;
       case 'cube':
         var cube = $scope.cube.trim();
-        if (!cube)
-          return alert('please enter your cube list');
-        var len = cube.split('\n').length;
-        if (len < 360)
+        var split = cube
+          .split('\n')
+          .map(function(x) { return x.trim(); })
+          .filter(function(x) { return x.length; })
+          .sort()
+          ;
+        if (split.length < 360)
           return alert('cubes must have at least 360 cards');
+        var prev = null;
+        for (var i = 0, l = split.length; i < l; i++) {
+          var name = split[i];
+          if (name === prev)
+            return alert('duplicate card found: ' + name);
+          prev = name;
+        }
+
         data.cube = cube;
     }
     $http.post('/create', data)

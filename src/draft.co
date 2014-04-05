@@ -28,14 +28,23 @@ transformCube = (cube) ->
     if name not in Cards
       bad.push name
     name
+
+  if cube.length < 360
+    throw Error 'cubes must have at least 360 cards'
+
+  cube.sort!
+  prev = null
+  for name of cube
+    if name is prev
+      throw Error "duplicate card found: #{name}"
+    prev = name
+
   if bad.length
     joined = bad.splice(-10).join '; '
     str = "invalid cards: #{joined}"
     if bad.length
       str += "; and #{that} more"
     throw Error str
-  if cube.length < 360
-    throw Error 'cubes must have at least 360 cards'
   cube
 
 do decrement = ->
