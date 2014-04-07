@@ -21,6 +21,7 @@ transformCube = (cube) ->
       .replace /\s*\/+\s*/g ' // '
       .replace \Æ \ae
       .replace \á \a
+      .replace \í \i
       .replace \ö \o
       .replace \û \u
       .toLowerCase!

@@ -101,6 +101,7 @@ go = (raw) ->
       name = card.name
         .replace \Æ \ae
         .replace \á \a
+        .replace \í \i
         .replace \ö \o
         .replace \û \u
         .toLowerCase!
