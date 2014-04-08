@@ -31,8 +31,8 @@ transformCube = (cube) ->
       bad.push name
     name
 
-  if cube.length < 360
-    throw Error 'cubes must have at least 360 cards'
+  unless 360 <= cube.length <= 1e3
+    throw Error 'cubes must be between 360 and 1000 cards'
 
   cube.sort!
   prev = null

@@ -191,8 +191,8 @@ function CreateCtrl($scope, $http, $location) {
           .filter(function(x) { return x.length; })
           .sort()
           ;
-        if (split.length < 360)
-          return alert('cubes must have at least 360 cards');
+        if (360 > split.length || split.length > 1e3)
+          return alert('cubes must have between 360 and 1000 cards');
         var prev = null;
         for (var i = 0, l = split.length; i < l; i++) {
           var name = split[i];
