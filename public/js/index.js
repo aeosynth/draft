@@ -107,6 +107,7 @@ function CreateCtrl($scope, $http, $location) {
     'Ice Age',
     'Innistrad',
     'Invasion',
+    'Journey into Nyx',
     'Judgment',
     'Legends',
     'Legions',
@@ -167,10 +168,10 @@ function CreateCtrl($scope, $http, $location) {
 
   $scope.set1 = 'Born of the Gods';
   $scope.set2 = 'Theros';
-  $scope.set3 = 'Theros';
+  $scope.set3 = 'Journey into Nyx';
   $scope.set4 = 'Born of the Gods';
   $scope.set5 = 'Theros';
-  $scope.set6 = 'Theros';
+  $scope.set6 = 'Journey into Nyx';
   $scope.create = function() {
     var id = localStorage.id || (localStorage.id = (Math.floor(Math.random() * 9e9)).toString(16));
     var type = $scope.type;
