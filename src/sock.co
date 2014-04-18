@@ -2,7 +2,7 @@
 
 class Sock extends EventEmitter
   (@ws) ->
-    {id, name, room, zone} = ws.request.query
+    {id, name, room, zone} = ws.request._query
     name ?.= slice 0 16
     unless zone of <[ main side ]>
       zone = \main
