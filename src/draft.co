@@ -12,7 +12,7 @@ Sets = require \../data/sets
 HOUR = 1e3 * 60 * 60
 drafts = {}
 
-transformCube = (cube) ->
+transformCube = (cube, type) ->
   cube .= split \\n
   bad = []
   cube = for name of cube
@@ -31,8 +31,14 @@ transformCube = (cube) ->
       bad.push name
     name
 
-  unless 360 <= cube.length <= 1e3
-    throw Error 'cubes must be between 360 and 1000 cards'
+  min =
+    if type is \cube_draft
+      360
+    else
+      720
+
+  unless min <= cube.length <= 1e3
+    throw Error 'cubes must have at least 360 cards for draft, 720 for sealed; at most 1000 for either'
 
   cube.sort!
   prev = null
@@ -59,10 +65,10 @@ do decrement = ->
 class Draft extends EventEmitter
   ({cube, host, seats, sets, type}) ->
     seats = Number <>
-    assert type of <[ cube draft sealed ]>, 'game type'
+    assert type of <[ cube_draft cube_sealed draft sealed ]>, 'game type'
     assert 1 <= seats <= 8, \seats
     assert typeof host is \string, 'typeof host'
-    if type is \cube
+    if type of <[ cube_draft cube_sealed ]>
       assert !sets, 'cube and not sets'
       assert typeof cube is \string, 'typeof cube'
       cube = transformCube cube
@@ -147,6 +153,16 @@ class Draft extends EventEmitter
       @round = 4
       for p of @players
         cards = genPack 1, @sets
+        cards = _.flat <>
+        p.cards = cards
+        p.send \set { (p.zone): cards, @round }
+      return
+
+    if @type is \cube_sealed
+      @round = 4
+      packs = genCube @players.length * 2, @cube
+      for p of @players
+        cards = packs.splice -6
         cards = _.flat <>
         p.cards = cards
         p.send \set { (p.zone): cards, @round }

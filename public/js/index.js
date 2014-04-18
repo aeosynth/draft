@@ -173,8 +173,10 @@ function CreateCtrl($scope, $http, $location) {
   $scope.set6 = 'Theros';
   $scope.create = function() {
     var id = localStorage.id || (localStorage.id = (Math.floor(Math.random() * 9e9)).toString(16));
+    var type = $scope.type;
+
     var data = {
-      type: $scope.type, seats: $scope.seats, host: id
+      type: type, seats: $scope.seats, host: id
     };
     switch(data.type) {
       case 'draft':
@@ -183,7 +185,7 @@ function CreateCtrl($scope, $http, $location) {
       case 'sealed':
         data.sets = [$scope.set1, $scope.set2, $scope.set3, $scope.set4, $scope.set5, $scope.set6];
         break;
-      case 'cube':
+      default: // cube
         var cube = $scope.cube.trim();
         var split = cube
           .split('\n')
@@ -191,8 +193,13 @@ function CreateCtrl($scope, $http, $location) {
           .filter(function(x) { return x.length; })
           .sort()
           ;
-        if (360 > split.length || split.length > 1e3)
-          return alert('cubes must have between 360 and 1000 cards');
+
+        var min = 360;
+        if (type === 'cube sealed')
+          min = 720;
+        if (min > split.length || split.length > 1e3)
+          return alert('cubes must have at least 360 cards for draft, 720 for sealed; at most 1000 for either');
+
         var prev = null;
         for (var i = 0, l = split.length; i < l; i++) {
           var name = split[i];
@@ -201,6 +208,7 @@ function CreateCtrl($scope, $http, $location) {
           prev = name;
         }
 
+        data.type = data.type.replace(' ', '_');
         data.cube = cube;
     }
     $http.post('/create', data)

@@ -14,12 +14,13 @@
 <select ng-model="type" save>
   <option>draft</option>
   <option>sealed</option>
-  <option>cube</option>
+  <option>cube draft</option>
+  <option>cube sealed</option>
 </select>
 <div>
-  <select ng-disabled="type == 'cube'" ng-model="set1" ng-options="set for set in sets" save></select>
-  <select ng-disabled="type == 'cube'" ng-model="set2" ng-options="set for set in sets" save></select>
-  <select ng-disabled="type == 'cube'" ng-model="set3" ng-options="set for set in sets" save></select>
+  <select ng-disabled="(type == 'cube draft') || (type == 'cube sealed')" ng-model="set1" ng-options="set for set in sets" save></select>
+  <select ng-disabled="(type == 'cube draft') || (type == 'cube sealed')" ng-model="set2" ng-options="set for set in sets" save></select>
+  <select ng-disabled="(type == 'cube draft') || (type == 'cube sealed')" ng-model="set3" ng-options="set for set in sets" save></select>
 </div>
 <div>
   <select ng-disabled="type != 'sealed'" ng-model="set4" ng-options="set for set in sets" save></select>
@@ -27,7 +28,7 @@
   <select ng-disabled="type != 'sealed'" ng-model="set6" ng-options="set for set in sets" save></select>
 </div>
 <div>
-  <textarea ng-disabled="type != 'cube'" ng-model="cube" placeholder="cube" save></textarea>
+  <textarea ng-disabled="(type != 'cube draft') && (type != 'cube sealed')" ng-model="cube" placeholder="cube" save></textarea>
 </div>
 
 <div>
