@@ -166,12 +166,12 @@ function CreateCtrl($scope, $http, $location) {
     'Zendikar'
   ];
 
-  $scope.set1 = 'Born of the Gods';
-  $scope.set2 = 'Theros';
-  $scope.set3 = 'Journey into Nyx';
-  $scope.set4 = 'Born of the Gods';
-  $scope.set5 = 'Theros';
-  $scope.set6 = 'Journey into Nyx';
+  $scope.set1 = 'Journey into Nyx';
+  $scope.set2 = 'Born of the Gods';
+  $scope.set3 = 'Theros';
+  $scope.set4 = 'Journey into Nyx';
+  $scope.set5 = 'Born of the Gods';
+  $scope.set6 = 'Theros';
   $scope.create = function() {
     var id = localStorage.id || (localStorage.id = (Math.floor(Math.random() * 9e9)).toString(16));
     var type = $scope.type;
