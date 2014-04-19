@@ -71,7 +71,7 @@ class Draft extends EventEmitter
     if type of <[ cube_draft cube_sealed ]>
       assert !sets, 'cube and not sets'
       assert typeof cube is \string, 'typeof cube'
-      cube = transformCube cube
+      cube = transformCube cube, type
     else
       assert !cube, 'draft and not cube'
       assert sets instanceof Array, 'typeof sets'
