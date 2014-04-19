@@ -15,6 +15,12 @@ this project is unafilliated with wizards of the coast
 
 - <http://localhost:1337>
 
+# spoilers
+
+    make spoiler WIZ=$WIZ SAL=$SAL
+
+where $WIZ and $SAL are the wizards and mtgsalvation spoiler urls, respectively
+
 # etc
 
 check out the [wiki]
