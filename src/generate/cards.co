@@ -2,6 +2,10 @@ fs = require \fs
 
 request = require \request
 
+files = require \./files
+
+{Cards, Sets} = files
+
 try
   raw = require \../../data/AllSets
   go raw
@@ -12,27 +16,18 @@ catch
   go raw
 
 go = (raw) ->
-  Cards = {}
-  Sets  = {}
+  raw.TSP.cards = <>concat raw.TSB.cards
+  delete raw.TSB
+
+  raw.PLC.booster = [\common] * 11
+  raw.FUT.booster = [\common] * 11
+
+  raw.UGL.cards = for card of <>
+    if !/token card/test card.name
+      card
 
   for tla, rawSet in raw
     continue if rawSet.type of <[ archenemy vanguard ]>
-
-    setName = rawSet.name
-
-    if setName is 'Time Spiral "Timeshifted"'
-      setName = 'Time Spiral'
-      set = Sets['Time Spiral']
-      set.mythic = []
-      set.special = []
-      rawSet.booster = raw.TSP.booster
-    else
-      set =
-        common: []
-        uncommon: []
-        rare: []
-        mythic: []
-        special: []
 
     cards = []
     split = []
@@ -70,10 +65,9 @@ go = (raw) ->
         else
           colors.0.0
 
-      card = { color, name, rarity, url, score: 99 }
+      card = { color, name, rarity, url }
         <<<< rawCard{ cost: manaCost, cmc, text, type }
       card.cmc or= 0
-      card.urls = { "#setName": url }
 
       if rawCard.layout is \split
         split.push card
@@ -97,43 +91,16 @@ go = (raw) ->
       if card.color is not splitCard.color
         card.color = \Y
 
-    for card of cards
-      name = card.name
-        .replace \Æ \ae
-        .replace \á \a
-        .replace \í \i
-        .replace \ö \o
-        .replace \û \u
-        .toLowerCase!
-      set[card.rarity]push name
-      if Cards[name]
-        that.urls[setName] = card.url
-      else
-        Cards[name] = card
-        delete card.url
-
-    for rarity of <[ mythic special ]>
-      unless set[rarity]length
-        delete set[rarity]
-
+    size = 0
     if rawSet.booster
-      set.size = (x if x is \common for x of that)length
-      Sets[setName] = set
+      size = (x if x is \common for x of that)length
+    files.add rawSet.name, cards, size
 
   for card of raw.HHO.cards
     # these cards have no multiverse id
     {name} = card
     lc = (card.names?join(' // ') or name)toLowerCase!
     Cards[lc].urls['Happy Holidays'] = "http://mtgimage.com/card/#name.jpg"
-
-  Sets.Unglued.uncommon = for name of <>
-    if /token card/test name
-      delete Cards[name]
-      continue
-    name
-
-  Sets['Planar Chaos']size = 11
-  Sets['Future Sight']size = 11
 
   DGM = Sets["Dragon's Maze"]
   DGM.special =
@@ -163,8 +130,4 @@ go = (raw) ->
   DGM.common = for name of <> => name unless name of DGM.special.gate
   DGM.mythic = for name of <> => name unless name is "maze's end"
 
-  if not fs.existsSync \data
-    fs.mkdirSync \data
-
-  fs.writeFileSync \data/cards.json JSON.stringify Cards, null 2
-  fs.writeFileSync \data/sets.json  JSON.stringify Sets,  null 2
+  files.write!

@@ -1,0 +1,54 @@
+fs = require \fs
+
+try
+  Cards = require \../../data/cards
+  Sets = require \../../data/sets
+catch
+  Cards = {}
+  Sets = {}
+
+module.exports =
+  Cards: Cards
+  Sets: Sets
+
+  add: (setName, cards, size) ->
+    set =
+      common: []
+      uncommon: []
+      rare: []
+      mythic: []
+      special: []
+      size: size
+
+    for card of cards
+      name = card.name
+        .replace \Æ \ae
+        .replace \á \a
+        .replace \í \i
+        .replace \ö \o
+        .replace \û \u
+        .toLowerCase!
+      url = delete card.url
+      card.score = 99
+
+      if Cards[name]
+        that.urls[setName] = url
+      else
+        card.urls = { "#setName": url }
+        Cards[name] = card
+      set[card.rarity]push name
+
+    return unless size
+
+    for rarity of <[ mythic special ]>
+      unless set[rarity]length
+        delete set[rarity]
+
+    Sets[setName] = set
+
+  write: ->
+    if not fs.existsSync \data
+      fs.mkdirSync \data
+
+    fs.writeFileSync \data/cards.json JSON.stringify Cards, null 2
+    fs.writeFileSync \data/sets.json  JSON.stringify Sets,  null 2
