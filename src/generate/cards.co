@@ -27,7 +27,7 @@ go = (raw) ->
       card
 
   for tla, rawSet in raw
-    continue if rawSet.type of <[ archenemy vanguard ]>
+    continue if rawSet.type of <[ archenemy box vanguard ]>
 
     cards = []
     split = []
