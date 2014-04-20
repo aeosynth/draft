@@ -7,6 +7,13 @@ catch
   Cards = {}
   Sets = {}
 
+rares =
+  special: 0
+  mythic: 1
+  rare: 2
+  uncommon: 3
+  common: 4
+
 module.exports =
   Cards: Cards
   Sets: Sets
@@ -31,12 +38,15 @@ module.exports =
       url = delete card.url
       card.score = 99
 
+      {rarity} = card
+      card.rarity = rares[rarity]
+
       if Cards[name]
         that.urls[setName] = url
       else
         card.urls = { "#setName": url }
         Cards[name] = card
-      set[card.rarity]push name
+      set[rarity]push name
 
     return unless size
 
