@@ -381,7 +381,37 @@ function QCtrl($scope, $timeout, $location, ws) {
     else
       $scope.side.push(card);
   };
-  $scope.generateDeck = function() {
+
+  $scope.download = function() {
+    var deck = generateRaw();
+    var str = generate[$scope.extension](deck);
+    str = encodeURIComponent(str);
+
+    var a = document.createElement('a');
+    a.href = 'data:,' + str;
+    a.download = 'draft.' + $scope.extension;
+    a.hidden = true;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+
+    if (!$scope.hash)
+      ws.json('hash', deck);
+  };
+
+  $scope.copy = function() {
+    var deck = generateRaw();
+    var str = generate.dec(deck);
+    $scope.deck = str;
+    $timeout(function() {
+      document.getElementById('copy').select();
+    });
+
+    if (!$scope.hash)
+      ws.json('hash', deck);
+  };
+
+  function generateRaw() {
     var main = {}
       , side = {}
       , deck
@@ -397,13 +427,50 @@ function QCtrl($scope, $timeout, $location, ws) {
       side[name] || (side[name] = 0);
       side[name] += 1;
     });
-    deck = {
+
+    return {
       main: main,
       side: side
     };
-    $scope.deckJSON = JSON.stringify(deck);
-    ws.json('hash', deck);
+  }
+
+  var generate = {
+    cod: function(deck) {
+      function f(it) {
+        var s = '';
+        for (name in it)
+          s += '    <card number="' + it[name] + '" name="' + name + '"/>\r\n';
+        return s;
+      }
+      var s =
+        '<?xml version="1.0" encoding="UTF-8"?>\r\n' +
+        '<cockatrice_deck version="1">\r\n' +
+        '  <deckname>draft</deckname>\r\n' +
+        '  <zone name="main">\r\n' +
+           f(deck.main) +
+        '  </zone>\r\n' +
+        '  <zone name="side">\r\n' +
+           f(deck.side) +
+        '  </zone>\r\n' +
+        '</cockatrice_deck>'
+        ;
+      return s;
+    },
+    dec: function(deck) {
+      var arr = [];
+      angular.forEach(deck.main, function(n, name) {
+        arr.push(n + ' ' + name);
+      });
+      angular.forEach(deck.side, function(n, name) {
+        arr.push('SB: ' + n + ' ' + name);
+      });
+      return arr.join('\r\n');
+    },
+    json: function(deck) {
+      return JSON.stringify(deck);
+    }
   };
+
   $scope.start = function() {
     if (!$scope.isHost) return;
     $scope.round = 1;

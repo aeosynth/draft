@@ -29,16 +29,16 @@
       </table>
     </div>
     <div>
-      <form method="post" action="/deck">
-        <input type="text" name="deck" hidden ng-model="deckJSON">
-        generates a hash on the FIRST
-        <button ng-disabled="round != 4" ng-click="generateDeck()">download</button>
-        <select name="extension" ng-model="extension" save>
-          <option value="dec">dec</option>
-          <option value="cod">cod</option>
-          <option value="json">json</option>
-        </select>
-      </form>
+      <button ng-disabled="round != 4" ng-click="download()">download</button>
+      <select name="extension" ng-model="extension" save>
+        <option value="dec">dec</option>
+        <option value="cod">cod</option>
+        <option value="json">json</option>
+      </select>
+    </div>
+    <div>
+      <button ng-disabled="round != 4" ng-click="copy()">copy</button>
+      <textarea readonly autoselect id="copy">{{ deck }}</textarea>
     </div>
     <div>
       <button ng-disabled="round != 4" ng-click="getCap()">draftcap</button>
