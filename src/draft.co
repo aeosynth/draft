@@ -214,7 +214,10 @@ class Draft extends EventEmitter
 
   getCap: (p) ->
     return unless @state is \done
-    return unless @type of <[ draft cube_draft ]>
+    if @type of <[ sealed cube_sealed ]>
+      p.send \set { cap: 'not available for sealed' }
+      return
+
     s = ''
     delta = -1
     # regenerate packs by looping over player picks
