@@ -202,7 +202,7 @@ function CreateCtrl($scope, $http, $location) {
         var packs = Number($scope.packs);
 
         var min = 720;
-        if (type === 'cube_draft')
+        if (type === 'cube draft')
           min = cards * packs * data.seats;
         if (min > list.length || list.length > 1e3)
           return alert('this cube needs between ' + min + ' and 1000 cards; it has ' + list.length);
