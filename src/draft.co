@@ -214,12 +214,13 @@ class Draft extends EventEmitter
 
   getCap: (p) ->
     return unless @state is \done
+    return unless @type of <[ draft cube_draft ]>
     s = ''
     delta = -1
     # regenerate packs by looping over player picks
-    for PACK from 0 to 2
+    for PACK til @rounds
       delta *= -1
-      for PICK from 0 to p.picks[PACK]length - 1
+      for PICK til p.picks[PACK]length
         s += "#{PACK + 1}, #{PICK + 1}\n"
         playerIndex = p.index
         cardIndex = PICK
