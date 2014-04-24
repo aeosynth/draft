@@ -63,14 +63,19 @@ do decrement = ->
   setTimeout decrement, 1e3
 
 class Draft extends EventEmitter
-  ({cube, host, seats, sets, type}) ->
+  ({cube, host, seats, sets, type, reduce}) ->
+    rounds = 3
+
     seats = Number <>
     assert type of <[ cube_draft cube_sealed draft sealed ]>, 'game type'
     assert 1 <= seats <= 8, \seats
-    assert typeof host is \string, 'typeof host'
+    assert typeof host is \string 'typeof host'
     if type of <[ cube_draft cube_sealed ]>
       assert !sets, 'cube and not sets'
-      assert typeof cube is \string, 'typeof cube'
+      assert typeof cube is \string 'typeof cube'
+      !!= reduce
+      if reduce
+        rounds = 4
       cube = transformCube cube, type
     else
       assert !cube, 'draft and not cube'
@@ -80,7 +85,7 @@ class Draft extends EventEmitter
       for set of sets
         assert set in Sets, 'set in Sets'
 
-    @ <<<< { cube, host, seats, sets, type }
+    @ <<<< { cube, host, seats, sets, type, reduce, rounds }
     @ <<<<
       id: _.uid!
       players: []
@@ -99,7 +104,7 @@ class Draft extends EventEmitter
           p.send \error 'you were dropped'
           return
         p.attach sock
-        p.send \set @{ round }
+        p.send \set @{ state }
         @meta!
         return
 
@@ -150,22 +155,22 @@ class Draft extends EventEmitter
     @timeout = setTimeout @end.bind(@, \timeout), HOUR
 
     if @type is \sealed
-      @round = 4
+      @state = \done
       for p of @players
         cards = genPack 1, @sets
         cards = _.flat <>
         p.cards = cards
-        p.send \set { (p.zone): cards, @round }
+        p.send \set { (p.zone): cards, @state }
       return
 
     if @type is \cube_sealed
-      @round = 4
+      @state = \done
       packs = genCube @players.length * 2, @cube
       for p of @players
         cards = packs.splice -6
         cards = _.flat <>
         p.cards = cards
-        p.send \set { (p.zone): cards, @round }
+        p.send \set { (p.zone): cards, @state }
       return
 
     drafts[@id] = @
@@ -181,7 +186,7 @@ class Draft extends EventEmitter
 
     @packs =
       if @cube
-        genCube @players.length, that
+        genCube @players.length, that, @reduce
       else
         genPack @players.length, @sets
 
@@ -190,8 +195,7 @@ class Draft extends EventEmitter
 
   startRound: !->
     r = ++@round
-    @send \set round: r
-    if r is 4
+    if r > @rounds
       return @end!
 
     if @sets
@@ -244,6 +248,7 @@ class Draft extends EventEmitter
       @emit \end
       @send \error err
       return
+    @send \set { @state }
 
     setTimeout (~> @emit \end), HOUR
 

@@ -3,18 +3,26 @@ fs = require \fs
 _ = require \../_
 Cards = require \../../data/cards.json
 
-module.exports = (players, cube) ->
-  numPacks = players * 3
-  names = _.choose packs * 15, cube
+module.exports = (players, cube, reduce) ->
+  if reduce
+    packsPerPlayer = 4
+    cardsPerPack = 11
+  else
+    packsPerPlayer = 3
+    cardsPerPack = 15
+
+  nPacks = players * packsPerPlayer
+  nCards = nPacks * cardsPerPack
+  names = _.choose nCards, cube
   cards = for name of names
     card = Cards[name]
     card.url = card.urls[Object.keys(card.urls).0]
     card
   packs = []
 
-  for i from 0 til numPacks
+  for i from 0 til nPacks
     pack = []
-    for j from 0 til 15
+    for j from 0 til cardsPerPack
       pack.push cards.pop!
     packs.push pack
 

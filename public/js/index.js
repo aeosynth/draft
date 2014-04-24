@@ -214,6 +214,7 @@ function CreateCtrl($scope, $http, $location) {
 
         data.type = data.type.replace(' ', '_');
         data.cube = cube;
+        data.reduce = $scope.reduce;
     }
     $http.post('/create', data)
       .success(function(qid, status) {
@@ -230,6 +231,7 @@ function QCtrl($scope, $timeout, $location, ws) {
   var selected = null
   var audio = document.querySelector('audio');
 
+  $scope.state = 'open';
   $scope.extension = 'dec';
   $scope.addBots = true;
   $scope.beep = 'never';
@@ -475,7 +477,7 @@ function QCtrl($scope, $timeout, $location, ws) {
 
   $scope.start = function() {
     if (!$scope.isHost) return;
-    $scope.round = 1;
+    $scope.state = 'started';
     ws.json('start', $scope.addBots);
   };
   $scope.getCap = function() {
