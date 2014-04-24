@@ -15,6 +15,9 @@ angular
       templateUrl: '/partials/q.html',
       controller: QCtrl
     })
+    .when('/help', {
+      templateUrl: '/partials/help.html'
+    })
     ;
 })
 .factory('ws', function($rootScope, $routeParams) {
@@ -227,7 +230,6 @@ function QCtrl($scope, $timeout, $location, ws) {
   var selected = null
   var audio = document.querySelector('audio');
 
-  document.getElementById('chat').style.display = 'none';
   $scope.extension = 'dec';
   $scope.addBots = true;
   $scope.beep = 'never';

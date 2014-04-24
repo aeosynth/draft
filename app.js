@@ -23,6 +23,9 @@ var app = express()
 .get('/q/:qid', function(req, res) {
   res.sendfile(__dirname + '/public/index.html');
 })
+.get('/help', function(req, res) {
+  res.sendfile(__dirname + '/public/index.html');
+})
 .get('/err/:err', function(req, res) {
   res.sendfile(__dirname + '/public/index.html');
 })
