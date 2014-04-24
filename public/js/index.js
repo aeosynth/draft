@@ -204,14 +204,6 @@ function CreateCtrl($scope, $http, $location) {
         if (min > split.length || split.length > 1e3)
           return alert('cubes must have at least 360 cards for draft, 720 for sealed; at most 1000 for either');
 
-        var prev = null;
-        for (var i = 0, l = split.length; i < l; i++) {
-          var name = split[i];
-          if (name === prev)
-            return alert('duplicate card found: ' + name);
-          prev = name;
-        }
-
         data.type = data.type.replace(' ', '_');
         data.cube = cube;
         data.reduce = $scope.reduce;
