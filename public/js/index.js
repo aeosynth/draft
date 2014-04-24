@@ -77,6 +77,8 @@ function ErrCtrl($scope, $routeParams) {
 function CreateCtrl($scope, $http, $location) {
   $scope.type = 'draft';
   $scope.seats = 8;
+  $scope.cards = 15;
+  $scope.packs = 3;
 
   $scope.sets = [
     'Alara Reborn',
@@ -180,9 +182,9 @@ function CreateCtrl($scope, $http, $location) {
     var type = $scope.type;
 
     var data = {
-      type: type, seats: $scope.seats, host: id
+      type: type, seats: Number($scope.seats), host: id
     };
-    switch(data.type) {
+    switch(type) {
       case 'draft':
         data.sets = [$scope.set1, $scope.set2, $scope.set3];
         break;
@@ -190,23 +192,27 @@ function CreateCtrl($scope, $http, $location) {
         data.sets = [$scope.set1, $scope.set2, $scope.set3, $scope.set4, $scope.set5, $scope.set6];
         break;
       default: // cube
-        var cube = $scope.cube.trim();
-        var split = cube
+        var list = $scope.list
           .split('\n')
           .map(function(x) { return x.trim(); })
           .filter(function(x) { return x.length; })
-          .sort()
           ;
 
-        var min = 360;
-        if (type === 'cube sealed')
-          min = 720;
-        if (min > split.length || split.length > 1e3)
-          return alert('cubes must have at least 360 cards for draft, 720 for sealed; at most 1000 for either');
+        var cards = Number($scope.cards);
+        var packs = Number($scope.packs);
+
+        var min = 720;
+        if (type === 'cube_draft')
+          min = cards * packs * data.seats;
+        if (min > list.length || list.length > 1e3)
+          return alert('this cube needs between ' + min + ' and 1000 cards; it has ' + list.length);
 
         data.type = data.type.replace(' ', '_');
-        data.cube = cube;
-        data.reduce = $scope.reduce;
+        data.cube = {
+          list: list,
+          cards: cards,
+          packs: packs
+        };
     }
     $http.post('/create', data)
       .success(function(qid, status) {

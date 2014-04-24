@@ -12,10 +12,9 @@ Sets = require \../data/sets
 HOUR = 1e3 * 60 * 60
 drafts = {}
 
-transformCube = (cube, type) ->
-  cube .= split \\n
+transformCube = ({list, cards, packs}, type, seats) ->
   bad = []
-  cube = for name of cube
+  list = for name of list
     name .= trim!
       .replace /(1.?)?\s*/ ''
       .replace /\s*\/+\s*/g ' // '
@@ -33,12 +32,12 @@ transformCube = (cube, type) ->
 
   min =
     if type is \cube_draft
-      360
+      cards * packs * seats
     else
       720
 
-  unless min <= cube.length <= 1e3
-    throw Error 'cubes must have at least 360 cards for draft, 720 for sealed; at most 1000 for either'
+  unless min <= list.length <= 1e3
+    throw Error "this cube needs between #{min} and 1000 cards; it has #{list.length}"
 
   if bad.length
     joined = bad.splice(-10).join '; '
@@ -46,7 +45,7 @@ transformCube = (cube, type) ->
     if bad.length
       str += "; and #{that} more"
     throw Error str
-  cube
+  list
 
 do decrement = ->
   for id, d in drafts
@@ -56,20 +55,21 @@ do decrement = ->
   setTimeout decrement, 1e3
 
 class Draft extends EventEmitter
-  ({cube, host, seats, sets, type, reduce}) ->
-    rounds = 3
-
-    seats = Number <>
+  ({cube, host, seats, sets, type}) ->
     assert type of <[ cube_draft cube_sealed draft sealed ]>, 'game type'
     assert 1 <= seats <= 8, \seats
     assert typeof host is \string 'typeof host'
     if type of <[ cube_draft cube_sealed ]>
       assert !sets, 'cube and not sets'
-      assert typeof cube is \string 'typeof cube'
-      !!= reduce
-      if reduce
-        rounds = 4
-      cube = transformCube cube, type
+      assert typeof cube is \object 'typeof cube'
+      {list, cards, packs} = cube
+      assert list instanceof Array, 'typeof cube list'
+      assert typeof cards is \number, 'typeof cube cards'
+      assert typeof packs is \number, 'typeof cube packs'
+      assert 8 <= cards <= 15, 'cards range'
+      assert 3 <= packs <= 5,  'packs range'
+
+      cube.list = transformCube cube, type, seats
     else
       assert !cube, 'draft and not cube'
       assert sets instanceof Array, 'typeof sets'
@@ -78,7 +78,7 @@ class Draft extends EventEmitter
       for set of sets
         assert set in Sets, 'set in Sets'
 
-    @ <<<< { cube, host, seats, sets, type, reduce, rounds }
+    @ <<<< { cube, host, seats, sets, type }
     @ <<<<
       id: _.uid!
       players: []
@@ -86,7 +86,6 @@ class Draft extends EventEmitter
       timeout: setTimeout @end.bind(@, \timeout), HOUR
 
   delta: -1
-  round: 0
   state: \open
 
   join: (sock) ->
@@ -158,7 +157,11 @@ class Draft extends EventEmitter
 
     if @type is \cube_sealed
       @state = \done
-      packs = genCube @players.length * 2, @cube
+      cube =
+        list: @cube.list
+        cards: 15
+        packs: 3
+      packs = genCube @players.length * 2, cube
       for p of @players
         cards = packs.splice -6
         cards = _.flat <>
@@ -179,7 +182,7 @@ class Draft extends EventEmitter
 
     @packs =
       if @cube
-        genCube @players.length, that, @reduce
+        genCube @players.length, that
       else
         genPack @players.length, @sets
 
@@ -187,12 +190,8 @@ class Draft extends EventEmitter
     @meta!
 
   startRound: !->
-    r = ++@round
-    if r > @rounds
+    unless @packs.length
       return @end!
-
-    if @sets
-      set = that[r - 1]
 
     @delta *= -1
     @activePacks = @players.length
@@ -221,7 +220,7 @@ class Draft extends EventEmitter
     s = ''
     delta = -1
     # regenerate packs by looping over player picks
-    for PACK til @rounds
+    for PACK til p.picks.length
       delta *= -1
       for PICK til p.picks[PACK]length
         s += "#{PACK + 1}, #{PICK + 1}\n"
