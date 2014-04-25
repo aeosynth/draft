@@ -2,13 +2,8 @@
 
 class Sock extends EventEmitter
   (@ws) ->
-    {id, name, room, zone} = ws.request._query
-    name ?.= slice 0 16
-    unless zone of <[ main side ]>
-      zone = \main
-    @ <<<< { id, name, room, zone }
-    ws.on \message @~message
-    ws.on \close   ~> @emit \drop
+    ws.on \data @~message
+    ws.on \close ~> @emit \drop
 
   message: ->
     try
@@ -19,6 +14,6 @@ class Sock extends EventEmitter
     @emit ...msg
 
   send: (name, args) ->
-    @ws.send JSON.stringify { name, args }
+    @ws.write JSON.stringify { name, args }
 
 module.exports = Sock

@@ -20,25 +20,14 @@ angular
     })
     ;
 })
-.factory('ws', function($rootScope, $routeParams) {
-  var id = localStorage.id ||
-    (localStorage.id = (Math.floor(Math.random() * 9e9)).toString(16));
-  try { var zone = JSON.parse(localStorage.zone); }
-  catch (err) { }
-  var options = { query: {
-    id: id,
-    name: localStorage.name,
-    zone: zone,
-    room: $routeParams.qid
-  }};
-  var ws = eio('ws://' + location.host, options);
-  ws.msg = new eio.Emitter;
-  ws.on('message', function(msg) {
+.factory('ws', function($rootScope) {
+  var ws = new SockJS('/sock');
+  ws.onmessage = function(e) {
     $rootScope.$apply(function() {
-      var data = JSON.parse(msg);
-      ws.msg.emit(data.name, data.args);
+      var data = JSON.parse(e.data);
+      ws.cb[data.name].call(null, data.args);
     });
-  });
+  };
   ws.json = function() {
     var args = Array.prototype.slice.call(arguments);
     ws.send(JSON.stringify(args));
@@ -225,7 +214,7 @@ function CreateCtrl($scope, $http, $location) {
   };
 }
 
-function QCtrl($scope, $timeout, $location, ws) {
+function QCtrl($scope, $timeout, $location, $routeParams, ws) {
   var selected = null
   var audio = document.querySelector('audio');
 
@@ -303,34 +292,49 @@ function QCtrl($scope, $timeout, $location, ws) {
 
   $timeout(decrement, 1000);
 
-  ws.on('open', function() {
+  ws.onopen = function() {
     console.log('open');
-  });
-  ws.on('error', function(error) {
+
+    var id = localStorage.id ||
+      (localStorage.id = (Math.floor(Math.random() * 9e9)).toString(16));
+    try { var zone = JSON.parse(localStorage.zone); }
+    catch (err) { }
+
+    var options = {
+      id: id,
+      name: localStorage.name,
+      zone: zone,
+      room: $routeParams.qid
+    };
+
+    ws.json('join', options);
+  };
+  ws.onerror = function(error) {
     console.log(error);
-  });
-  ws.on('close', function() {
+  };
+  ws.onclose = function() {
     console.log('close');
-  });
+  };
 
-  var msg = ws.msg;
-  msg.on('error', function(error) {
-    $location.path('/err/' + error);
-  });
-  msg.on('set', function(data) {
-    angular.extend($scope, data);
+  ws.cb = {
+    error: function(error) {
+      $location.path('/err/' + error);
+    },
+    set: function(data) {
+      angular.extend($scope, data);
 
-    if (!(data.pack && data.pack.length)) return;
-    var d = document;
-    var hidden = d.hidden || d.webkitHidden;
-    switch ($scope.beep) {
-      case 'if tab is hidden': if (!hidden) return;
-      case 'always': audio.play();
+      if (!(data.pack && data.pack.length)) return;
+      var d = document;
+      var hidden = d.hidden || d.webkitHidden;
+      switch ($scope.beep) {
+        case 'if tab is hidden': if (!hidden) return;
+        case 'always': audio.play();
+      }
+    },
+    add: function(card) {
+      $scope[$scope.zone].push(card);
     }
-  });
-  msg.on('add', function(card) {
-    $scope[$scope.zone].push(card);
-  });
+  };
 
   $scope.pick = function(index) {
     if (selected !== index) {

@@ -2,7 +2,7 @@ var PORT = 1337;
 
 var http = require('http');
 var express = require('express');
-var engine = require('engine.io');
+var sockjs = require('sockjs');
 var router = require('./lib/router');
 
 // TODO replace express w/ static file server
@@ -32,8 +32,13 @@ var app = express()
 ;
 
 var httpServer = http.createServer(app);
-
-engine.attach(httpServer).on('connection', router.connect);
+sockjs.createServer()
+  .on('connection', router.connect)
+  .installHandlers(httpServer, {
+    prefix: '/sock',
+    log: function(){}
+  })
+  ;
 
 httpServer.listen(PORT, function() {
   console.log('http://localhost:%d', PORT);
