@@ -18,7 +18,7 @@ module.exports =
   Cards: Cards
   Sets: Sets
 
-  add: (setName, cards, size) ->
+  add: (tla, cards, size) ->
     set =
       common: []
       uncommon: []
@@ -42,9 +42,9 @@ module.exports =
       card.rarity = rares[rarity]
 
       if Cards[name]
-        that.urls[setName] = url
+        that.urls[tla] = url
       else
-        card.urls = { "#setName": url }
+        card.urls = { "#tla": url }
         Cards[name] = card
       set[rarity]push name
 
@@ -54,7 +54,7 @@ module.exports =
       unless set[rarity]length
         delete set[rarity]
 
-    Sets[setName] = set
+    Sets[tla] = set
 
   write: ->
     if not fs.existsSync \data

@@ -69,103 +69,105 @@ function CreateCtrl($scope, $http, $location) {
   $scope.cards = 15;
   $scope.packs = 3;
 
-  $scope.sets = [
-    'Alara Reborn',
-    'Alliances',
-    'Antiquities',
-    'Apocalypse',
-    'Arabian Nights',
-    'Avacyn Restored',
-    'Betrayers of Kamigawa',
-    'Born of the Gods',
-    'Champions of Kamigawa',
-    'Chronicles',
-    'Classic Sixth Edition',
-    'Coldsnap',
-    'Conflux',
-    'Dark Ascension',
-    'Darksteel',
-    'Dissension',
-    'Dragon\'s Maze',
-    'Eighth Edition',
-    'Eventide',
-    'Exodus',
-    'Fallen Empires',
-    'Fifth Dawn',
-    'Fifth Edition',
-    'Fourth Edition',
-    'Future Sight',
-    'Gatecrash',
-    'Guildpact',
-    'Homelands',
-    'Ice Age',
-    'Innistrad',
-    'Invasion',
-    'Journey into Nyx',
-    'Judgment',
-    'Legends',
-    'Legions',
-    'Limited Edition Alpha',
-    'Limited Edition Beta',
-    'Lorwyn',
-    'Magic 2010',
-    'Magic 2011',
-    'Magic 2012',
-    'Magic 2013',
-    'Magic 2014 Core Set',
-    'Mercadian Masques',
-    'Mirage',
-    'Mirrodin',
-    'Mirrodin Besieged',
-    'Modern Masters',
-    'Morningtide',
-    'Nemesis',
-    'New Phyrexia',
-    'Ninth Edition',
-    'Odyssey',
-    'Onslaught',
-    'Planar Chaos',
-    'Planeshift',
-    'Portal',
-    'Portal Second Age',
-    'Portal Three Kingdoms',
-    'Prophecy',
-    'Ravnica: City of Guilds',
-    'Return to Ravnica',
-    'Revised Edition',
-    'Rise of the Eldrazi',
-    'Saviors of Kamigawa',
-    'Scars of Mirrodin',
-    'Scourge',
-    'Seventh Edition',
-    'Shadowmoor',
-    'Shards of Alara',
-    'Starter 1999',
-    'Stronghold',
-    'Tempest',
-    'Tenth Edition',
-    'The Dark',
-    'Theros',
-    'Time Spiral',
-    'Torment',
-    'Unglued',
-    'Unhinged',
-    'Unlimited Edition',
-    'Urza\'s Destiny',
-    'Urza\'s Legacy',
-    'Urza\'s Saga',
-    'Visions',
-    'Weatherlight',
-    'Worldwake',
-    'Zendikar'
-  ];
+  $scope.sets = {
+    "Portal": "POR",
+    "Portal Second Age": "PO2",
+    "Portal Three Kingdoms": "PTK",
+    "Starter 1999": "S99",
+    "Unglued": "UGL",
+    "Unhinged": "UNH",
+    "Modern Masters": "MMA",
 
-  $scope.set1 = 'Journey into Nyx';
-  $scope.set2 = 'Born of the Gods';
-  $scope.set3 = 'Theros';
-  $scope.set4 = 'Journey into Nyx';
-  $scope.set5 = 'Born of the Gods';
-  $scope.set6 = 'Theros';
+    "Limited Edition Alpha": "LEA",
+    "Limited Edition Beta": "LEB",
+    "Unlimited Edition": "2ED",
+    "Revised Edition": "3ED",
+    "Fourth Edition": "4ED",
+    "Fifth Edition": "5ED",
+    "Classic Sixth Edition": "6ED",
+    "Seventh Edition": "7ED",
+    "Eighth Edition": "8ED",
+    "Ninth Edition": "9ED",
+    "Tenth Edition": "10E",
+    "Magic 2010": "M10",
+    "Magic 2011": "M11",
+    "Magic 2012": "M12",
+    "Magic 2013": "M13",
+    "Magic 2014 Core Set": "M14",
+
+    "Arabian Nights": "ARN",
+    "Antiquities": "ATQ",
+    "Legends": "LEG",
+    "The Dark": "DRK",
+    "Fallen Empires": "FEM",
+    "Ice Age": "ICE",
+    "Chronicles": "CHR",
+    "Homelands": "HML",
+    "Alliances": "ALL",
+    "Mirage": "MIR",
+    "Visions": "VIS",
+    "Weatherlight": "WTH",
+    "Tempest": "TMP",
+    "Stronghold": "STH",
+    "Exodus": "EXO",
+    "Urza's Saga": "USG",
+    "Urza's Legacy": "ULG",
+    "Urza's Destiny": "UDS",
+    "Mercadian Masques": "MMQ",
+    "Nemesis": "NMS",
+    "Prophecy": "PCY",
+    "Invasion": "INV",
+    "Planeshift": "PLS",
+    "Apocalypse": "APC",
+    "Odyssey": "ODY",
+    "Torment": "TOR",
+    "Judgment": "JUD",
+    "Onslaught": "ONS",
+    "Legions": "LGN",
+    "Scourge": "SCG",
+    "Mirrodin": "MRD",
+    "Darksteel": "DST",
+    "Fifth Dawn": "5DN",
+    "Champions of Kamigawa": "CHK",
+    "Betrayers of Kamigawa": "BOK",
+    "Saviors of Kamigawa": "SOK",
+    "Ravnica: City of Guilds": "RAV",
+    "Guildpact": "GPT",
+    "Dissension": "DIS",
+    "Coldsnap": "CSP",
+    "Time Spiral": "TSP",
+    "Planar Chaos": "PLC",
+    "Future Sight": "FUT",
+    "Lorwyn": "LRW",
+    "Morningtide": "MOR",
+    "Shadowmoor": "SHM",
+    "Eventide": "EVE",
+    "Shards of Alara": "ALA",
+    "Conflux": "CON",
+    "Alara Reborn": "ARB",
+    "Zendikar": "ZEN",
+    "Worldwake": "WWK",
+    "Rise of the Eldrazi": "ROE",
+    "Scars of Mirrodin": "SOM",
+    "Mirrodin Besieged": "MBS",
+    "New Phyrexia": "NPH",
+    "Innistrad": "ISD",
+    "Dark Ascension": "DKA",
+    "Avacyn Restored": "AVR",
+    "Return to Ravnica": "RTR",
+    "Gatecrash": "GTC",
+    "Dragon's Maze": "DGM",
+    "Theros": "THS",
+    "Born of the Gods": "BNG",
+    "Journey into Nyx": "JOU"
+  };
+
+  $scope.set1 = 'JOU';
+  $scope.set2 = 'BNG';
+  $scope.set3 = 'THS';
+  $scope.set4 = 'JOU';
+  $scope.set5 = 'BNG';
+  $scope.set6 = 'THS';
   $scope.create = function() {
     var id = localStorage.id || (localStorage.id = (Math.floor(Math.random() * 9e9)).toString(16));
     var type = $scope.type;
@@ -173,36 +175,35 @@ function CreateCtrl($scope, $http, $location) {
     var data = {
       type: type, seats: Number($scope.seats), host: id
     };
-    switch(type) {
-      case 'draft':
-        data.sets = [$scope.set1, $scope.set2, $scope.set3];
-        break;
-      case 'sealed':
-        data.sets = [$scope.set1, $scope.set2, $scope.set3, $scope.set4, $scope.set5, $scope.set6];
-        break;
-      default: // cube
-        var list = $scope.list
-          .split('\n')
-          .map(function(x) { return x.trim(); })
-          .filter(function(x) { return x.length; })
-          ;
-
-        var cards = Number($scope.cards);
-        var packs = Number($scope.packs);
-
-        var min = 720;
-        if (type === 'cube draft')
-          min = cards * packs * data.seats;
-        if (min > list.length || list.length > 1e3)
-          return alert('this cube needs between ' + min + ' and 1000 cards; it has ' + list.length);
-
-        data.type = data.type.replace(' ', '_');
-        data.cube = {
-          list: list,
-          cards: cards,
-          packs: packs
-        };
+    if ((type === 'draft') || (type === 'sealed')) {
+      data.sets = [$scope.set1, $scope.set2, $scope.set3];
+      if (type === 'sealed')
+        data.sets = data.sets.concat([$scope.set4, $scope.set5, $scope.set6]);
     }
+    else {
+      var list = $scope.list
+        .split('\n')
+        .map(function(x) { return x.trim(); })
+        .filter(function(x) { return x.length; })
+        ;
+
+      var cards = Number($scope.cards);
+      var packs = Number($scope.packs);
+
+      var min = 720;
+      if (type === 'cube draft')
+        min = cards * packs * data.seats;
+      if (min > list.length || list.length > 1e3)
+        return alert('this cube needs between ' + min + ' and 1000 cards; it has ' + list.length);
+
+      data.type = data.type.replace(' ', '_');
+      data.cube = {
+        list: list,
+        cards: cards,
+        packs: packs
+      };
+    }
+
     $http.post('/create', data)
       .success(function(qid, status) {
         $location.path('/q/' + qid);

@@ -18,14 +18,14 @@
   <option>cube sealed</option>
 </select>
 <div>
-  <select ng-disabled="(type == 'cube draft') || (type == 'cube sealed')" ng-model="set1" ng-options="set for set in sets" save></select>
-  <select ng-disabled="(type == 'cube draft') || (type == 'cube sealed')" ng-model="set2" ng-options="set for set in sets" save></select>
-  <select ng-disabled="(type == 'cube draft') || (type == 'cube sealed')" ng-model="set3" ng-options="set for set in sets" save></select>
+  <select ng-disabled="(type == 'cube draft') || (type == 'cube sealed')" ng-model="set1" ng-options="name for (name, code) in sets" save></select>
+  <select ng-disabled="(type == 'cube draft') || (type == 'cube sealed')" ng-model="set2" ng-options="name for (name, code) in sets" save></select>
+  <select ng-disabled="(type == 'cube draft') || (type == 'cube sealed')" ng-model="set3" ng-options="name for (name, code) in sets" save></select>
 </div>
 <div>
-  <select ng-disabled="type != 'sealed'" ng-model="set4" ng-options="set for set in sets" save></select>
-  <select ng-disabled="type != 'sealed'" ng-model="set5" ng-options="set for set in sets" save></select>
-  <select ng-disabled="type != 'sealed'" ng-model="set6" ng-options="set for set in sets" save></select>
+  <select ng-disabled="type != 'sealed'" ng-model="set4" ng-options="name for (name, code) in sets" save></select>
+  <select ng-disabled="type != 'sealed'" ng-model="set5" ng-options="name for (name, code) in sets" save></select>
+  <select ng-disabled="type != 'sealed'" ng-model="set6" ng-options="name for (name, code) in sets" save></select>
 </div>
 <div>
   <textarea ng-disabled="(type != 'cube draft') && (type != 'cube sealed')" ng-model="list" placeholder="cube" save></textarea>

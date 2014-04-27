@@ -94,15 +94,15 @@ go = (raw) ->
     size = 0
     if rawSet.booster
       size = (x if x is \common for x of that)length
-    files.add rawSet.name, cards, size
+    files.add tla, cards, size
 
   for card of raw.HHO.cards
     # these cards have no multiverse id
     {name} = card
     lc = (card.names?join(' // ') or name)toLowerCase!
-    Cards[lc].urls['Happy Holidays'] = "http://mtgimage.com/card/#name.jpg"
+    Cards[lc].urls['HHO'] = "http://mtgimage.com/card/#name.jpg"
 
-  DGM = Sets["Dragon's Maze"]
+  {DGM} = Sets
   DGM.special =
     gate:
       'azorius guildgate'
