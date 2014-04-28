@@ -223,8 +223,7 @@ function QCtrl($scope, $timeout, $location, $routeParams, ws) {
   var selected = null
   var audio = document.querySelector('audio');
 
-  $scope.editFilename = false;
-  $scope.filename = 'draft';
+  $scope.filename = 'filename';
   $scope.state = 'open';
   $scope.extension = 'dec';
   $scope.addBots = true;
