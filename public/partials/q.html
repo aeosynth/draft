@@ -30,7 +30,9 @@
     </div>
     <div>
       <button ng-disabled="state != 'done'" ng-click="download()">download</button>
-      <input save ng-model="filename" placeholder="filename">
+      <form ng-submit="download()" class="inline">
+        <input save ng-model="filename" placeholder="filename">
+      </form>
       <select ng-model="extension" save>
         <option value="cod">cod</option>
         <option value="dec">dec</option>
