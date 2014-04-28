@@ -25,7 +25,7 @@ input[type="number"] {
   background-color: rgba(0, 255, 0, .3);
 }
 
-.self td:nth-of-type(2) {
+.click {
   cursor: pointer;
   color: blue;
 }
@@ -53,6 +53,10 @@ input[type="number"] {
 
 .dropped::after {
   content: '<-- dropped';
+}
+
+.inline {
+  display: inline;
 }
 
 #chat {

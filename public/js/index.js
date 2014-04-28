@@ -162,6 +162,7 @@ function CreateCtrl($scope, $http, $location) {
     "Portal": "POR"
   };
 
+  // XXX technically the order is undefined
   $scope.sets = Object.keys(setMap);
 
   $scope.set1 = 'Journey into Nyx';
@@ -222,6 +223,8 @@ function QCtrl($scope, $timeout, $location, $routeParams, ws) {
   var selected = null
   var audio = document.querySelector('audio');
 
+  $scope.editFilename = false;
+  $scope.filename = 'draft';
   $scope.state = 'open';
   $scope.extension = 'dec';
   $scope.addBots = true;
@@ -399,7 +402,7 @@ function QCtrl($scope, $timeout, $location, $routeParams, ws) {
 
     var a = document.createElement('a');
     a.href = 'data:,' + str;
-    a.download = 'draft.' + $scope.extension;
+    a.download = $scope.filename + '.' + $scope.extension;
     a.hidden = true;
     document.body.appendChild(a);
     a.click();
