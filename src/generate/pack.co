@@ -13,9 +13,9 @@ genPack = (code) ->
     choose 1 rare
 
   switch code
-  case "Dragon's Maze"
+  case \DGM
     special = if rand 20 then <>gate else <>shock
-  case 'Modern Masters'
+  case \MMA
     special = []concat common, uncommon, rare
 
   if special
