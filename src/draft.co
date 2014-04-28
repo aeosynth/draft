@@ -70,6 +70,7 @@ class Draft extends EventEmitter
       assert 3 <= packs <= 5,  'packs range'
 
       cube.list = transformCube cube, type, seats
+      title = \cube
     else
       assert !cube, 'draft and not cube'
       assert sets instanceof Array, 'typeof sets'
@@ -77,8 +78,9 @@ class Draft extends EventEmitter
       assert sets.length is n, 'sets length'
       for set of sets
         assert set in Sets, 'set in Sets'
+      title = sets * ' / '
 
-    @ <<<< { cube, host, seats, sets, type }
+    @ <<<< { cube, host, seats, sets, type, title }
     @ <<<<
       id: _.uid!
       players: []
@@ -96,7 +98,7 @@ class Draft extends EventEmitter
           p.send \error 'you were dropped'
           return
         p.attach sock
-        p.send \set @{ state }
+        p.send \set @{ state, title }
         @meta!
         return
 
@@ -116,6 +118,7 @@ class Draft extends EventEmitter
       h.once \start (@addBots) ~>
         @start!
 
+    h.send \set @{ title }
     @add h
     @meta!
 
