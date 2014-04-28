@@ -69,105 +69,107 @@ function CreateCtrl($scope, $http, $location) {
   $scope.cards = 15;
   $scope.packs = 3;
 
-  $scope.sets = {
-    "Portal": "POR",
-    "Portal Second Age": "PO2",
-    "Portal Three Kingdoms": "PTK",
-    "Starter 1999": "S99",
-    "Unglued": "UGL",
-    "Unhinged": "UNH",
-    "Modern Masters": "MMA",
-
-    "Limited Edition Alpha": "LEA",
-    "Limited Edition Beta": "LEB",
-    "Unlimited Edition": "2ED",
-    "Revised Edition": "3ED",
-    "Fourth Edition": "4ED",
-    "Fifth Edition": "5ED",
-    "Classic Sixth Edition": "6ED",
-    "Seventh Edition": "7ED",
-    "Eighth Edition": "8ED",
-    "Ninth Edition": "9ED",
-    "Tenth Edition": "10E",
-    "Magic 2010": "M10",
-    "Magic 2011": "M11",
-    "Magic 2012": "M12",
-    "Magic 2013": "M13",
-    "Magic 2014 Core Set": "M14",
-
-    "Arabian Nights": "ARN",
-    "Antiquities": "ATQ",
-    "Legends": "LEG",
-    "The Dark": "DRK",
-    "Fallen Empires": "FEM",
-    "Ice Age": "ICE",
-    "Chronicles": "CHR",
-    "Homelands": "HML",
-    "Alliances": "ALL",
-    "Mirage": "MIR",
-    "Visions": "VIS",
-    "Weatherlight": "WTH",
-    "Tempest": "TMP",
-    "Stronghold": "STH",
-    "Exodus": "EXO",
-    "Urza's Saga": "USG",
-    "Urza's Legacy": "ULG",
-    "Urza's Destiny": "UDS",
-    "Mercadian Masques": "MMQ",
-    "Nemesis": "NMS",
-    "Prophecy": "PCY",
-    "Invasion": "INV",
-    "Planeshift": "PLS",
-    "Apocalypse": "APC",
-    "Odyssey": "ODY",
-    "Torment": "TOR",
-    "Judgment": "JUD",
-    "Onslaught": "ONS",
-    "Legions": "LGN",
-    "Scourge": "SCG",
-    "Mirrodin": "MRD",
-    "Darksteel": "DST",
-    "Fifth Dawn": "5DN",
-    "Champions of Kamigawa": "CHK",
-    "Betrayers of Kamigawa": "BOK",
-    "Saviors of Kamigawa": "SOK",
-    "Ravnica: City of Guilds": "RAV",
-    "Guildpact": "GPT",
-    "Dissension": "DIS",
-    "Coldsnap": "CSP",
-    "Time Spiral": "TSP",
-    "Planar Chaos": "PLC",
-    "Future Sight": "FUT",
-    "Lorwyn": "LRW",
-    "Morningtide": "MOR",
-    "Shadowmoor": "SHM",
-    "Eventide": "EVE",
-    "Shards of Alara": "ALA",
-    "Conflux": "CON",
-    "Alara Reborn": "ARB",
-    "Zendikar": "ZEN",
-    "Worldwake": "WWK",
-    "Rise of the Eldrazi": "ROE",
-    "Scars of Mirrodin": "SOM",
-    "Mirrodin Besieged": "MBS",
-    "New Phyrexia": "NPH",
-    "Innistrad": "ISD",
-    "Dark Ascension": "DKA",
-    "Avacyn Restored": "AVR",
-    "Return to Ravnica": "RTR",
-    "Gatecrash": "GTC",
-    "Dragon's Maze": "DGM",
-    "Theros": "THS",
+  var setMap = {
+    "Journey into Nyx": "JOU",
     "Born of the Gods": "BNG",
-    "Journey into Nyx": "JOU"
+    "Theros": "THS",
+    "Dragon's Maze": "DGM",
+    "Gatecrash": "GTC",
+    "Return to Ravnica": "RTR",
+    "Avacyn Restored": "AVR",
+    "Dark Ascension": "DKA",
+    "Innistrad": "ISD",
+    "New Phyrexia": "NPH",
+    "Mirrodin Besieged": "MBS",
+    "Scars of Mirrodin": "SOM",
+    "Rise of the Eldrazi": "ROE",
+    "Worldwake": "WWK",
+    "Zendikar": "ZEN",
+    "Alara Reborn": "ARB",
+    "Conflux": "CON",
+    "Shards of Alara": "ALA",
+    "Eventide": "EVE",
+    "Shadowmoor": "SHM",
+    "Morningtide": "MOR",
+    "Lorwyn": "LRW",
+    "Future Sight": "FUT",
+    "Planar Chaos": "PLC",
+    "Time Spiral": "TSP",
+    "Coldsnap": "CSP",
+    "Dissension": "DIS",
+    "Guildpact": "GPT",
+    "Ravnica: City of Guilds": "RAV",
+    "Saviors of Kamigawa": "SOK",
+    "Betrayers of Kamigawa": "BOK",
+    "Champions of Kamigawa": "CHK",
+    "Fifth Dawn": "5DN",
+    "Darksteel": "DST",
+    "Mirrodin": "MRD",
+    "Scourge": "SCG",
+    "Legions": "LGN",
+    "Onslaught": "ONS",
+    "Judgment": "JUD",
+    "Torment": "TOR",
+    "Odyssey": "ODY",
+    "Apocalypse": "APC",
+    "Planeshift": "PLS",
+    "Invasion": "INV",
+    "Prophecy": "PCY",
+    "Nemesis": "NMS",
+    "Mercadian Masques": "MMQ",
+    "Urza's Destiny": "UDS",
+    "Urza's Legacy": "ULG",
+    "Urza's Saga": "USG",
+    "Exodus": "EXO",
+    "Stronghold": "STH",
+    "Tempest": "TMP",
+    "Weatherlight": "WTH",
+    "Visions": "VIS",
+    "Mirage": "MIR",
+    "Alliances": "ALL",
+    "Homelands": "HML",
+    "Chronicles": "CHR",
+    "Ice Age": "ICE",
+    "Fallen Empires": "FEM",
+    "The Dark": "DRK",
+    "Legends": "LEG",
+    "Antiquities": "ATQ",
+    "Arabian Nights": "ARN",
+
+    "Magic 2014 Core Set": "M14",
+    "Magic 2013": "M13",
+    "Magic 2012": "M12",
+    "Magic 2011": "M11",
+    "Magic 2010": "M10",
+    "Tenth Edition": "10E",
+    "Ninth Edition": "9ED",
+    "Eighth Edition": "8ED",
+    "Seventh Edition": "7ED",
+    "Classic Sixth Edition": "6ED",
+    "Fifth Edition": "5ED",
+    "Fourth Edition": "4ED",
+    "Revised Edition": "3ED",
+    "Unlimited Edition": "2ED",
+    "Limited Edition Beta": "LEB",
+    "Limited Edition Alpha": "LEA",
+
+    "Modern Masters": "MMA",
+    "Unhinged": "UNH",
+    "Unglued": "UGL",
+    "Starter 1999": "S99",
+    "Portal Three Kingdoms": "PTK",
+    "Portal Second Age": "PO2",
+    "Portal": "POR"
   };
 
-  $scope.set1 = 'JOU';
-  $scope.set2 = 'BNG';
-  $scope.set3 = 'THS';
-  $scope.set4 = 'JOU';
-  $scope.set5 = 'BNG';
-  $scope.set6 = 'THS';
+  $scope.sets = Object.keys(setMap);
+
+  $scope.set1 = 'Journey into Nyx';
+  $scope.set2 = 'Born of the Gods';
+  $scope.set3 = 'Theros';
+  $scope.set4 = 'Journey into Nyx';
+  $scope.set5 = 'Born of the Gods';
+  $scope.set6 = 'Theros';
   $scope.create = function() {
     var id = localStorage.id || (localStorage.id = (Math.floor(Math.random() * 9e9)).toString(16));
     var type = $scope.type;
@@ -176,9 +178,10 @@ function CreateCtrl($scope, $http, $location) {
       type: type, seats: Number($scope.seats), host: id
     };
     if ((type === 'draft') || (type === 'sealed')) {
-      data.sets = [$scope.set1, $scope.set2, $scope.set3];
+      var sets = [$scope.set1, $scope.set2, $scope.set3];
       if (type === 'sealed')
-        data.sets = data.sets.concat([$scope.set4, $scope.set5, $scope.set6]);
+        sets = sets.concat([$scope.set4, $scope.set5, $scope.set6]);
+      data.sets = sets.map(function(name) { return setMap[name]; });
     }
     else {
       var list = $scope.list
