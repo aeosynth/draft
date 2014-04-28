@@ -244,11 +244,11 @@ function QCtrl($scope, $timeout, $location, $routeParams, ws) {
   };
 
   var lands = {
-    b: { land: true, cmc: 0, color: 'L', key: 'b', url: 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=73973', name: 'Swamp'    },
-    g: { land: true, cmc: 0, color: 'L', key: 'g', url: 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=73946', name: 'Forest'   },
-    r: { land: true, cmc: 0, color: 'L', key: 'r', url: 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=73958', name: 'Mountain' },
-    u: { land: true, cmc: 0, color: 'L', key: 'u', url: 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=73951', name: 'Island'   },
-    w: { land: true, cmc: 0, color: 'L', key: 'w', url: 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=73963', name: 'Plains'   }
+    b: { land: true, cmc: 0, code: 'UNH', color: 'L', key: 'b', url: 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=73973', name: 'Swamp'    },
+    g: { land: true, cmc: 0, code: 'UNH', color: 'L', key: 'g', url: 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=73946', name: 'Forest'   },
+    r: { land: true, cmc: 0, code: 'UNH', color: 'L', key: 'r', url: 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=73958', name: 'Mountain' },
+    u: { land: true, cmc: 0, code: 'UNH', color: 'L', key: 'u', url: 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=73951', name: 'Island'   },
+    w: { land: true, cmc: 0, code: 'UNH', color: 'L', key: 'w', url: 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=73963', name: 'Plains'   }
   };
   function landFactory(zoneName) {
     return function(cur, old) {
@@ -421,23 +421,27 @@ function QCtrl($scope, $timeout, $location, $routeParams, ws) {
   function generateRaw() {
     var main = {}
       , side = {}
+      , code = {}
       , deck
       ;
 
     angular.forEach($scope.main, function(card) {
       var name = card.name;
+      code[name] = card.code;
       main[name] || (main[name] = 0);
       main[name] += 1;
     });
     angular.forEach($scope.side, function(card) {
       var name = card.name;
+      code[name] = card.code;
       side[name] || (side[name] = 0);
       side[name] += 1;
     });
 
     return {
       main: main,
-      side: side
+      side: side,
+      code: code
     };
   }
 
@@ -473,7 +477,19 @@ function QCtrl($scope, $timeout, $location, $routeParams, ws) {
       });
       return arr.join('\r\n');
     },
+    mwdeck: function(deck) {
+      var arr = [];
+      var code = deck.code;
+      angular.forEach(deck.main, function(n, name) {
+        arr.push(n + ' [' + code[name] + '] ' + name);
+      });
+      angular.forEach(deck.side, function(n, name) {
+        arr.push('SB: ' + n + ' [' + code[name] + '] ' + name);
+      });
+      return arr.join('\r\n');
+    },
     json: function(deck) {
+      delete deck.code;
       return JSON.stringify(deck);
     }
   };

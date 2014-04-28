@@ -9,7 +9,8 @@ module.exports = (players, cube) ->
   names = _.choose nCards, cube.list
   cards = for name of names
     card = Cards[name]
-    card.url = card.urls[Object.keys(card.urls).0]
+    card.code = Object.keys(card.urls)0
+    card.url = card.urls[card.code]
     card
   packs = []
 

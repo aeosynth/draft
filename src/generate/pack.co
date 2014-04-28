@@ -2,8 +2,8 @@ Cards = require \../../data/cards
 Sets  = require \../../data/sets
 {choose, rand} = require \../_
 
-genPack = (setName) ->
-  {size, common, uncommon, rare, mythic, special} = Sets[setName]
+genPack = (code) ->
+  {size, common, uncommon, rare, mythic, special} = Sets[code]
   if mythic and not rand 8
     rare = mythic
 
@@ -12,7 +12,7 @@ genPack = (setName) ->
     choose 3 uncommon
     choose 1 rare
 
-  switch setName
+  switch code
   case "Dragon's Maze"
     special = if rand 20 then <>gate else <>shock
   case 'Modern Masters'
@@ -24,7 +24,8 @@ genPack = (setName) ->
 
   for name of pack
     card = {}<<<<Cards[name]
-    card.url = card.urls[setName]
+    card.code = code
+    card.url = card.urls[code]
     card
 
 genPacks = (count, sets) ->
