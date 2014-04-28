@@ -25,7 +25,7 @@ input[type="number"] {
   background-color: rgba(0, 255, 0, .3);
 }
 
-.click {
+.self .name {
   cursor: pointer;
   color: blue;
 }
