@@ -99,7 +99,7 @@
     </tr>
   </table>
 
-  <div class="container" ng-hide="end">
+  <div class="container" ng-hide="state == 'done'">
     <h1>pack</h1>
     <div ng-show="pack">
       <img ng-src="{{ card.url }}" ng-repeat="card in pack" ng-click="pick($index)">
