@@ -1,121 +1,119 @@
-<div>
-  <div class="pull-right">
-    <div>
-      <table>
-        <tr>
-          <th></th>
-          <th><img src="/media/W.jpeg"></th>
-          <th><img src="/media/U.jpeg"></th>
-          <th><img src="/media/B.jpeg"></th>
-          <th><img src="/media/R.jpeg"></th>
-          <th><img src="/media/G.jpeg"></th>
-        </tr>
-        <tr>
-          <td>main</td>
-          <td><input type="number" min="0" autoselect ng-model="mainLand.w"></td>
-          <td><input type="number" min="0" autoselect ng-model="mainLand.u"></td>
-          <td><input type="number" min="0" autoselect ng-model="mainLand.b"></td>
-          <td><input type="number" min="0" autoselect ng-model="mainLand.r"></td>
-          <td><input type="number" min="0" autoselect ng-model="mainLand.g"></td>
-        </tr>
-        <tr>
-          <td>side</td>
-          <td><input type="number" min="0" autoselect ng-model="sideLand.w"></td>
-          <td><input type="number" min="0" autoselect ng-model="sideLand.u"></td>
-          <td><input type="number" min="0" autoselect ng-model="sideLand.b"></td>
-          <td><input type="number" min="0" autoselect ng-model="sideLand.r"></td>
-          <td><input type="number" min="0" autoselect ng-model="sideLand.g"></td>
-        </tr>
-      </table>
-    </div>
-    <div>
-      <button ng-disabled="state != 'done'" ng-click="download()">download</button>
-      <form ng-submit="download()" class="inline">
-        <input save ng-model="filename" placeholder="filename">
+<div class="pull-right">
+  <div>
+    <table>
+      <tr>
+        <th></th>
+        <th><img src="/media/W.jpeg"></th>
+        <th><img src="/media/U.jpeg"></th>
+        <th><img src="/media/B.jpeg"></th>
+        <th><img src="/media/R.jpeg"></th>
+        <th><img src="/media/G.jpeg"></th>
+      </tr>
+      <tr>
+        <td>main</td>
+        <td><input type="number" min="0" autoselect ng-model="mainLand.w"></td>
+        <td><input type="number" min="0" autoselect ng-model="mainLand.u"></td>
+        <td><input type="number" min="0" autoselect ng-model="mainLand.b"></td>
+        <td><input type="number" min="0" autoselect ng-model="mainLand.r"></td>
+        <td><input type="number" min="0" autoselect ng-model="mainLand.g"></td>
+      </tr>
+      <tr>
+        <td>side</td>
+        <td><input type="number" min="0" autoselect ng-model="sideLand.w"></td>
+        <td><input type="number" min="0" autoselect ng-model="sideLand.u"></td>
+        <td><input type="number" min="0" autoselect ng-model="sideLand.b"></td>
+        <td><input type="number" min="0" autoselect ng-model="sideLand.r"></td>
+        <td><input type="number" min="0" autoselect ng-model="sideLand.g"></td>
+      </tr>
+    </table>
+  </div>
+  <div>
+    <button ng-disabled="state != 'done'" ng-click="download()">download</button>
+    <form ng-submit="download()" class="inline">
+      <input save ng-model="filename" placeholder="filename">
+    </form>
+    <select ng-model="extension" save>
+      <option value="cod">cod</option>
+      <option value="dec">dec</option>
+      <option value="mwdeck">mwdeck</option>
+      <option value="json">json</option>
+    </select>
+  </div>
+  <div>
+    <button ng-disabled="state != 'done'" ng-click="copy()">copy</button>
+    <textarea readonly autoselect id="copy">{{ deck }}</textarea>
+  </div>
+  <div>
+    <button ng-disabled="state != 'done'" ng-click="getCap()">draftcap</button>
+    <textarea readonly autoselect>{{ cap }}</textarea>
+  </div>
+  <div>
+    <select dir="rtl" ng-model="beep" save>
+      <option>never</option>
+      <option>always</option>
+      <option>if tab is hidden</option>
+    </select>
+    beep when receiving packs
+    <!--
+    http://freesound.org/people/pierrecartoons1979/sounds/90112/
+    cc-by-nc-3.0
+    -->
+    <audio src="/media/beep.wav"></audio>
+  </div>
+  <div>
+    order by
+    <select ng-model="order" save>
+      <option>cmc</option>
+      <option>color</option>
+      <option>rarity</option>
+      <option>type</option>
+    </select>
+  </div>
+  <div>
+    add cards to:
+    <label><input type="radio" ng-model="zone" save value="main">main</input></label>
+    <label><input type="radio" ng-model="zone" save value="side">side</input></label>
+  </div>
+</div>
+
+<h1>{{ title }}</h1>
+<div ng-show="isHost && state == 'open'">
+  <button ng-click="start()">start</button>
+  <label>add bots<input type="checkbox" ng-model="addBots" save></label>
+</div>
+<table>
+  <tr><th>#</th><th>name</th><th>time</th><th>packs</th><th>cockatrice</th><th>mws</th></tr>
+  <tr ng-repeat="player in players" ng-class="{ self: self == $index, dropped: player.dropped, opponent: $index == ((self + 4) % 8) }">
+    <td>{{ $index + 1 }}</td>
+    <td ng-switch on="player.edit" ng-click="editName(player, $index)">
+      <form ng-submit="name(player)" ng-switch-when="true">
+        <input type="text" placeholder="username" autofocus required ng-model="player.name">
+        <button>save</button>
       </form>
-      <select ng-model="extension" save>
-        <option value="cod">cod</option>
-        <option value="dec">dec</option>
-        <option value="mwdeck">mwdeck</option>
-        <option value="json">json</option>
-      </select>
-    </div>
-    <div>
-      <button ng-disabled="state != 'done'" ng-click="copy()">copy</button>
-      <textarea readonly autoselect id="copy">{{ deck }}</textarea>
-    </div>
-    <div>
-      <button ng-disabled="state != 'done'" ng-click="getCap()">draftcap</button>
-      <textarea readonly autoselect>{{ cap }}</textarea>
-    </div>
-    <div>
-      <select dir="rtl" ng-model="beep" save>
-        <option>never</option>
-        <option>always</option>
-        <option>if tab is hidden</option>
-      </select>
-      beep when receiving packs
-      <!--
-      http://freesound.org/people/pierrecartoons1979/sounds/90112/
-      cc-by-nc-3.0
-      -->
-      <audio src="/media/beep.wav"></audio>
-    </div>
-    <div>
-      order by
-      <select ng-model="order" save>
-        <option>cmc</option>
-        <option>color</option>
-        <option>rarity</option>
-        <option>type</option>
-      </select>
-    </div>
-    <div>
-      add cards to:
-      <label><input type="radio" ng-model="zone" save value="main">main</input></label>
-      <label><input type="radio" ng-model="zone" save value="side">side</input></label>
-    </div>
-  </div>
+      <span class="name" ng-switch-default>{{ player.name }}</span>
+    </td>
+    <td>{{ player.time }}</td>
+    <td>{{ player.packs }}</td>
+    <td>{{ player.hash.cock }}</td>
+    <td>{{ player.hash.mws }}</td>
+  </tr>
+</table>
 
-  <h1>{{ title }}</h1>
-  <div ng-show="isHost && state == 'open'">
-    <button ng-click="start()">start</button>
-    <label>add bots<input type="checkbox" ng-model="addBots" save></label>
+<div class="container" ng-hide="state == 'done'">
+  <h1>pack</h1>
+  <div ng-show="pack">
+    <img ng-src="{{ card.url }}" ng-repeat="card in pack" ng-click="pick($index)">
   </div>
-  <table>
-    <tr><th>#</th><th>name</th><th>time</th><th>packs</th><th>cockatrice</th><th>mws</th></tr>
-    <tr ng-repeat="player in players" ng-class="{ self: self == $index, dropped: player.dropped, opponent: $index == ((self + 4) % 8) }">
-      <td>{{ $index + 1 }}</td>
-      <td ng-switch on="player.edit" ng-click="editName(player, $index)">
-        <form ng-submit="name(player)" ng-switch-when="true">
-          <input type="text" placeholder="username" autofocus required ng-model="player.name">
-          <button>save</button>
-        </form>
-        <span class="name" ng-switch-default>{{ player.name }}</span>
-      </td>
-      <td>{{ player.time }}</td>
-      <td>{{ player.packs }}</td>
-      <td>{{ player.hash.cock }}</td>
-      <td>{{ player.hash.mws }}</td>
-    </tr>
-  </table>
-
-  <div class="container" ng-hide="state == 'done'">
-    <h1>pack</h1>
-    <div ng-show="pack">
-      <img ng-src="{{ card.url }}" ng-repeat="card in pack" ng-click="pick($index)">
-    </div>
-  </div>
-  <div class="container">
-    <h1>main {{ main.length }}</h1>
-    <img ng-src="{{ card.url }}" ng-repeat="card in main | orderBy:[order, 'name']" ng-click="fromMain(card, $event)">
-  </div>
-  <div class="container">
-    <h1>side</h1>
-    <img ng-src="{{ card.url }}" ng-repeat="card in side | orderBy:[order, 'name']" ng-click="fromSide(card, $event)">
-  </div>
-  <div class="container">
-    <h1>jank</h1>
-    <img ng-src="{{ card.url }}" ng-repeat="card in jank | orderBy:[order, 'name']" ng-click="fromJank(card, $event)">
-  </div>
+</div>
+<div class="container">
+  <h1>main {{ main.length }}</h1>
+  <img ng-src="{{ card.url }}" ng-repeat="card in main | orderBy:[order, 'name']" ng-click="fromMain(card, $event)">
+</div>
+<div class="container">
+  <h1>side</h1>
+  <img ng-src="{{ card.url }}" ng-repeat="card in side | orderBy:[order, 'name']" ng-click="fromSide(card, $event)">
+</div>
+<div class="container">
+  <h1>jank</h1>
+  <img ng-src="{{ card.url }}" ng-repeat="card in jank | orderBy:[order, 'name']" ng-click="fromJank(card, $event)">
 </div>
