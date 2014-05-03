@@ -175,8 +175,9 @@ function CreateCtrl($scope, $http, $location) {
     var id = localStorage.id || (localStorage.id = (Math.floor(Math.random() * 9e9)).toString(16));
     var type = $scope.type;
 
+    var seats = Number($scope.seats);
     var data = {
-      type: type, seats: Number($scope.seats), host: id
+      type: type, seats: seats, host: id
     };
     if ((type === 'draft') || (type === 'sealed')) {
       var sets = [$scope.set1, $scope.set2, $scope.set3];
@@ -194,9 +195,11 @@ function CreateCtrl($scope, $http, $location) {
       var cards = Number($scope.cards);
       var packs = Number($scope.packs);
 
-      var min = 720;
+      var min;
       if (type === 'cube draft')
-        min = cards * packs * data.seats;
+        min = seats * cards * packs;
+      else
+        min = seats * 90;
       if (min > list.length || list.length > 1e3)
         return alert('this cube needs between ' + min + ' and 1000 cards; it has ' + list.length);
 

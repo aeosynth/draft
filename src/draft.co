@@ -31,9 +31,9 @@ transformCube = ({list, cards, packs}, type, seats) ->
 
   min =
     if type is \cube_draft
-      cards * packs * seats
+      seats * cards * packs
     else
-      720
+      seats * 90
 
   unless min <= list.length <= 1e3
     throw Error "this cube needs between #{min} and 1000 cards; it has #{list.length}"
