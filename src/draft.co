@@ -15,15 +15,14 @@ drafts = {}
 transformCube = ({list, cards, packs}, type, seats) ->
   bad = []
   list = for name of list
-    name .= trim!
-      .replace /(1.?)?\s*/ ''
-      .replace /\s*\/+\s*/g ' // '
-      .replace \Æ \ae
-      .replace \á \a
-      .replace \í \i
-      .replace \ö \o
-      .replace \û \u
-      .toLowerCase!
+    name .= trim!toLowerCase!replace /[æâàáéíöúû]/g ->
+      switch it
+      case \æ => \ae
+      case \â \à \á => \a
+      case \é => \e
+      case \í => \i
+      case \ö => \o
+      case \ú \û => \u
     if not name
       continue # skip blank lines
     if name not in Cards
