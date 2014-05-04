@@ -72,7 +72,7 @@ class Draft extends EventEmitter
       assert 3 <= packs <= 5,  'packs range'
 
       cube.list = transformCube cube, type, seats
-      title = \cube
+      title = type
     else
       assert !cube, 'draft and not cube'
       assert sets instanceof Array, 'typeof sets'
