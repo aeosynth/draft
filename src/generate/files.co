@@ -28,14 +28,16 @@ module.exports =
       size: size
 
     for card of cards
-      name = card.name.toLowerCase!replace /[æâàáéíöúû]/g ->
+      name = card.name = card.name.replace /[Æâàáéíöúû]/g ->
         switch it
-        case \æ => \ae
+        case \Æ => \AE
         case \â \à \á => \a
         case \é => \e
         case \í => \i
         case \ö => \o
         case \ú \û => \u
+      name .= toLowerCase!
+
       url = delete card.url
       card.score = 99
 
