@@ -252,11 +252,11 @@ function QCtrl($scope, $timeout, $location, $routeParams, ws) {
   };
 
   var lands = {
-    b: { land: true, cmc: 0, code: 'UNH', color: 'L', key: 'b', url: 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=73973', name: 'Swamp'    },
-    g: { land: true, cmc: 0, code: 'UNH', color: 'L', key: 'g', url: 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=73946', name: 'Forest'   },
-    r: { land: true, cmc: 0, code: 'UNH', color: 'L', key: 'r', url: 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=73958', name: 'Mountain' },
-    u: { land: true, cmc: 0, code: 'UNH', color: 'L', key: 'u', url: 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=73951', name: 'Island'   },
-    w: { land: true, cmc: 0, code: 'UNH', color: 'L', key: 'w', url: 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=73963', name: 'Plains'   }
+    w: { land: true, cmc: 0, code: 'UNH', color: 'A', key: 'w', url: 'http://mtgimage.com/multiverseid/73963.jpg', name: 'Plains'   },
+    u: { land: true, cmc: 0, code: 'UNH', color: 'A', key: 'u', url: 'http://mtgimage.com/multiverseid/73951.jpg', name: 'Island'   },
+    b: { land: true, cmc: 0, code: 'UNH', color: 'A', key: 'b', url: 'http://mtgimage.com/multiverseid/73973.jpg', name: 'Swamp'    },
+    r: { land: true, cmc: 0, code: 'UNH', color: 'A', key: 'r', url: 'http://mtgimage.com/multiverseid/73958.jpg', name: 'Mountain' },
+    g: { land: true, cmc: 0, code: 'UNH', color: 'A', key: 'g', url: 'http://mtgimage.com/multiverseid/73946.jpg', name: 'Forest'   }
   };
   function landFactory(zoneName) {
     return function(cur, old) {
