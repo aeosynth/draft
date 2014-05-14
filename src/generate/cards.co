@@ -100,7 +100,7 @@ go = (raw) ->
     # these cards have no multiverse id
     {name} = card
     lc = (card.names?join(' // ') or name)toLowerCase!
-    Cards[lc].urls['HHO'] = "http://mtgimage.com/card/#name.jpg"
+    Cards[lc]urls['HHO'] = "http://mtgimage.com/card/#name.jpg"
 
   {DGM} = Sets
   DGM.special =
