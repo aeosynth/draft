@@ -400,7 +400,6 @@ function QCtrl($scope, $timeout, $location, $routeParams, ws) {
   $scope.download = function() {
     var deck = generateRaw();
     var str = generate[$scope.extension](deck);
-    str = encodeURIComponent(str);
 
     // https://code.google.com/p/chromium/issues/detail?id=376197
     // use blob instead of data uri
