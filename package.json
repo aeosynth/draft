@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "author": "James Campos <james.r.campos@gmail.com>",
   "dependencies": {
+    "cheerio": "^0.15.0",
+    "coco": "~0.9.1",
     "express": "~3.2.6",
     "request": "~2.21.0",
-    "coco": "~0.9.1",
-    "cheerio": "^0.15.0",
-    "sockjs": "^0.3.8"
+    "sockjs": "^0.3.9"
   }
 }
