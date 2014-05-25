@@ -402,13 +402,20 @@ function QCtrl($scope, $timeout, $location, $routeParams, ws) {
     var str = generate[$scope.extension](deck);
     str = encodeURIComponent(str);
 
+    // https://code.google.com/p/chromium/issues/detail?id=376197
+    // use blob instead of data uri
+    var blob = new Blob([str]);
+    var url = URL.createObjectURL(blob);
+
     var a = document.createElement('a');
-    a.href = 'data:,' + str;
+    a.href = url;
     a.download = $scope.filename + '.' + $scope.extension;
     a.hidden = true;
     document.body.appendChild(a);
     a.click();
     a.remove();
+
+    URL.revokeObjectURL(url);
 
     if (!$scope.hash)
       ws.json('hash', deck);
