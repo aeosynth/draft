@@ -6,18 +6,6 @@ drafts = {}
 rm = ->
   delete drafts[@id]
 
-join = (opts={}) ->
-  {id, name, room, zone} = opts
-  name ?.= slice 0 16
-  unless zone of <[ main side ]>
-    zone = \main
-  @ <<<< { id, name, room, zone }
-
-  if drafts[room]
-    that.join @
-  else
-    @send \error 'room not found'
-
 router =
   create: (opts) ->
     draft = new Draft opts
@@ -26,6 +14,11 @@ router =
     draft.id
   connect: (ws) ->
     sock = new Sock ws
-    sock.once \join join
+    {room} = sock
+
+    if drafts[room]
+      that.join sock
+    else
+      sock.send \error 'room not found'
 
 module.exports = router

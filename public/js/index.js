@@ -20,14 +20,26 @@ angular
     })
     ;
 })
-.factory('ws', function($rootScope) {
-  var ws = new SockJS('/sock');
-  ws.onmessage = function(e) {
+.factory('ws', function($rootScope, $routeParams) {
+  var id = localStorage.id ||
+    (localStorage.id = (Math.floor(Math.random() * 9e9)).toString(16));
+  try { var zone = JSON.parse(localStorage.zone); }
+  catch (err) { }
+
+  var options = { query: {
+    id: id,
+    name: localStorage.name,
+    zone: zone,
+    room: $routeParams.qid
+  }};
+
+  var ws = eio('ws://' + location.host, options);
+  ws.on('message', function(data) {
     $rootScope.$apply(function() {
-      var data = JSON.parse(e.data);
+      data = JSON.parse(data);
       ws.cb[data.name].call(null, data.args);
     });
-  };
+  });
   ws.json = function() {
     var args = Array.prototype.slice.call(arguments);
     ws.send(JSON.stringify(args));
@@ -222,7 +234,7 @@ function CreateCtrl($scope, $http, $location) {
   };
 }
 
-function QCtrl($scope, $timeout, $location, $routeParams, ws) {
+function QCtrl($scope, $timeout, $location, ws) {
   var selected = null
   var audio = document.querySelector('audio');
 
@@ -301,29 +313,15 @@ function QCtrl($scope, $timeout, $location, $routeParams, ws) {
 
   $timeout(decrement, 1000);
 
-  ws.onopen = function() {
+  ws.on('open', function() {
     console.log('open');
-
-    var id = localStorage.id ||
-      (localStorage.id = (Math.floor(Math.random() * 9e9)).toString(16));
-    try { var zone = JSON.parse(localStorage.zone); }
-    catch (err) { }
-
-    var options = {
-      id: id,
-      name: localStorage.name,
-      zone: zone,
-      room: $routeParams.qid
-    };
-
-    ws.json('join', options);
-  };
-  ws.onerror = function(error) {
+  });
+  ws.on('error', function(error) {
     console.log(error);
-  };
-  ws.onclose = function() {
+  });
+  ws.on('close', function() {
     console.log('close');
-  };
+  });
 
   ws.cb = {
     error: function(error) {

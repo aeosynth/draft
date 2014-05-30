@@ -5,6 +5,7 @@
   "dependencies": {
     "cheerio": "^0.15.0",
     "coco": "~0.9.1",
+    "engine.io": "^1.2.2",
     "express": "~3.2.6",
     "request": "~2.21.0",
     "sockjs": "^0.3.9"
