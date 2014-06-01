@@ -27,7 +27,15 @@ go = (raw) ->
       card
 
   for tla, rawSet in raw
-    continue if rawSet.type of <[ archenemy box vanguard ]>
+    continue if rawSet.type of [
+      \archenemy
+      \box
+      'duel deck'
+      'from the vault'
+      \masters
+      'premium deck'
+      \vanguard
+    ]
 
     cards = []
     split = []
