@@ -493,9 +493,11 @@ function QCtrl($scope, $timeout, $location, ws) {
       var arr = [];
       var code = deck.code;
       angular.forEach(deck.main, function(n, name) {
+        name = name.replace(' // ', '/');
         arr.push(n + ' [' + code[name] + '] ' + name);
       });
       angular.forEach(deck.side, function(n, name) {
+        name = name.replace(' // ', '/');
         arr.push('SB: ' + n + ' [' + code[name] + '] ' + name);
       });
       return arr.join('\r\n');
