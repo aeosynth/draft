@@ -1,7 +1,8 @@
 fs = require \fs
 
 _ = require \../_
-Cards = require \../../data/cards.json
+Cards = require \../../data/cards
+mws = require \../../data/mws
 
 module.exports = (players, cube) ->
   nPacks = players * cube.packs
@@ -9,8 +10,9 @@ module.exports = (players, cube) ->
   names = _.choose nCards, cube.list
   cards = for name of names
     card = Cards[name]
-    card.code = Object.keys(card.urls)0
-    card.url = card.urls[card.code]
+    code = Object.keys(card.urls)0
+    card.code = mws[code] or code
+    card.url = card.urls[code]
     card
   packs = []
 

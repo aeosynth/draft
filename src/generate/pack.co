@@ -1,5 +1,6 @@
 Cards = require \../../data/cards
 Sets  = require \../../data/sets
+mws   = require \../../data/mws
 {choose, rand} = require \../_
 
 genPack = (code) ->
@@ -22,9 +23,10 @@ genPack = (code) ->
     index = rand special.length
     pack.push special[index]
 
+  mwsCode = mws[code] or code
   for name of pack
     card = {}<<<<Cards[name]
-    card.code = code
+    card.code = mwsCode
     card.url = card.urls[code]
     card
 
