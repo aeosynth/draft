@@ -9,6 +9,8 @@
   "7ED":"7E",
   "8ED":"8E",
   "9ED":"9E",
+
+  "ARN":"AN",
   "ATQ":"AQ",
   "LEG":"LG",
   "DRK":"DK",
@@ -42,6 +44,7 @@
   "DST":"DS",
   "5DN":"FD",
   "GPT":"GP",
+  "CON":"CFX",
 
   "POR":"PT",
   "PO2":"P2",
