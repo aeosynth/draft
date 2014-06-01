@@ -9,6 +9,11 @@ textarea {
 input[type="number"] {
   width: 3em;
 }
+table img {
+  width:  25px;
+  height: 25px;
+}
+
 .pull-right table {
   margin-left: auto;
 }
