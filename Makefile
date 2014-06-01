@@ -13,4 +13,4 @@ bots:
 	node lib/db/score.js
 
 spoiler:
-	node lib/generate/spoiler.js ${WIZ} ${SAL}
+	node lib/generate/spoiler

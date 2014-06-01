@@ -1,11 +1,13 @@
 fs = require \fs
 
+/*
 try
   Cards = require \../../data/cards
   Sets = require \../../data/sets
 catch
-  Cards = {}
-  Sets = {}
+*/
+Cards = {}
+Sets = {}
 
 rares =
   special: 0

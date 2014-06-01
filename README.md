@@ -17,9 +17,9 @@ this project is unafilliated with wizards of the coast
 
 # spoilers
 
-    make spoiler WIZ=$WIZ SAL=$SAL
+    make spoiler
 
-where $WIZ and $SAL are the wizards and mtgsalvation spoiler urls, respectively
+this is very volatile; only assume it works if a spoiled set is playable
 
 # etc
 

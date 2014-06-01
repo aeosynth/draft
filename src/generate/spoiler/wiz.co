@@ -1,0 +1,15 @@
+cheerio = require \cheerio
+
+module.exports = (html) ->
+  $ = cheerio.load html
+
+  setName = $('.description i')text!
+
+  cards = {}
+  $('.article-image[title]')each !->
+    $el = $ @
+    name = $el.attr \alt
+    url = $el.attr \src
+    cards[name] = url
+
+  { setName, cards }

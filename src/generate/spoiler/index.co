@@ -1,0 +1,13 @@
+# XXX this file will probably change for every spoiler
+
+request = require \request
+
+url = null
+
+(err, res, body) <- request url
+throw err if err
+
+{setName, cards} = wiz body
+
+console.log cards
+console.log setName

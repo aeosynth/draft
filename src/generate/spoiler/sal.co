@@ -1,0 +1,29 @@
+cheerio = require \cheerio
+
+module.exports = (html) ->
+  $ = cheerio.load body, { normalizeWhitespace: true }
+
+  cards = []
+  $('.t-spoiler')each !->
+    $el = $ @
+    name = $el.attr \id
+    cost = $($el.find '.t-spoiler-mana')text!replace /\s/g ''
+    rarity = $($el.find('header')).attr('class').replace 't-spoiler-header ' ''
+    if rarity is 'mythic rare'
+      rarity = \mythic
+    type = $el.find('.t-spoiler-type')text!
+    text = $el.find('.t-spoiler-ability')text!trim!replace '  ' \\n\n
+
+    cmc = parseInt(cost) or 0
+    color = \A
+    if colors = cost.match /\D+/
+      colors = colors[0]
+      cmc += colors.length
+
+      if /^(.)\1*$/.test colors
+        color = colors[0]
+      else
+        color = \Y
+
+    cards.push { name, color, cost, cmc, rarity, type, text }
+  cards
