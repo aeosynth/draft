@@ -1,6 +1,4 @@
-Cards = require \../../data/cards
-Sets  = require \../../data/sets
-mws   = require \../../data/mws
+{Cards, Sets, mws} = require \../../data
 {choose, rand} = require \../_
 
 genRarity = (obj) ->

@@ -4,16 +4,7 @@ request = require \request
 
 files = require \./files
 
-{Cards, Sets} = files
-
-try
-  raw = require \../../data/AllSets
-  go raw
-catch
-  (err, res, body) <- request \http://mtgjson.com/json/AllSets.json
-  throw err if err
-  raw = JSON.parse body
-  go raw
+{Cards, Sets, raw} = require \../../data
 
 go = (raw) ->
   raw.TSP.cards = <>concat raw.TSB.cards
@@ -154,3 +145,11 @@ go = (raw) ->
   DGM.mythic = for name of <> => name unless name is "maze's end"
 
   files.write!
+
+if raw
+  go raw
+else
+  (err, res, body) <- request \http://mtgjson.com/json/AllSets.json
+  throw err if err
+  raw = JSON.parse body
+  go raw

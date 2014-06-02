@@ -1,11 +1,5 @@
 fs = require \fs
 
-/*
-try
-  Cards = require \../../data/cards
-  Sets = require \../../data/sets
-catch
-*/
 Cards = {}
 Sets = {}
 
@@ -62,8 +56,5 @@ module.exports =
     Sets[tla] = set
 
   write: ->
-    if not fs.existsSync \data
-      fs.mkdirSync \data
-
     fs.writeFileSync \data/cards.json JSON.stringify Cards, null 2
     fs.writeFileSync \data/sets.json  JSON.stringify Sets,  null 2

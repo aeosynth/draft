@@ -1,8 +1,7 @@
 fs = require \fs
 
 _ = require \../_
-Cards = require \../../data/cards
-mws = require \../../data/mws
+{Cards, mws} = require \../../data
 
 module.exports = (players, cube) ->
   nPacks = players * cube.packs

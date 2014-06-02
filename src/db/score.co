@@ -1,11 +1,8 @@
 fs = require \fs
 request = require \request
-Cards = require \../../data/cards
+{Cards, couch} = require \../../data
 
-try
-  {origin} = require \../../data/couch
-catch
-  {origin} = require \../../couch/couch
+{origin} = couch
 
 console.log "fetching data from #origin"
 

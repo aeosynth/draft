@@ -1,5 +1,8 @@
 node_modules
 .DS_Store
 *.swp
-data
+
 lib
+data/AllSets.json
+data/sets.json
+data/cards.json

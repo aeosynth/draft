@@ -1,7 +1,0 @@
-{
-  "auth": {
-    "user": "USERNAME",
-    "pass": "PASSWORD"
-  },
-  "origin": "http://aeosynth.iriscouch.com"
-}
