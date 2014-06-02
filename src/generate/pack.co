@@ -3,6 +3,20 @@ Sets  = require \../../data/sets
 mws   = require \../../data/mws
 {choose, rand} = require \../_
 
+genRarity = (obj) ->
+  # mostly arbitrary numbers
+  n = rand 100
+  rarity =
+    if n > 33
+      \common
+    else if n > 8
+      \uncommon
+    else if n > 0
+      \rare
+    else
+      \mythic
+  obj[rarity]
+
 genPack = (code) ->
   {size, common, uncommon, rare, mythic, special} = Sets[code]
   if mythic and not rand 8
@@ -16,8 +30,10 @@ genPack = (code) ->
   switch code
   case \DGM
     special = if rand 20 then <>gate else <>shock
+  case \ISD
+    special = genRarity special
   case \MMA
-    special = []concat common, uncommon, rare
+    special = genRarity Sets[code]
 
   if special
     index = rand special.length

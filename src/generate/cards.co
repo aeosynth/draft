@@ -110,6 +110,21 @@ go = (raw) ->
     lc = (card.names?join(' // ') or name)toLowerCase!
     Cards[lc]urls['HHO'] = "http://mtgimage.com/card/#name.jpg"
 
+  Sets.ISD.special =
+    common: []
+    uncommon: []
+    rare: []
+    mythic: []
+
+  for card of raw.ISD.cards
+    if (card.layout is \double-faced) and card.number[* - 1] is \a
+      {name, rarity} = card
+      name .= toLowerCase!
+      rarity .= toLowerCase!
+      if rarity is 'mythic rare'
+        rarity = \mythic
+      Sets.ISD.special[rarity]push name
+
   {DGM} = Sets
   DGM.special =
     gate:
