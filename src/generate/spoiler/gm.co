@@ -1,5 +1,5 @@
 cheerio = require \cheerio
-util = require \./util
+util = require \../../util
 
 module.exports = (html) ->
   $ = cheerio.load html
