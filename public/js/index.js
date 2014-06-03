@@ -178,12 +178,12 @@ function CreateCtrl($scope, $http, $location) {
   // XXX technically the order is undefined
   $scope.sets = Object.keys(setMap);
 
-  $scope.set1 = 'Journey into Nyx';
-  $scope.set2 = 'Born of the Gods';
-  $scope.set3 = 'Theros';
-  $scope.set4 = 'Journey into Nyx';
-  $scope.set5 = 'Born of the Gods';
-  $scope.set6 = 'Theros';
+  $scope.set1 = 'Vintage Masters';
+  $scope.set2 = 'Vintage Masters';
+  $scope.set3 = 'Vintage Masters';
+  $scope.set4 = 'Vintage Masters';
+  $scope.set5 = 'Vintage Masters';
+  $scope.set6 = 'Vintage Masters';
   $scope.create = function() {
     var id = localStorage.id || (localStorage.id = (Math.floor(Math.random() * 9e9)).toString(16));
     var type = $scope.type;
