@@ -11,13 +11,13 @@ rares =
   uncommon: 3
   common: 4
 
-module.exports =
+module.exports = self =
   Cards: Cards
   Sets: Sets
 
   clear: ->
-    Cards := {}
-    Sets  := {}
+    self.Cards = Cards := {}
+    self.Sets  = Sets  := {}
 
   add: (tla, cards, size) ->
     set =
