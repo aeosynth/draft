@@ -1,7 +1,8 @@
 fs = require \fs
 
-Cards = {}
-Sets = {}
+util = require \../util
+
+{Cards, Sets} = require \../../data
 
 rares =
   special: 0
@@ -14,6 +15,10 @@ module.exports =
   Cards: Cards
   Sets: Sets
 
+  clear: ->
+    Cards := {}
+    Sets  := {}
+
   add: (tla, cards, size) ->
     set =
       common: []
@@ -24,15 +29,8 @@ module.exports =
       size: size
 
     for card of cards
-      name = card.name = card.name.replace /[Æâàáéíöúû]/g ->
-        switch it
-        case \Æ => \AE
-        case \â \à \á => \a
-        case \é => \e
-        case \í => \i
-        case \ö => \o
-        case \ú \û => \u
-      name .= toLowerCase!
+      card.name = util.name card.name
+      lc = card.name.toLowerCase!
 
       url = delete card.url
       card.score = 99
@@ -40,12 +38,12 @@ module.exports =
       {rarity} = card
       card.rarity = rares[rarity]
 
-      if Cards[name]
+      if Cards[lc]
         that.urls[tla] = url
       else
         card.urls = { "#tla": url }
-        Cards[name] = card
-      set[rarity]push name
+        Cards[lc] = card
+      set[rarity]push lc
 
     return unless size
 

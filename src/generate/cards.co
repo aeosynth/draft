@@ -3,8 +3,10 @@ fs = require \fs
 request = require \request
 
 files = require \./files
+files.clear!
+{Cards, Sets} = files
 
-{Cards, Sets, raw} = require \../../data
+{raw} = require \../../data
 
 go = (raw) ->
   raw.TSP.cards = <>concat raw.TSB.cards

@@ -1,0 +1,24 @@
+module.exports =
+  color: (cost) ->
+    cmc = parseInt(cost) or 0
+
+    color = \A
+    if colors = cost.match /\D+/
+      colors = colors.0
+      cmc += colors.length
+
+      if /^(.)\1*$/.test colors
+        color = colors[0]
+      else
+        color = \Y
+
+    { cmc, color }
+  name: (raw) ->
+    raw.trim!replace /[Æâàáéíöúû]/g ->
+      switch it
+      case \Æ => \AE
+      case \â \à \á => \a
+      case \é => \e
+      case \í => \i
+      case \ö => \o
+      case \ú \û => \u

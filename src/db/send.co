@@ -17,7 +17,7 @@ send = (data) ->
     if err
       console.log 'couch err' err.message
 
-if couch.user is null
+if couch.auth.user is null
   console.log 'invalid credentials; draft results will not be sent to your couch'
   send = ->
 

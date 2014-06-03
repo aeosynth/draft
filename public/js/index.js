@@ -165,6 +165,7 @@ function CreateCtrl($scope, $http, $location) {
     "Limited Edition Beta": "LEB",
     "Limited Edition Alpha": "LEA",
 
+    "Vintage Masters": "VMA",
     "Modern Masters": "MMA",
     "Unhinged": "UNH",
     "Unglued": "UGL",

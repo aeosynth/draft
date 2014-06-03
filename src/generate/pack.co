@@ -16,7 +16,7 @@ genRarity = (obj) ->
   obj[rarity]
 
 genPack = (code) ->
-  {size, common, uncommon, rare, mythic, special} = Sets[code]
+  {size, common, uncommon, rare, mythic, special} = set = Sets[code]
   if mythic and not rand 8
     rare = mythic
 
@@ -31,7 +31,11 @@ genPack = (code) ->
   case \ISD
     special = genRarity special
   case \MMA
-    special = genRarity Sets[code]
+    special = genRarity set
+  case \VMA
+    # http://www.wizards.com/magic/magazine/article.aspx?x=mtg/daily/arcana/1491
+    if rand 53
+      special = genRarity set
 
   if special
     index = rand special.length

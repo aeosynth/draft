@@ -1,13 +1,36 @@
-# XXX this file will probably change for every spoiler
-
 request = require \request
 
-url = null
+after = require \./after
+files = require \../files
+util = require \../../util
+{spoiler} = require \../../../data
+{code, size, images, content} = spoiler
+imageParser = require "./#{images.parser}"
+contentParser = require "./#{content.parser}"
 
-(err, res, body) <- request url
+(err, res, body) <- request images.url
+throw err if err
+urls = imageParser body
+
+(err, res, body) <- request content.url
 throw err if err
 
-{setName, cards} = wiz body
+cards = contentParser body
 
-console.log cards
-console.log setName
+tmp = {}
+for card of urls
+  name = util.name card.name
+  tmp[name] = card.url
+
+cards = for card of cards
+  name = util.name card.name
+  if tmp[name]
+    card.url = that
+  else
+    continue
+  card
+
+cards = after cards
+
+files.add code, cards, size
+files.write!

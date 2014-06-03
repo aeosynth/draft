@@ -7,6 +7,7 @@ _ = require \./_
 genCube = require \./generate/cube
 genPack = require \./generate/pack
 {Cards, Sets} = require \../data
+util = require \./util
 
 HOUR = 1e3 * 60 * 60
 drafts = {}
@@ -14,17 +15,11 @@ drafts = {}
 transformCube = ({list, cards, packs}, type, seats) ->
   bad = []
   list = for name of list
-    name .= trim!toLowerCase!
+    name = util.name name
       .replace /^1.?\s*/ ''
       .replace /\s*\/+\s*/g ' // '
-      .replace /[æâàáéíöúû]/g ->
-        switch it
-        case \æ => \ae
-        case \â \à \á => \a
-        case \é => \e
-        case \í => \i
-        case \ö => \o
-        case \ú \û => \u
+      .toLowerCase!
+
     if not name
       continue # skip blank lines
     if name not in Cards

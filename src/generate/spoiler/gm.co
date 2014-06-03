@@ -1,0 +1,28 @@
+cheerio = require \cheerio
+util = require \./util
+
+module.exports = (html) ->
+  $ = cheerio.load html
+
+  cards = []
+  $(\.spoiler-card)each !->
+    $el = $ @
+
+    color = $el.attr(\class)
+    name = $($el.find(\.title))text!
+    cost = $el.find('.cost img')map(-> $(@)attr \alt)get! * ''
+    type = $el.find(\.type)text!
+    rarity = $el.find(\.rarity)text!
+    text = $el.find(\.text)text!
+
+    {cmc, color} = util.color cost.replace /[{}]/g ''
+
+    rarity = switch rarity.toLowerCase!
+    case \com.  => \common
+    case \unc.  => \uncommon
+    case \rare  => \rare
+    case \myth. => \mythic
+    default \mythic
+
+    cards.push { name, cost, cmc, color, type, rarity, text }
+  cards
