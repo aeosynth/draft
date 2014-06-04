@@ -396,24 +396,25 @@ function QCtrl($scope, $timeout, $location, ws) {
       $scope.side.push(card);
   };
 
+  var objURL;
   $scope.download = function() {
+    URL.revokeObjectURL(objURL);
+
     var deck = generateRaw();
     var str = generate[$scope.extension](deck);
 
     // https://code.google.com/p/chromium/issues/detail?id=376197
     // use blob instead of data uri
     var blob = new Blob([str]);
-    var url = URL.createObjectURL(blob);
+    objURL = URL.createObjectURL(blob);
 
     var a = document.createElement('a');
-    a.href = url;
+    a.href = objURL;
     a.download = $scope.filename + '.' + $scope.extension;
     a.hidden = true;
     document.body.appendChild(a);
     a.click();
     a.remove();
-
-    URL.revokeObjectURL(url);
 
     if (!$scope.hash)
       ws.json('hash', deck);
