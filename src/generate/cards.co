@@ -19,6 +19,10 @@ go = (raw) ->
     if !/token card/test card.name
       card
 
+  raw.CNS.cards = for card of <>
+    if !/draft/test card.text
+      card
+
   for tla, rawSet in raw
     continue if rawSet.type of [
       \archenemy
@@ -147,6 +151,23 @@ go = (raw) ->
       "maze's end"
   DGM.common = for name of <> => name unless name of DGM.special.gate
   DGM.mythic = for name of <> => name unless name is "maze's end"
+
+  {CNS} = Sets
+  CNS.special =
+    common: []
+    uncommon: []
+    rare: []
+
+  for rarity of <[ common uncommon rare ]>
+    normal = []
+
+    for name of CNS[rarity]
+      if Cards[name]type is \Conspiracy
+        CNS.special[rarity]push name
+      else
+        normal.push name
+
+    CNS[rarity] = normal
 
   files.write!
 

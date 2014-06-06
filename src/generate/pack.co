@@ -26,6 +26,8 @@ genPack = (code) ->
     choose 1 rare
 
   switch code
+  case \CNS
+    special = genRarity special
   case \DGM
     special = if rand 20 then <>gate else <>shock
   case \ISD

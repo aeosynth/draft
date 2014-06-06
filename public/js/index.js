@@ -165,6 +165,7 @@ function CreateCtrl($scope, $http, $location) {
     "Limited Edition Beta": "LEB",
     "Limited Edition Alpha": "LEA",
 
+    "Conspiracy": "CNS",
     "Vintage Masters": "VMA",
     "Modern Masters": "MMA",
     "Unhinged": "UNH",
@@ -178,12 +179,12 @@ function CreateCtrl($scope, $http, $location) {
   // XXX technically the order is undefined
   $scope.sets = Object.keys(setMap);
 
-  $scope.set1 = 'Vintage Masters';
-  $scope.set2 = 'Vintage Masters';
-  $scope.set3 = 'Vintage Masters';
-  $scope.set4 = 'Vintage Masters';
-  $scope.set5 = 'Vintage Masters';
-  $scope.set6 = 'Vintage Masters';
+  $scope.set1 = 'Conspiracy';
+  $scope.set2 = 'Conspiracy';
+  $scope.set3 = 'Conspiracy';
+  $scope.set4 = 'Conspiracy';
+  $scope.set5 = 'Conspiracy';
+  $scope.set6 = 'Conspiracy';
   $scope.create = function() {
     var id = localStorage.id || (localStorage.id = (Math.floor(Math.random() * 9e9)).toString(16));
     var type = $scope.type;
