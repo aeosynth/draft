@@ -13,6 +13,5 @@ module.exports = {
   Cards: Cards,
   Sets: Sets,
   mws: require('./mws'),
-  spoiler: require('./spoiler'),
   couch: require('./couch')
 };

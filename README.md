@@ -19,7 +19,7 @@ this project is unafilliated with wizards of the coast
 
     make spoiler
 
-this is very volatile; only assume it works if a spoiled set is playable
+only assume this works if a spoiled set is playable, and not on gatherer
 
 # etc
 
