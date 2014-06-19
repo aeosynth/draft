@@ -157,6 +157,10 @@ go = (raw) ->
       "maze's end"
   DGM.common = for name of <> => name unless name of DGM.special.gate
   DGM.mythic = for name of <> => name unless name is "maze's end"
+  for name of DGM.special.shock
+    {set} = Cards[name]
+    last = Object.keys(set)[* - 1]
+    set.DGM = set[last]
 
   {CNS} = Sets
   CNS.special =
