@@ -29,21 +29,22 @@ module.exports = self =
       size: size
 
     for card of cards
+      card.score = 99
       card.name = util.name card.name
       lc = card.name.toLowerCase!
 
-      url = delete card.url
-      card.score = 99
+      {rarity, url} = card
+      delete card.rarity
+      delete card.url
 
-      {rarity} = card
-      card.rarity = rares[rarity]
+      set[rarity]push lc
+      rarity = rares[rarity]
 
       if Cards[lc]
-        that.urls[tla] = url
+        that.set[tla] = { rarity, url }
       else
-        card.urls = { "#tla": url }
+        card.set = "#tla": { rarity, url }
         Cards[lc] = card
-      set[rarity]push lc
 
     return unless size
 
