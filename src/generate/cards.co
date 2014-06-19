@@ -30,16 +30,12 @@ go = (raw) ->
   # https://github.com/Sembiance/mtgjson/issues/14
   raw.VMA.booster = [\common] * 10
 
-  for tla, rawSet in raw
-    continue if rawSet.type of [
-      \archenemy
-      \box
-      'duel deck'
-      'from the vault'
-      'premium deck'
-      \vanguard
-    ]
+  rawSets = for setCode, rawSet in raw
+    if rawSet.type of <[ core expansion commander planechase starter un ]>
+      rawSet
+  rawSets.push raw.HHO, raw.MMA, raw.VMA
 
+  for rawSet of rawSets
     cards = []
     split = []
     prev = null
@@ -105,7 +101,7 @@ go = (raw) ->
     size = 0
     if rawSet.booster
       size = (x if x is \common for x of that)length
-    files.add tla, cards, size
+    files.add rawSet.code, cards, size
 
   for card of raw.HHO.cards
     # these cards have no multiverse id
