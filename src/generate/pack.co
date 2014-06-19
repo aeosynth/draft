@@ -47,10 +47,8 @@ genPack = (code) ->
   for name of pack
     card = {}<<<<Cards[name]
     card.code = mwsCode
-    {rarity, url} = card.set[code]
+    card{rarity, url} = card.set[code]
     delete card.set
-    card.url = url
-    card.rarity = rarity
     card
 
 genPacks = (count, sets) ->

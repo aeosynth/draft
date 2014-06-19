@@ -8,10 +8,11 @@ module.exports = (players, cube) ->
   nCards = nPacks * cube.cards
   names = _.choose nCards, cube.list
   cards = for name of names
-    card = Cards[name]
-    code = Object.keys(card.urls)0
+    card = {}<<<<Cards[name]
+    code = Object.keys(card.set)0
     card.code = mws[code] or code
-    card.url = card.urls[code]
+    card{rarity, url} = card.set[code]
+    delete card.set
     card
   packs = []
 
