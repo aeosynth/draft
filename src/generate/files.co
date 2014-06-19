@@ -33,9 +33,7 @@ module.exports = self =
       card.name = util.name card.name
       lc = card.name.toLowerCase!
 
-      {rarity, url} = card
-      delete card.rarity
-      delete card.url
+      [rarity, url] = delete card<[rarity url]>
 
       set[rarity]push lc
       rarity = rares[rarity]
