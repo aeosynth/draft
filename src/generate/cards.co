@@ -23,13 +23,6 @@ go = (raw) ->
     if !/draft/test card.text
       card
 
-  for card of raw.VMA.cards
-    if card.rarity is \Bonus
-      card.rarity = \Special
-
-  # https://github.com/Sembiance/mtgjson/issues/14
-  raw.VMA.booster = [\common] * 10
-
   rawSets = for setCode, rawSet in raw
     if rawSet.type of <[ core expansion commander planechase starter un ]>
       rawSet
