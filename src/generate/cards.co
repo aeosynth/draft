@@ -121,17 +121,7 @@ go = (raw) ->
 
   {DGM} = Sets
   DGM.special =
-    gate:
-      'azorius guildgate'
-      'boros guildgate'
-      'dimir guildgate',
-      'golgari guildgate'
-      'gruul guildgate'
-      'izzet guildgate'
-      'orzhov guildgate'
-      'rakdos guildgate'
-      'selesnya guildgate'
-      'simic guildgate'
+    gate: []
     shock:
       'blood crypt'
       'breeding pool'
@@ -144,7 +134,11 @@ go = (raw) ->
       'temple garden'
       'watery grave'
       "maze's end"
-  DGM.common = for name of <> => name unless name of DGM.special.gate
+  DGM.common = for name of <>
+    if /guildgate/test name
+      DGM.special.gate.push name
+      continue
+    name
   DGM.mythic = for name of <> => name unless name is "maze's end"
   for name of DGM.special.shock
     {set} = Cards[name]
