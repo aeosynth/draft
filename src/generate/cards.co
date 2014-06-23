@@ -104,12 +104,12 @@ go = (raw) ->
 
   delete Sets.UNH.special # 1 card, useless 'super secret tech'
 
-  Sets.ISD.special =
+  {ISD} = Sets
+  ISD.special =
     common: []
     uncommon: []
     rare: []
     mythic: []
-
   for card of raw.ISD.cards
     if (card.layout is \double-faced) and card.number[* - 1] is \a
       {name, rarity} = card
@@ -117,7 +117,9 @@ go = (raw) ->
       rarity .= toLowerCase!
       if rarity is 'mythic rare'
         rarity = \mythic
-      Sets.ISD.special[rarity]push name
+      ISD.special[rarity]push name
+  for rarity in ISD.special
+    ISD[rarity] = for name of <> => name unless name of ISD.special[rarity]
 
   {DGM} = Sets
   DGM.special =
