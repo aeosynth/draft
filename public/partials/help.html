@@ -56,6 +56,59 @@
 
 <hr>
 
+<h1>duplicates</h1>
+<p>
+  this site uses pseudo random numbers to generate packs; it has no knowledge
+  of print runs. you can expect a number of duplicate rares and/or mythics per
+  draft. let's calculate this number for the original ravnica block, which did
+  not contain mythics:
+</p>
+
+<a href="http://en.wikipedia.org/wiki/Birthday_problem">http://en.wikipedia.org/wiki/Birthday_problem</a>
+<blockquote>In probability theory, the birthday problem or birthday paradox[1]
+  concerns the probability that, in a set of n randomly chosen people, some
+  pair of them will have the same birthday.</blockquote>
+
+<p>
+  the birthday problem is a nice start, but we are concerned with the expected
+  number of duplicates, not the probability of a duplicate occuring
+</p>
+
+<a href="http://math.stackexchange.com/questions/35791/birthday-problem-expected-number-of-collisions">http://math.stackexchange.com/questions/35791/birthday-problem-expected-number-of-collisions</a>
+<blockquote>I am wondering how to find instead the expected number of people
+  sharing a birthday in a group of n people.</blockquote>
+
+...
+
+<blockquote>so the expected number of people who share birthdays with somebody
+  is n(1−(1−1/N)<sup>n−1</sup>).</blockquote>
+
+<p>
+  where N is the number of of equally possible birthdays, and n is the number
+  of people. for our purposes, N is the number of rares in the set, and n is
+  the number of people drafting
+</p>
+
+<p>
+  now to plug in some numbers:
+</p>
+
+<pre>
+  n = 8
+  N = 88 (RAV), 55 (GPT), 60 (DIS)
+
+  E(RAV) ≈ 0.615
+  E(GPT) ≈ 0.964
+  E(DIS) ≈ 0.888
+  --------------
+  E(SUM) ≈ 2.467
+</pre>
+
+<p>
+  so, in an 8 player draft of the original ravnica block, you can expect about
+  2.5 duplicate rares per draft
+</p>
+
 <h1>draft data</h1>
 <a href="https://github.com/aeosynth/draft/wiki/download-draft-results">download draft results</a>
 
