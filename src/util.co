@@ -1,5 +1,5 @@
 module.exports =
-  color: (cost) ->
+  cost: (cost) ->
     cmc = parseInt(cost) or 0
 
     color = \A
@@ -14,7 +14,7 @@ module.exports =
 
     { cmc, color }
   name: (raw) ->
-    raw.trim!replace /[Æâàáéíöúû]/g ->
+    raw.trim!replace /[Æâàáéíöúû’]/g ->
       switch it
       case \Æ => \AE
       case \â \à \á => \a
@@ -22,3 +22,4 @@ module.exports =
       case \í => \i
       case \ö => \o
       case \ú \û => \u
+      case \’ => \'

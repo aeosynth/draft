@@ -1,21 +1,29 @@
+url = require \url
+
+cheerio = require \cheerio
 request = require \request
 
-after = require \./after
 files = require \../files
 util = require \../../util
-{spoiler} = require \../../../data
-{code, size, images, content} = spoiler
-imageParser = require "./#{images.parser}"
-contentParser = require "./#{content.parser}"
 
-(err, res, body) <- request images.url
+CODE = \M15
+SIZE = 10
+URL_IMG = \http://magic.wizards.com/en/content/magic-2015-core-set-card-set-archive-products-game-info
+URL_CONTENT = \http://www.mtgsalvation.com/spoilers/141-magic-2015
+
+host = -> url.parse(it).hostname.split(\.)[*-2]
+
+imageParser   = require "\./#{host URL_IMG}"
+contentParser = require "\./#{host URL_CONTENT}"
+
+(err, res, body) <- request URL_IMG
 throw err if err
-urls = imageParser body
+urls = imageParser cheerio.load body
 
-(err, res, body) <- request content.url
+(err, res, body) <- request URL_CONTENT
 throw err if err
 
-cards = contentParser body
+cards = contentParser cheerio.load body
 
 tmp = {}
 for card of urls
@@ -27,10 +35,9 @@ cards = for card of cards
   if tmp[name]
     card.url = that
   else
+    console.log "#{name} not found"
     continue
   card
 
-cards = after cards
-
-files.add code, cards, size
+files.add CODE, cards, SIZE
 files.write!

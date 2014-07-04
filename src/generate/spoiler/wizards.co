@@ -1,0 +1,8 @@
+module.exports = ($) ->
+  cards = []
+  $('.advanced-card img')each !->
+    $el = $ @
+    name = $el.attr \alt
+    url = $el.attr \src
+    cards.push { name, url }
+  cards
