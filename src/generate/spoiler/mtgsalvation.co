@@ -10,8 +10,6 @@ module.exports = ($) ->
     cost = $($el.find '.t-spoiler-mana')text!replace /\s/g ''
     {cmc, color} = util.cost cost
     rarity = $($el.find('header')).attr('class').replace 't-spoiler-header ' ''
-    if rarity is 'mythic rare'
-      rarity = \mythic
     type = $el.find('.t-spoiler-type')text!
     #text = $el.find('.t-spoiler-ability')text!trim!replace '  ' \\n\n
     text = $el.find('.t-spoiler-ability')text!

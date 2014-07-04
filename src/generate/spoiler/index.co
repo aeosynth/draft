@@ -31,6 +31,11 @@ for card of urls
   tmp[name] = card.url
 
 cards = for card of cards
+  if card.rarity is 'basic land'
+    continue
+  if card.rarity is 'mythic rare'
+    card.rarity = \mythic
+
   name = util.name card.name
   if tmp[name]
     card.url = that
