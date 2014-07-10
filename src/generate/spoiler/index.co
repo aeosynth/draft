@@ -1,3 +1,6 @@
+console.log 'use `make cards` instead'
+process.exit!
+
 url = require \url
 
 cheerio = require \cheerio
