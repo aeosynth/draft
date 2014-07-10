@@ -26,7 +26,7 @@ go = (raw) ->
   rawSets = for setCode, rawSet in raw
     if rawSet.type of <[ core expansion commander planechase starter un ]>
       rawSet
-  rawSets.push ...raw<[HHO MMA VMA]>
+  rawSets.push ...raw<[HHO MMA VMA CNS]>
 
   for rawSet of rawSets
     cards = []
