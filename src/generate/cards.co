@@ -23,6 +23,13 @@ go = (raw) ->
     if !/draft/test card.text
       card
 
+  # http://mtgsalvation.gamepedia.com/Magic_2015/Sample_decks
+  # Each sample deck has several cards numbered 270 and higher that do not
+  # appear in Magic 2015 booster packs.
+  raw.M15.cards = for card of <>
+    if parseInt(card.number) < 270
+      card
+
   rawSets = for setCode, rawSet in raw
     if rawSet.type of <[ core expansion commander planechase starter un ]>
       rawSet
