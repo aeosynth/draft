@@ -42,20 +42,40 @@ console.log('\n' +
       if (e.keyCode !== 13) return;
       var text = this.value.slice(0, MAX_TEXT);
       if (!text) return;
+      this.value = '';
+
+      var match = text.match(/^\/(\w+)( (\S+))?$/);
+      if (match) {
+        switch (match[1]) {
+          case 'nick':
+            var name = match[2];
+            if (name)
+              displayMessage('you are now known as ' + name);
+            else
+              displayMessage('please enter a name');
+            return;
+          default:
+            displayMessage('/nick is the only available command');
+            return;
+        }
+      }
+
       var name = (localStorage.name || 'undefined').slice(0, MAX_NAME);
       var time = Firebase.ServerValue.TIMESTAMP;
       fire.push({ name: name, text: text, time: time });
-      this.value = '';
     }
-    function displayMessage(snapshot) {
+    function pad(n) { return ('0' + n).slice(-2); }
+    function addedCB(snapshot) {
       var val = snapshot.val();
-      var div = d.createElement('div');
       var date = new Date(val.time);
-      function pad(n) { return ('0' + n).slice(-2); }
       var time = pad(date.getHours()) + ':' + pad(date.getMinutes());
       var name = val.name.slice(0, MAX_NAME);
       var text = val.text.slice(0, MAX_TEXT);
-      div.textContent = time + ' ' + name + ': ' + text;
+      displayMessage(time + ' ' + name + ': ' + text);
+    }
+    function displayMessage(text) {
+      var div = d.createElement('div');
+      div.textContent = text;
       messages.appendChild(div);
       div.scrollIntoView();
     }
@@ -63,7 +83,7 @@ console.log('\n' +
     if (location.pathname === '/') {
       var fire = new Firebase('https://draft.firebaseio.com/');
       var query = fire.limit(15);
-      query.on('child_added', displayMessage);
+      query.on('child_added', addedCB);
       document.getElementById('message').addEventListener('keypress', pushMessage);
       var d = document;
       var messages = d.getElementById('messages');
