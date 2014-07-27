@@ -1,3 +1,7 @@
+/** @jsx React.DOM */
+var Help = React.createClass({
+  render() {
+    return <div>
 <h1>joining games</h1>
 <p>
   ask someone for a link to a game
@@ -54,7 +58,7 @@
   a hash is generated on either event, and cannot be changed
 </p>
 
-<hr>
+<hr />
 
 <h1>duplicates</h1>
 <p>
@@ -93,7 +97,7 @@
   now to plug in some numbers:
 </p>
 
-<pre>
+<pre>{`
   n = 8
   N = 88 (RAV), 55 (GPT), 60 (DIS)
 
@@ -101,7 +105,7 @@
   E(GPT) ≈ 0.964
   E(DIS) ≈ 0.888
   --------------
-  E(SUM) ≈ 2.467
+  E(SUM) ≈ 2.467`}
 </pre>
 
 <p>
@@ -114,15 +118,18 @@
 
 <h1>donate</h1>
 <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-  <input type="hidden" name="cmd" value="_s-xclick">
-  <input type="hidden" name="hosted_button_id" value="2ZFX53P7K8ZD8">
-  <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-  <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+  <input type="hidden" name="cmd" value="_s-xclick" />
+  <input type="hidden" name="hosted_button_id" value="2ZFX53P7K8ZD8" />
+  <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!" />
+  <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1" />
 </form>
 
 <h1>contact</h1>
 <p>
-  <a target="_blank" href="https://github.com/aeosynth/draft/issues">github</a>
-  <a target="_blank" href="https://twitter.com/aeosynth">twitter</a>
+  <a target="_blank" href="https://github.com/aeosynth/draft/issues">github</a>,
+  <a target="_blank" href="https://twitter.com/aeosynth">twitter</a>,
   <a target="_blank" href="mailto:james.r.campos@gmail.com?subject=[draft]">email</a>
 </p>
+    </div>;
+  }
+});

@@ -6,3 +6,6 @@ lib
 data/AllSets.json
 data/sets.json
 data/cards.json
+
+public/js
+public/css/normalize.css

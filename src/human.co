@@ -4,7 +4,7 @@ genHash = require \./generate/hash
 class Human extends Player
   (@sock, @isHost) ->
     super!
-    @<<<< sock{ id, name, zone }
+    @<<<< sock{ id, name }
     @<<<<
       cards: []
     @attach sock
@@ -16,7 +16,7 @@ class Human extends Player
     @sock.removeAllListeners!
     @sock = sock
     @send = sock~send
-    @send \set { @isHost, pack: @packs.0, (@zone): @cards }
+    @send \set { @isHost, pack: @packs.0, pool: @cards }
 
     # TODO events hash
     # TODO bubbling, single arg w/ data + src, namespaces
@@ -24,12 +24,9 @@ class Human extends Player
     sock.on \name @~setName
     sock.on \drop ~> @emit \drop @
     sock.on \getCap ~> @emit \getCap @
-    sock.on \hash (deck) ~>
+    sock.once \hash (deck) ~>
       @hash = genHash deck
       @emit \meta
-    sock.on \zone (zone) ~>
-      return unless zone of <[ main side ]>
-      @zone = zone
 
     if @isHost
       sock.on \start ~> @emit \start it

@@ -2,11 +2,23 @@
   "name": "draft",
   "version": "0.1.0",
   "author": "James Campos <james.r.campos@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/aeosynth/draft"
+  },
   "dependencies": {
+    "body-parser": "^1.5.2",
     "cheerio": "^0.16.0",
     "coco": "~0.9.1",
-    "engine.io": "^1.2.2",
-    "express": "~3.2.6",
-    "request": "~2.21.0"
+    "engine.io": "^1.3.1",
+    "engine.io-client": "^1.3.1",
+    "express": "^4.7.2",
+    "gulp": "^3.8.6",
+    "gulp-livereload": "^2.1.0",
+    "gulp-react": "^0.5.0",
+    "normalize.css": "^3.0.1",
+    "react": "^0.11.1",
+    "request": "^2.21.0",
+    "serve-static": "^1.4.3"
   }
 }

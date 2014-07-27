@@ -27,7 +27,7 @@ transformCube = ({list, cards, packs}, type, seats) ->
     name
 
   min =
-    if type is \cube_draft
+    if type is 'cube draft'
       seats * cards * packs
     else
       seats * 90
@@ -51,11 +51,11 @@ do decrement = ->
   setTimeout decrement, 1e3
 
 class Draft extends EventEmitter
-  ({cube, host, seats, sets, type}) ->
-    assert type of <[ cube_draft cube_sealed draft sealed ]>, 'game type'
+  ({cube, id, seats, sets, type}) ->
+    assert type of ['cube draft' 'cube sealed' \draft \sealed], 'game type'
     assert 1 <= seats <= 8, \seats
-    assert typeof host is \string 'typeof host'
-    if type of <[ cube_draft cube_sealed ]>
+    assert typeof id is \string 'typeof host'
+    if type of ['cube draft' 'cube sealed']
       assert !sets, 'cube and not sets'
       assert typeof cube is \object 'typeof cube'
       {list, cards, packs} = cube
@@ -76,8 +76,9 @@ class Draft extends EventEmitter
         assert set in Sets, 'set in Sets'
       title = sets * ' / '
 
-    @ <<<< { cube, host, seats, sets, type, title }
+    @ <<<< { cube, seats, sets, type, title }
     @ <<<<
+      host: id
       id: _.uid!
       players: []
       startTime: Date.now! / 1e3 | 0
@@ -151,10 +152,10 @@ class Draft extends EventEmitter
         cards = genPack 1, @sets
         cards = _.flat <>
         p.cards = cards
-        p.send \set { (p.zone): cards, @state }
+        p.send \set { pool: cards, @state }
       return
 
-    if @type is \cube_sealed
+    if @type is 'cube sealed'
       @state = \done
       cube =
         list: @cube.list
@@ -165,7 +166,7 @@ class Draft extends EventEmitter
         cards = packs.splice -6
         cards = _.flat <>
         p.cards = cards
-        p.send \set { (p.zone): cards, @state }
+        p.send \set { pool: cards, @state }
       return
 
     drafts[@id] = @
@@ -212,8 +213,8 @@ class Draft extends EventEmitter
 
   getCap: (p) ->
     return unless @state is \done
-    if @type of <[ sealed cube_sealed ]>
-      p.send \set { cap: 'not available for sealed' }
+    unless @type of [\draft 'cube draft']
+      p.send \set { cap: 'only available for draft' }
       return
 
     s = ''

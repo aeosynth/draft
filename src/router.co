@@ -19,6 +19,6 @@ router =
     if drafts[room]
       that.join sock
     else
-      sock.send \error 'room not found'
+      sock.send \error "room #room not found"
 
 module.exports = router
