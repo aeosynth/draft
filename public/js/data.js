@@ -58,7 +58,6 @@ var SETS = {
     "Mirage": "MIR",
     "Alliances": "ALL",
     "Homelands": "HML",
-    "Chronicles": "CHR",
     "Ice Age": "ICE",
     "Fallen Empires": "FEM",
     "The Dark": "DRK",

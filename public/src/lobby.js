@@ -163,8 +163,12 @@ var Create = React.createClass({
         .filter(x => x.length)
         ;
 
-      cards = cards;
-      packs = packs;
+      var min = type === 'cube draft' ?
+        seats * cards * packs :
+        seats * 90;
+      if ((list.length < min) || (1e3 < list.length))
+        return this.props.setErr('this cube needs between ' + min +
+            ' and 1000 cards; it has ' + list.length);
 
       opts.cube = { list, cards, packs };
     }
