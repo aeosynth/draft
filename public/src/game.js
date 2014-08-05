@@ -17,7 +17,8 @@ var Game = React.createClass({
       players: [],
       pack: [],
       main: [],
-      side: []
+      side: [],
+      junk: []
     };
 
     var defaults = {
@@ -127,13 +128,11 @@ var Game = React.createClass({
     this.setState({pack: [], selected: null});
   },
 
-  clickPool(index, zoneName) {
-    var {land, main, side} = this.state;
-    zoneName === 'main' ?
-      (from = main, to = side):
-      (from = side, to = main);
-
+  clickPool(index, zoneName, e) {
+    var {land, main, side, junk} = this.state;
+    var from = this.state[zoneName];
     var card = from[index];
+
     if (card.type === 'Basic Land') {
       var {key} = card;
       land[zoneName][key]--;
@@ -141,9 +140,15 @@ var Game = React.createClass({
       return;
     }
 
+    var to;
+    if (e.shiftKey)
+      to = zoneName === 'junk' ? main : junk;
+    else
+      to = zoneName === 'side' ? main : side;
+
     from.splice(index, 1);
     to.push(card);
-    this.setState({ main, side });
+    this.setState({ main, side, junk });
   },
 
   change(key) {
@@ -344,6 +349,7 @@ ${fn(deck.side)}
         pack={this.state.pack}
         main={this.state.main}
         side={this.state.side}
+        junk={this.state.junk}
         sort={this.state.sort}
         clickPack={this.clickPack}
         clickPool={this.clickPool}
@@ -566,10 +572,11 @@ var Cards = React.createClass({
   },
 
   render() {
-    var {pack, main, side} = this.props;
+    var {pack, main, side, junk} = this.props;
     pack = this.show(pack, 'pack');
     main = this.show(this.sort(main), 'main');
     side = this.show(this.sort(side), 'side');
+    junk = this.show(this.sort(junk), 'junk');
 
     return <div className="cards">
       <div>
@@ -583,6 +590,10 @@ var Cards = React.createClass({
       <div>
         <h1>side {side.length}</h1>
         {side}
+      </div>
+      <div>
+        <h1>junk {junk.length}</h1>
+        {junk}
       </div>
     </div>;
   }
