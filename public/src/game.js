@@ -423,6 +423,9 @@ var Stats = React.createClass({
   setName(e) {
     e.preventDefault();
     var name = this.refs.nameEl.getDOMNode().value.slice(0, 15);
+    if (!name)
+      return;
+
     this.setState({ edit: false });
     App.save('name', name);
     this.props.ws.json('name', name);
@@ -438,11 +441,10 @@ var Stats = React.createClass({
         '';
 
       var td = i === self ?
-        <td>
+        <td onClick={this.click}>
           <span
             className="link"
             hidden={this.state.edit}
-            onClick={this.click}
             >{p.name}
           </span>
           <form onSubmit={this.setName}><input
