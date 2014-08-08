@@ -3,30 +3,25 @@ var Lobby = React.createClass({
   render() {
     return <div>
       <a href="https://github.com/aeosynth/draft"><img id="github" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"/></a>
-      <Chat />
+      <Chat/>
       <h1>drafts.in</h1>
       <div><small>unaffiliated with wizards of the coast</small></div>
-      <Create setErr={this.props.setErr} err={this.props.err}/>
+      <Create/>
+      <p className="err">{this.props.err}</p>
     </div>;
   }
 });
 
 var Chat = React.createClass({
   getInitialState() {
-    var name = 'newfriend';
-    try {
-      name = JSON.parse(localStorage.name);
-    } catch(err) {}
-
     return {
-      items: [],
-      name
+      items: []
     };
   },
 
   componentDidMount() {
-    var fire = this.fire = new Firebase('https://draft.firebaseio.com/');
-    fire
+    this.fire = new Firebase('https://draft.firebaseio.com/');
+    this.fire
       .limit(15)
       .on('child_added', this.add)
     ;
@@ -37,24 +32,10 @@ var Chat = React.createClass({
     Firebase.goOffline();
   },
 
-  change(key) {
-    return {target} => {
-      var val;
-      switch(target.type) {
-        case 'submit':
-          val = target.textContent;
-          break;
-        default:
-          val = target.value;
-      }
-      this.set(key, val);
-    };
-  },
-
   add(snapshot) {
     var val = snapshot.val();
-    this.state.items.push(val);
-    this.forceUpdate();
+    var items = this.state.items.concat(val);
+    this.setState({ items });
   },
 
   pad(n) {
@@ -71,7 +52,7 @@ var Chat = React.createClass({
 
     this.fire.push({
       time: Firebase.ServerValue.TIMESTAMP,
-      name: this.state.name,
+      name: App.state.name,
       text
     });
   },
@@ -99,49 +80,10 @@ var Chat = React.createClass({
 });
 
 var Create = React.createClass({
-  getInitialState() {
-    var {id} = localStorage;
-    if (!id)
-      localStorage.id = id = Math.random(9e9).toString(32);
-
-    var state = {
-      id
-    };
-
-    var defaults = {
-      list: '',
-      cards: 15,
-      packs: 3,
-
-      type: 'sealed',
-      seats: 8,
-      sets: [
-        'M15',
-        'M15',
-        'M15',
-        'M15',
-        'M15',
-        'M15'
-      ]
-    };
-
-    var key, val;
-    for (key in defaults) {
-      try {
-        val = JSON.parse(localStorage[key]);
-      } catch(err) {
-        val = defaults[key];
-      }
-      state[key] = val;
-    }
-
-    return state;
-  },
-
   onload(e) {
     var {status, response} = e.target;
     if (status !== 200)
-      return this.props.setErr(response);
+      return App.err(response);
 
     location.hash = 'q/' + response;
   },
@@ -152,11 +94,11 @@ var Create = React.createClass({
     x.setRequestHeader('Content-Type', 'application/json');
     x.onload = this.onload;
 
-    var {id, seats, type} = this.state;
+    var {id, seats, type} = App.state;
     var opts = { id, seats, type };
 
     if (/cube/.test(type)) {
-      var {list, cards, packs} = this.state;
+      var {list, cards, packs} = App.state;
 
       list = list
         .split('\n')
@@ -168,13 +110,13 @@ var Create = React.createClass({
         seats * cards * packs :
         seats * 90;
       if ((list.length < min) || (1e3 < list.length))
-        return this.props.setErr('this cube needs between ' + min +
+        return App.err('this cube needs between ' + min +
             ' and 1000 cards; it has ' + list.length);
 
       opts.cube = { list, cards, packs };
     }
     else {
-      var {sets} = this.state;
+      var {sets} = App.state;
       if (type === 'draft')
         sets = sets.slice(0, 3);
       opts.sets = sets;
@@ -183,37 +125,8 @@ var Create = React.createClass({
     x.send(JSON.stringify(opts));
   },
 
-  change(key) {
-    return {target} => {
-      var val;
-      switch(target.type) {
-        case 'submit':
-          val = target.textContent;
-          break;
-        default:
-          val = target.value;
-      }
-      this.set(key, val);
-    };
-  },
-
-  set(key, val) {
-    var obj = {};
-    obj[key] = val;
-    this.setState(obj);
-    localStorage[key] = JSON.stringify(val);
-  },
-
-  changeSet(index) {
-    return e => {
-      var {sets} = this.state;
-      sets[index] = e.target.value;
-      this.set('sets', sets);
-    };
-  },
-
   genSets() {
-    var {sets} = this.state;
+    var {sets} = App.state;
     return sets.map((selectedSet, i) => {
       var groups = [];
       var type, typeName, opts, setName;
@@ -226,7 +139,7 @@ var Create = React.createClass({
       }
       return (
         <select
-          onChange={this.changeSet(i)}
+          onChange={App.change('sets', i)}
           value={selectedSet}
         >{groups}</select>
       );
@@ -241,7 +154,7 @@ var Create = React.createClass({
   },
 
   getTab() {
-    var {list, cards, packs, type} = this.state;
+    var {list, cards, packs, type} = App.state;
 
     var sets = this.genSets();
     var setsTop = sets.slice(0, 3);
@@ -249,7 +162,10 @@ var Create = React.createClass({
 
     var cube = <div>
       <div>enter one card per line</div>
-      <textarea value={list} onChange={this.change('list')}></textarea>
+      <textarea
+        value={list}
+        onChange={App.change('list')}
+      ></textarea>
     </div>;
     var cardsEl = this.seq(15, 8).map(x => <option>{x}</option>);
     var packsEl = this.seq(5,  3).map(x => <option>{x}</option>);
@@ -265,12 +181,12 @@ var Create = React.createClass({
       case 'cube draft': return <div>
         {cube}
         <select
-          onChange={this.change('cards')}
+          onChange={App.change('cards')}
           value={cards}
         >{cardsEl}</select>
         cards,
         <select
-          onChange={this.change('packs')}
+          onChange={App.change('packs')}
           value={packs}
         >{packsEl}</select>
         packs
@@ -282,11 +198,11 @@ var Create = React.createClass({
   },
 
   render() {
-    var {type} = this.state;
+    var {type} = App.state;
     var typeEl = ['draft', 'sealed', 'cube draft', 'cube sealed'].map(x =>
       <button
         disabled={x === type}
-        onClick={this.change('type')}
+        onClick={App.change('type')}
         >{x}</button>);
 
     var seats = this.seq(8, 2).map(x => <option>{x}</option>);
@@ -296,8 +212,8 @@ var Create = React.createClass({
         <button onClick={this.start}>create</button>
         room for
         <select
-          onChange={this.change('seats')}
-          value={this.state.seats}
+          onChange={App.change('seats')}
+          value={App.state.seats}
           >{seats}
         </select>
         <a href="#help">help</a>
@@ -306,7 +222,6 @@ var Create = React.createClass({
         {typeEl}
       </div>
       {this.getTab()}
-      <p className="err">{this.props.err}</p>
     </div>;
   }
 });

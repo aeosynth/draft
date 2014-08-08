@@ -2,10 +2,7 @@
   "name": "draft",
   "version": "0.1.0",
   "author": "James Campos <james.r.campos@gmail.com>",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/aeosynth/draft"
-  },
+  "repository": "aeosynth/draft",
   "dependencies": {
     "body-parser": "^1.5.2",
     "cheerio": "^0.16.0",

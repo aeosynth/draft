@@ -3,12 +3,7 @@ var ZONES = ['main', 'side'];
 
 var Game = React.createClass({
   getInitialState() {
-    var {id} = localStorage;
-    if (!id)
-      localStorage.id = id = Math.random(9e9).toString(32);
-
-    var state = {
-      id,
+    return {
       isHost: false,
       selected: null,
       state: 'open',
@@ -20,35 +15,15 @@ var Game = React.createClass({
       side: [],
       junk: []
     };
-
-    var defaults = {
-      beep: false,
-      bots: true,
-      filename: 'filename',
-      filetype: 'dec',
-      name: 'newfriend',
-      sort: 'color',
-      zone: 'main'
-    };
-
-    var key, val;
-    for (key in defaults) {
-      try {
-        val = JSON.parse(localStorage[key]);
-      } catch(err) {
-        val = defaults[key];
-      }
-      state[key] = val;
-    }
-
-    return state;
   },
 
   join(room) {
+    this.setState(this.getInitialState());
+
     if (this.ws)
       this.ws.close();
 
-    var {id, name} = this.state;
+    var {id, name} = App.state;
     var options = {
       query: { id, name, room }
     };
@@ -58,18 +33,18 @@ var Game = React.createClass({
       var {args} = data;
       switch(data.name) {
         case 'add':
-          this.state[this.state.zone].push(args);
+          this.state[App.state.zone].push(args);
           this.forceUpdate();
           break;
         case 'error':
-          this.props.setErr(args);
+          App.err(args);
           break;
         case 'set':
           if (args.pool) {
-            args[this.state.zone] = args.pool;
+            args[App.state.zone] = args.pool;
             delete args.pool;
           }
-          if (args.pack && this.state.beep) {
+          if (args.pack && App.state.beep) {
             this.refs.audio.getDOMNode().play();
           }
           this.setState(args);
@@ -85,21 +60,17 @@ var Game = React.createClass({
   componentDidMount() {
     this.decrement();
     this.join(this.props.room);
-  },
-
-  componentDidUpdate(prevProps) {
-    var {room} = this.props;
-    if (prevProps.room !== room)
-      this.join(room);
+    App.on('join', this.join)
   },
 
   componentWillUnmount() {
     this.ws.close();
     clearTimeout(this.timeoutID);
+    App.off('join', this.join)
   },
 
   start() {
-    this.ws.json('start', this.state.bots);
+    this.ws.json('start', App.state.bots);
     this.setState({ state: 'started' });
   },
 
@@ -151,25 +122,6 @@ var Game = React.createClass({
     this.setState({ main, side, junk });
   },
 
-  change(key) {
-    return {target} => {
-      var val;
-      switch (target.type) {
-        case 'checkbox': val = target.checked; break;
-        case 'submit': val = target.textContent; break;
-        default: val = target.value;
-      }
-      this.set(key, val);
-    }
-  },
-
-  set(key, val) {
-    var obj = {};
-    obj[key] = val;
-    this.setState(obj);
-    localStorage[key] = JSON.stringify(val);
-  },
-
   setLand(land) {
     ZONES.forEach(zoneName => {
       var zone = this.state[zoneName].filter(x => x.type !== 'Basic Land');
@@ -200,7 +152,8 @@ var Game = React.createClass({
 
     var land = this.resetLand();
 
-    this.setState({ zone: value, land, main, side });
+    this.setState({ land, main, side });
+    App.save('zone', value);
   },
 
   resetLand() {
@@ -214,7 +167,7 @@ var Game = React.createClass({
   },
 
   download() {
-    var {filename, filetype} = this.state;
+    var {filename, filetype} = App.state;
 
     var fileText = this.generate(filetype);
 
@@ -259,7 +212,7 @@ var Game = React.createClass({
 
       var data = `<?xml version="1.0" encoding="UTF-8"?>
 <cockatrice_deck version="1">
-  <deckname>${this.state.filename}</deckname>
+  <deckname>${App.state.filename}</deckname>
   <zone name="main">
 ${fn(deck.main)}
   </zone>
@@ -306,11 +259,6 @@ ${fn(deck.side)}
     this.ws.json('getCap');
   },
 
-  setName(name) {
-    this.ws.json('name', name);
-    localStorage.name = JSON.stringify(name);
-  },
-
   render() {
     return <div>
       <audio ref="audio" src="/media/beep.wav"></audio>
@@ -324,22 +272,15 @@ ${fn(deck.side)}
         set={this.set}
 
         cap={this.state.cap}
-        beep={this.state.beep}
         land={this.state.land}
-        filename={this.state.filename}
-        filetype={this.state.filetype}
-        sort={this.state.sort}
         state={this.state.state}
-        zone={this.state.zone}
         />
       <Stats
         change={this.change}
         start={this.start}
-        setName={this.setName}
+        ws={this.ws}
 
         isHost={this.state.isHost}
-        name={this.state.name}
-        bots={this.state.bots}
         players={this.state.players}
         self={this.state.self}
         state={this.state.state}
@@ -350,7 +291,6 @@ ${fn(deck.side)}
         main={this.state.main}
         side={this.state.side}
         junk={this.state.junk}
-        sort={this.state.sort}
         clickPack={this.clickPack}
         clickPool={this.clickPool}
         />
@@ -374,8 +314,8 @@ var Settings = React.createClass({
   render() {
     var sort = ['cmc', 'color', 'rarity', 'type'].map(x =>
       <button
-        onClick={this.props.change('sort')}
-        disabled={this.props.sort === x}
+        onClick={App.change('sort')}
+        disabled={App.state.sort === x}
         >{x}</button>
     );
     var zone = ZONES.map(x =>
@@ -383,7 +323,7 @@ var Settings = React.createClass({
         type="radio"
         name="zone"
         value={x}
-        checked={this.props.zone === x}
+        checked={App.state.zone === x}
         onChange={this.props.changeZone}
       >{x}</input></label>
     );
@@ -425,8 +365,12 @@ var Settings = React.createClass({
           onClick={this.props.download}
           >download
         </button>
-        <input placeholder="filename" value={this.props.filename} onChange={this.props.change('filename')}/>
-        <select value={this.props.filetype} onChange={this.props.change('filetype')}>
+        <input
+          placeholder="filename"
+          value={App.state.filename}
+          onChange={App.change('filename')}
+        />
+        <select value={App.state.filetype} onChange={App.change('filetype')}>
           <option>cod</option>
           <option>dec</option>
           <option>json</option>
@@ -452,8 +396,8 @@ var Settings = React.createClass({
         <label> beep when receiving packs
           <input
             type="checkbox"
-            checked={this.props.beep}
-            onChange={this.props.change('beep')}
+            checked={App.state.beep}
+            onChange={App.change('beep')}
         /></label>
       </div>
       <div>
@@ -480,7 +424,8 @@ var Stats = React.createClass({
     e.preventDefault();
     var name = this.refs.nameEl.getDOMNode().value.slice(0, 15);
     this.setState({ edit: false });
-    this.props.setName(name);
+    App.save('name', name);
+    this.props.ws.json('name', name);
   },
 
   render() {
@@ -504,7 +449,7 @@ var Stats = React.createClass({
             ref="nameEl"
             hidden={!this.state.edit}
             placeholder="name"
-            defaultValue={this.props.name}
+            defaultValue={App.state.name}
           /></form>
         </td> :
         <td>{p.name}</td>;
@@ -523,7 +468,11 @@ var Stats = React.createClass({
       <div><strong>{this.props.title}</strong></div>
       <div hidden={(this.props.state !== 'open') || !this.props.isHost}>
         <button onClick={this.props.start}>start</button>
-        <label>add bots<input type="checkbox" checked={this.props.bots} onChange={this.props.change('bots')}/></label>
+        <label>add bots<input
+          type="checkbox"
+          checked={App.state.bots}
+          onChange={App.change('bots')}/>
+        </label>
       </div>
       <table><tbody>
         <tr>
@@ -542,7 +491,7 @@ var Stats = React.createClass({
 
 var Cards = React.createClass({
   sort(arr) {
-    var {sort} = this.props;
+    var {sort} = App.state;
 
     return arr.sort((a, b) => {
       if (a[sort] < b[sort])
