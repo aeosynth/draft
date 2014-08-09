@@ -23,7 +23,7 @@ var Chat = React.createClass({
     this.fire = new Firebase('https://draft.firebaseio.com/');
     this.fire
       .limit(15)
-      .on('child_added', this.add)
+      .on('child_added', this.addFire)
     ;
     this.refs.chat.getDOMNode().focus();
   },
@@ -32,9 +32,12 @@ var Chat = React.createClass({
     Firebase.goOffline();
   },
 
-  add(snapshot) {
-    var val = snapshot.val();
-    var items = this.state.items.concat(val);
+  addFire(snapshot) {
+    this.add(snapshot.val());
+  },
+
+  add(item) {
+    var items = this.state.items.concat(item);
     this.setState({ items });
   },
 
@@ -50,11 +53,26 @@ var Chat = React.createClass({
     if (!text) return;
     el.value = '';
 
-    this.fire.push({
-      time: Firebase.ServerValue.TIMESTAMP,
-      name: App.state.name,
+    if (text[0] !== '/')
+      return this.fire.push({
+        time: Firebase.ServerValue.TIMESTAMP,
+        name: App.state.name,
+        text
+      });
+
+    var match = text.match(/^\/nick (\S+)/);
+    var text = match ?
+      `hello, ${match[1]}` :
+      'only /nick is supported';
+
+    this.add({
+      time: Date.now(),
+      name: '',
       text
     });
+
+    if (match)
+      App.save('name', match[1]);
   },
 
   render() {
