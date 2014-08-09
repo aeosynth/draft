@@ -71,7 +71,7 @@ var App = {
         case 'submit': val = target.textContent; break;
         default: val = target.value;
       }
-      if (path) {
+      if (path !== void 0) {
         var tmp = this.state[key];
         tmp[path] = val;
         val = tmp;
