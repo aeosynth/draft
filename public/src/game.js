@@ -306,9 +306,9 @@ var Settings = React.createClass({
   },
 
   copy() {
-    this.setState({
-      decklist: this.props.generate('dec')
-    });
+    var state = { decklist: this.props.generate('dec') };
+    var cb = () => this.refs.decklist.getDOMNode().select();
+    this.setState(state, cb);
   },
 
   render() {
@@ -383,11 +383,20 @@ var Settings = React.createClass({
           onClick={this.copy}
           >decklist
         </button>
-        <textarea placeholder="decklist" readOnly value={this.state.decklist}></textarea>
+        <textarea
+          placeholder="decklist"
+          ref="decklist"
+          readOnly
+          value={this.state.decklist}
+        ></textarea>
       </div>
       <div>
         <button onClick={this.props.getCap}>draftcap</button>
-        <textarea placeholder="draftcap" readOnly value={this.props.cap}></textarea>
+        <textarea
+          placeholder="draftcap"
+          readOnly
+          value={this.props.cap}
+        ></textarea>
       </div>
       <div>
         add cards to: {zone}
