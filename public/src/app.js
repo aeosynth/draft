@@ -89,7 +89,10 @@ var App = {
   },
   err(msg) {
     this.msg = msg;
-    location.hash = '';
+    if (location.hash)
+      location.hash = '';
+    else
+      this.route();
   }
 };
 
