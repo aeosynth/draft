@@ -1,29 +1,29 @@
-var gulp = require('gulp');
+var spawn = require('child_process').spawn
+var gulp = require('gulp')
 
-var lr = require('gulp-livereload');
-var react = require('gulp-react');
-
-function log(e) {
-  console.log(e.message);
-}
-
-gulp.task('build', function() {
-  build({ path: 'public/src/*' });
-});
+try {
+  var lr = require('gulp-livereload')
+} catch(err) {}
 
 function build(e) {
   gulp.src(e.path)
   .pipe(react({ harmony: true }))
-  .on('error', log)
-  .pipe(gulp.dest('public/js'))
+  .pipe(gulp.dest('public/out'))
   .pipe(lr({ auto: false }))
-  ;
-};
+}
+
+function run() {
+  spawn('node', ['app.js'], { stdio: 'inherit' })
+  .on('close', run)
+}
+
+gulp.task('run', run)
 
 gulp.task('default', function() {
-  gulp.watch('public/src/*', build);
-  gulp.watch(['public/css/style.css', 'public/index.html'], lr.changed);
+  spawn('node', ['app.js'], { stdio: 'inherit' })
 
-  lr.listen();
-  build({ path: 'public/src/*' });
-});
+  lr.listen()
+  build({ path: 'public/src/*' })
+  gulp.watch('public/src/*', build)
+  gulp.watch(['public/style.css', 'public/index.html'], lr.changed)
+})

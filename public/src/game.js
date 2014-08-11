@@ -1,4 +1,4 @@
-/** @jsx React.DOM */
+var d = React.DOM
 var ZONES = ['main', 'side'];
 
 var Game = React.createClass({
@@ -6,8 +6,7 @@ var Game = React.createClass({
     return {
       isHost: false,
       selected: null,
-      state: 'open',
-      cap: '',
+      self: null,
       land: this.resetLand(),
       players: [],
       pack: [],
@@ -16,62 +15,47 @@ var Game = React.createClass({
       junk: []
     };
   },
+  componentDidMount() {
+    this.decrement();
+
+    App.on('join', this.join)
+    App.on('add', this.add);
+    App.on('set', this.set);
+
+    this.join(this.props.room);
+  },
+  componentWillUnmount() {
+    clearTimeout(this.timeoutID);
+
+    App.off('join', this.join);
+    App.off('add', this.add);
+    App.off('set', this.set);
+  },
 
   join(room) {
     this.setState(this.getInitialState());
-
-    if (this.ws)
-      this.ws.close();
-
-    var {id, name} = App.state;
-    var options = {
-      query: { id, name, room }
-    };
-    var ws = this.ws = eio('ws://' + location.host, options);
-    ws.on('message', (data) => {
-      data = JSON.parse(data);
-      var {args} = data;
-      switch(data.name) {
-        case 'add':
-          this.state[App.state.zone].push(args);
-          this.forceUpdate();
-          break;
-        case 'error':
-          App.err(args);
-          break;
-        case 'set':
-          if (args.pool) {
-            args[App.state.zone] = args.pool;
-            delete args.pool;
-          }
-          if (args.pack && App.state.beep) {
-            this.refs.audio.getDOMNode().play();
-          }
-          this.setState(args);
-          break;
-      }
-    });
-    ws.json = function() {
-      var args = Array.prototype.slice.call(arguments);
-      ws.send(JSON.stringify(args));
-    };
+    App.send('join', room);
   },
 
-  componentDidMount() {
-    this.decrement();
-    this.join(this.props.room);
-    App.on('join', this.join)
+  add([card, isJunk]) {
+    var state = {};
+    var zone = isJunk ? 'junk' : App.state.zone
+    state[zone] = this.state[zone].concat(card);
+    this.setState(state);
   },
 
-  componentWillUnmount() {
-    this.ws.close();
-    clearTimeout(this.timeoutID);
-    App.off('join', this.join)
+  set(state) {
+    if (state.pool) {
+      state[App.state.zone] = state.pool;
+      delete state.pool;
+    }
+    if (state.pack && App.state.beep)
+      this.refs.audio.getDOMNode().play();
+    this.setState(state);
   },
 
   start() {
-    this.ws.json('start', App.state.bots);
-    this.setState({ state: 'started' });
+    App.send('start', App.state.bots);
   },
 
   decrement() {
@@ -84,18 +68,18 @@ var Game = React.createClass({
   },
 
   lands: {
-    w: { key: 'w', cmc: 0, code: 'UNH', color: 'A', rarity: 5, type: 'Basic Land', url: 'http://mtgimage.com/multiverseid/73963.jpg', name: 'Plains'   },
-    u: { key: 'u', cmc: 0, code: 'UNH', color: 'A', rarity: 5, type: 'Basic Land', url: 'http://mtgimage.com/multiverseid/73951.jpg', name: 'Island'   },
-    b: { key: 'b', cmc: 0, code: 'UNH', color: 'A', rarity: 5, type: 'Basic Land', url: 'http://mtgimage.com/multiverseid/73973.jpg', name: 'Swamp'    },
-    r: { key: 'r', cmc: 0, code: 'UNH', color: 'A', rarity: 5, type: 'Basic Land', url: 'http://mtgimage.com/multiverseid/73958.jpg', name: 'Mountain' },
-    g: { key: 'g', cmc: 0, code: 'UNH', color: 'A', rarity: 5, type: 'Basic Land', url: 'http://mtgimage.com/multiverseid/73946.jpg', name: 'Forest'   }
+    w: { cmc: 0, code: 'UNH', color: 'A', rarity: 5, type: 'Land', key: 'w', url: 'http://mtgimage.com/multiverseid/73963.jpg', name: 'Plains'   },
+    u: { cmc: 0, code: 'UNH', color: 'A', rarity: 5, type: 'Land', key: 'u', url: 'http://mtgimage.com/multiverseid/73951.jpg', name: 'Island'   },
+    b: { cmc: 0, code: 'UNH', color: 'A', rarity: 5, type: 'Land', key: 'b', url: 'http://mtgimage.com/multiverseid/73973.jpg', name: 'Swamp'    },
+    r: { cmc: 0, code: 'UNH', color: 'A', rarity: 5, type: 'Land', key: 'r', url: 'http://mtgimage.com/multiverseid/73958.jpg', name: 'Mountain' },
+    g: { cmc: 0, code: 'UNH', color: 'A', rarity: 5, type: 'Land', key: 'g', url: 'http://mtgimage.com/multiverseid/73946.jpg', name: 'Forest'   }
   },
 
   clickPack(index) {
     if (this.state.selected !== index)
       return this.state.selected = index;
 
-    this.ws.json('pick', index);
+    App.send('pick', index);
     this.setState({pack: [], selected: null});
   },
 
@@ -104,7 +88,7 @@ var Game = React.createClass({
     var from = this.state[zoneName];
     var card = from[index];
 
-    if (card.type === 'Basic Land') {
+    if (card.key) {
       var {key} = card;
       land[zoneName][key]--;
       this.setLand(land);
@@ -124,7 +108,7 @@ var Game = React.createClass({
 
   setLand(land) {
     ZONES.forEach(zoneName => {
-      var zone = this.state[zoneName].filter(x => x.type !== 'Basic Land');
+      var zone = this.state[zoneName].filter(x => !x.key)
       var color, i;
       for (color in land[zoneName]) {
         i = 0;
@@ -145,7 +129,7 @@ var Game = React.createClass({
   changeZone(e) {
     var {value} = e.target;
     var {main, side} = this.state;
-    var all = main.concat(side).filter(x => x.type !== 'Basic Land');
+    var all = main.concat(side).filter(x => !x.key)
     value === 'main' ?
       (main = all, side = []) :
       (main = [],  side = all);
@@ -194,9 +178,7 @@ var Game = React.createClass({
       });
     });
 
-    var {players, self} = this.state;
-    if (!players[self].hash)
-      this.ws.json('hash', deck);
+    App.send('hash', deck)
 
     return this.gen[filetype].call(this, deck, codes);
   },
@@ -223,16 +205,8 @@ ${fn(deck.side)}
       return data;
     },
 
-    dec(deck) {
-      var data = [];
-      var name, prefix, zone, zoneName;
-      for (zoneName in deck) {
-        prefix = zoneName === 'side' ? 'SB: ' : '';
-        zone = deck[zoneName];
-        for (name in zone)
-          data.push(prefix + zone[name] + ' ' + name);
-      }
-      return data.join('\n');
+    json(deck) {
+      return JSON.stringify(deck, null, 2);
     },
 
     mwdeck(deck, codes) {
@@ -250,51 +224,50 @@ ${fn(deck.side)}
       return data.join('\n');
     },
 
-    json(deck) {
-      return JSON.stringify(deck, null, 2);
+    txt(deck) {
+      var _deck = {}
+      ZONES.forEach(zoneName => {
+        _deck[zoneName] = []
+        var zone = deck[zoneName]
+        for (var card in zone)
+          _deck[zoneName].push(zone[card] + ' ' + card)
+      })
+      return _deck.main.join('\n') + '\nSideboard\n' + _deck.side.join('\n')
     }
   },
 
-  getCap() {
-    this.ws.json('getCap');
-  },
-
   render() {
-    return <div>
-      <audio ref="audio" src="/media/beep.wav"></audio>
-      <Settings
-        change={this.change}
-        changeLand={this.changeLand}
-        changeZone={this.changeZone}
-        download={this.download}
-        generate={this.generate}
-        getCap={this.getCap}
-        set={this.set}
+    return d.div({},
+      d.audio({
+        ref: 'audio',
+        src: '/beep.wav'}),
+      Settings({
+        change: this.change,
+        changeLand: this.changeLand,
+        changeZone: this.changeZone,
+        download: this.download,
+        generate: this.generate,
+        set: this.set,
 
-        cap={this.state.cap}
-        land={this.state.land}
-        state={this.state.state}
-        />
-      <Stats
-        change={this.change}
-        start={this.start}
-        ws={this.ws}
+        land: this.state.land,
+        round: this.state.round}),
+      Stats({
+        change: this.change,
+        start: this.start,
 
-        isHost={this.state.isHost}
-        players={this.state.players}
-        self={this.state.self}
-        state={this.state.state}
-        title={this.state.title}
-        />
-      <Cards
-        pack={this.state.pack}
-        main={this.state.main}
-        side={this.state.side}
-        junk={this.state.junk}
-        clickPack={this.clickPack}
-        clickPool={this.clickPool}
-        />
-    </div>;
+        isHost: this.state.isHost,
+        players: this.state.players,
+        round: this.state.round,
+        self: this.state.self,
+        title: this.state.title}),
+      Cards({
+        clickPack: this.clickPack,
+        clickPool: this.clickPool,
+
+        pack: this.state.pack,
+        main: this.state.main,
+        side: this.state.side,
+        junk: this.state.junk}))
   }
 });
 
@@ -306,113 +279,87 @@ var Settings = React.createClass({
   },
 
   copy() {
-    var state = { decklist: this.props.generate('dec') };
+    var state = { decklist: this.props.generate('txt') };
     var cb = () => this.refs.decklist.getDOMNode().select();
     this.setState(state, cb);
   },
 
   render() {
     var sort = ['cmc', 'color', 'rarity', 'type'].map(x =>
-      <button
-        onClick={App.change('sort')}
-        disabled={App.state.sort === x}
-        >{x}</button>
-    );
+      d.button({
+        onClick: App.change('sort'),
+        disabled: App.state.sort === x},
+        x))
     var zone = ZONES.map(x =>
-      <label><input
-        type="radio"
-        name="zone"
-        value={x}
-        checked={App.state.zone === x}
-        onChange={this.props.changeZone}
-      >{x}</input></label>
-    );
+      d.label({},
+        d.input({
+          type: 'radio',
+          name: 'zone',
+          value: x,
+          checked: App.state.zone === x,
+          onChange: this.props.changeZone},
+          x)))
 
     var lands = {};
     ZONES.forEach(zoneName => {
       lands[zoneName] = ['w', 'u', 'b', 'r', 'g'].map(x =>
-        <td><input
-          type="number"
-          min="0"
-          value={this.props.land[zoneName][x]}
-          onChange={this.props.changeLand.bind(null, x, zoneName)}
-          /></td>
-      );
-    });
+        d.td({},
+          d.input({
+            type: 'number',
+            min: 0,
+            value: this.props.land[zoneName][x],
+            onChange: this.props.changeLand.bind(null, x, zoneName)})))})
 
-    return <div className="settings">
-      <table><tbody>
-        <tr>
-          <td></td>
-          <td><img src="http://mtgimage.com/symbol/mana/w.svg"/></td>
-          <td><img src="http://mtgimage.com/symbol/mana/u.svg"/></td>
-          <td><img src="http://mtgimage.com/symbol/mana/b.svg"/></td>
-          <td><img src="http://mtgimage.com/symbol/mana/r.svg"/></td>
-          <td><img src="http://mtgimage.com/symbol/mana/g.svg"/></td>
-        </tr>
-        <tr>
-          <td>main</td>
-          {lands.main}
-        </tr>
-        <tr>
-          <td>side</td>
-          {lands.side}
-        </tr>
-      </tbody></table>
-      <div>
-        <button
-          disabled={this.props.state !== 'done'}
-          onClick={this.props.download}
-          >download
-        </button>
-        <input
-          placeholder="filename"
-          value={App.state.filename}
-          onChange={App.change('filename')}
-        />
-        <select value={App.state.filetype} onChange={App.change('filetype')}>
-          <option>cod</option>
-          <option>dec</option>
-          <option>json</option>
-          <option>mwdeck</option>
-        </select>
-      </div>
-      <div>
-        <button
-          disabled={this.props.state !== 'done'}
-          onClick={this.copy}
-          >decklist
-        </button>
-        <textarea
-          placeholder="decklist"
-          ref="decklist"
-          readOnly
-          value={this.state.decklist}
-        ></textarea>
-      </div>
-      <div>
-        <button onClick={this.props.getCap}>draftcap</button>
-        <textarea
-          placeholder="draftcap"
-          readOnly
-          value={this.props.cap}
-        ></textarea>
-      </div>
-      <div>
-        add cards to: {zone}
-      </div>
-      <div>
-        <label> beep when receiving packs
-          <input
-            type="checkbox"
-            checked={App.state.beep}
-            onChange={App.change('beep')}
-        /></label>
-      </div>
-      <div>
-        {sort}
-      </div>
-    </div>;
+    return d.div({ className: 'settings' },
+      d.table({},
+        d.tbody({},
+          d.tr({},
+            d.td(),
+            d.td({}, d.img({ src: 'http://mtgimage.com/symbol/mana/w.svg' })),
+            d.td({}, d.img({ src: 'http://mtgimage.com/symbol/mana/u.svg' })),
+            d.td({}, d.img({ src: 'http://mtgimage.com/symbol/mana/b.svg' })),
+            d.td({}, d.img({ src: 'http://mtgimage.com/symbol/mana/r.svg' })),
+            d.td({}, d.img({ src: 'http://mtgimage.com/symbol/mana/g.svg' }))),
+          d.tr({},
+            d.td({}, 'main'),
+            lands.main),
+          d.tr({},
+            d.td({}, 'side'),
+            lands.side))),
+      d.div({},
+        d.button({
+          disabled: this.props.round !== -1,
+          onClick: this.props.download},
+          'download'),
+        d.input({
+          placeholder: 'filename',
+          value: App.state.filename,
+          onChange: App.change('filename')}),
+        d.select({
+          value: App.state.filetype,
+          onChange: App.change('filetype')},
+          d.option({}, 'cod'),
+          d.option({}, 'json'),
+          d.option({}, 'mwdeck'),
+          d.option({}, 'txt'))),
+      d.div({},
+        d.button({
+          disabled: this.props.round !== -1,
+          onClick: this.copy},
+          'copy'),
+        d.textarea({
+          placeholder: 'decklist',
+          ref: 'decklist',
+          readOnly: true,
+          value: this.state.decklist})),
+      d.div({},
+        d.label({},
+          'beep when receiving packs',
+          d.input({
+            type: 'checkbox',
+            checked: App.state.beep,
+            onChange: App.change('beep')}))),
+      d.div({}, sort))
   }
 });
 
@@ -429,74 +376,77 @@ var Stats = React.createClass({
     );
   },
 
-  setName(e) {
-    e.preventDefault();
-    var name = this.refs.nameEl.getDOMNode().value.slice(0, 15);
-    if (!name)
-      return;
+  _edit() {
+    this.setState({ edit: true }, ()=>
+      this.refs.name.getDOMNode().focus())
+  },
+  _name(e) {
+    e.preventDefault()
 
-    this.setState({ edit: false });
-    App.save('name', name);
-    this.props.ws.json('name', name);
+    this.setState({ edit: false })
+    var name = this.refs.name.getDOMNode().value.slice(0, 15)
+
+    if (!name || name === App.state.name)
+      return
+
+    App.save('name', name)
+    App.send('name', name)
   },
 
   render() {
-    var {players, self, state} = this.props;
-    var opp = (self + 4) % 8;
+    var {players, self} = this.props;
+    var {length} = players
+    if (!(length % 2))
+      var opp = (self + length / 2) % length
     players = players.map((p, i) => {
-      var className =
-        i === self ? 'self' :
-        i === opp ? 'opponent' :
-        '';
+      if (i === self)
+        var className = 'self'
+      else if (i === opp)
+        className = 'opponent'
 
-      var td = i === self ?
-        <td onClick={this.click}>
-          <span
-            className="link"
-            hidden={this.state.edit}
-            >{p.name}
-          </span>
-          <form onSubmit={this.setName}><input
-            ref="nameEl"
-            hidden={!this.state.edit}
-            placeholder="name"
-            defaultValue={App.state.name}
-          /></form>
-        </td> :
-        <td>{p.name}</td>;
+      if (i === self) {
+        if (this.state.edit)
+          var content = d.form({ onSubmit: this._name },
+            d.input({ ref: 'name', defaultValue: p.name}))
+        else
+          content = d.a({ href: 'javascript:;' }, p.name)
+        var td = d.td({ onClick: this._edit }, content)
+      } else
+        td = d.td({}, p.name)
 
-      return <tr className={className}>
-        <td>{i + 1}</td>
-        {td}
-        <td>{p.packs}</td>
-        <td>{p.time}</td>
-        <td>{p.hash && p.hash.cock}</td>
-        <td>{p.hash && p.hash.mws}</td>
-      </tr>;
-    });
+      return d.tr({
+        className: className},
+        d.td({}, i + 1),
+        td,
+        d.td({}, p.time),
+        d.td({}, p.packs),
+        d.td({}, p.hash && p.hash.cock),
+        d.td({}, p.hash && p.hash.mws))
+    })
 
-    return <div>
-      <div><strong>{this.props.title}</strong></div>
-      <div hidden={(this.props.state !== 'open') || !this.props.isHost}>
-        <button onClick={this.props.start}>start</button>
-        <label>add bots<input
-          type="checkbox"
-          checked={App.state.bots}
-          onChange={App.change('bots')}/>
-        </label>
-      </div>
-      <table><tbody>
-        <tr>
-          <th>#</th>
-          <th>name</th>
-          <th>time</th>
-          <th>packs</th>
-          <th>cockatrice</th>
-          <th>mws</th>
-        </tr>
-        {players}
-      </tbody></table>
-    </div>;
+    return d.div({},
+      d.div({}, d.strong({}, this.props.title)),
+      d.div({
+        hidden: this.props.round || !this.props.isHost},
+        d.button({
+          onClick: this.props.start},
+          'start'),
+        d.label({},
+          'add bots',
+          d.input({
+            type: 'checkbox',
+            checked: App.state.bots,
+            onChange: App.change('bots')}))),
+      d.table({}, d.tbody({
+        id: 'stats'},
+        d.tr({},
+          d.th({}, '#'),
+          d.th({}, 'name'),
+          d.th({}, 'time'),
+          d.th({}, 'packs'),
+          d.th({}, 'cock'),
+          d.th({}, 'mws')),
+        players)))
   }
 });
 
@@ -525,10 +475,9 @@ var Cards = React.createClass({
       this.props.clickPool;
 
     return arr.map((card, i) =>
-      <img
-        onClick={cb.bind(null, i, zone)}
-        src={card.url}
-      />);
+      d.img({
+        onClick: cb.bind(null, i, zone),
+        src: card.url}))
   },
 
   render() {
@@ -538,23 +487,20 @@ var Cards = React.createClass({
     side = this.show(this.sort(side), 'side');
     junk = this.show(this.sort(junk), 'junk');
 
-    return <div className="cards">
-      <div>
-        <h1>pack {pack.length}</h1>
-        {pack}
-      </div>
-      <div>
-        <h1>main {main.length}</h1>
-        {main}
-      </div>
-      <div>
-        <h1>side {side.length}</h1>
-        {side}
-      </div>
-      <div>
-        <h1>junk {junk.length}</h1>
-        {junk}
-      </div>
-    </div>;
+    return d.div({
+      className: 'cards'},
+      d.div({
+        hidden: !pack.length},
+        d.h1({}, 'pack ' + pack.length),
+        pack),
+      d.div({},
+        d.h1({}, 'main ' + main.length),
+        main),
+      d.div({},
+        d.h1({}, 'side ' + side.length),
+        side),
+      d.div({},
+        d.h1({}, 'junk ' + junk.length),
+        junk))
   }
 });

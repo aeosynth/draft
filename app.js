@@ -1,34 +1,26 @@
-var PORT = 1337;
+var PORT = 1337
+var http = require('http')
+var serve = require('serve')
+var eio = require('engine.io')
+var traceur = require('traceur')
 
-var http = require('http');
+traceur.require.makeDefault()
+var router = require('./src/router')
 
-var engine = require('engine.io');
-var express = require('express');
-var serveStatic = require('serve-static');
-var bodyParser = require('body-parser');
+var server = http.createServer(serve('public')).listen(PORT)
+var eioServer = eio(server).on('connection', router)
 
-var router = require('./lib/router');
+console.log('[%s] port', (new Date).toUTCString(), PORT)
 
-// TODO replace express w/ static file server
-var app = express()
-.use(serveStatic('public'))
-.use(bodyParser.json())
-.post('/create', function(req, res) {
-  var body = req.body;
-  try {
-    var data = router.create(body);
-  } catch(err) {
-    console.log('error creating draft', err);
-    res.status(500);
-    data = err.message;
-  }
-  res.send(data);
-})
-;
+;(function log() {
+  var up = process.uptime().toFixed(2)
+  var mem = process.memoryUsage()
+  var count = eioServer.clientsCount
 
-var httpServer = http.createServer(app);
-engine.attach(httpServer).on('connection', router.connect);
+  for (var key in mem)
+    mem[key] = (mem[key] / 1e6).toFixed(2)
 
-httpServer.listen(PORT, function() {
-  console.log('http://localhost:%d', PORT);
-});
+  console.log(up, count, mem)
+
+  setTimeout(log, 1000 * 60 * 60)
+})()

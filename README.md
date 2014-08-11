@@ -1,13 +1,12 @@
 # draft
 
-this project is a draft simulator client / server for the card game
-[magic: the gathering](http://en.wikipedia.org/wiki/Magic:_The_Gathering)
+client/server for <http://drafts.in>
 
-this project is unafilliated with wizards of the coast
+unaffiliated with wizards of the coast
 
 # run
 
-- [nodejs](http://nodejs.org)
+- [node.js](http://nodejs.org/)
 
 - `make`
 
@@ -15,21 +14,10 @@ this project is unafilliated with wizards of the coast
 
 - <http://localhost:1337>
 
-# spoilers
-
-    make spoiler
-
-only assume this works if a spoiled set is playable, and not on gatherer
-
 # etc
 
-check out the [wiki]
+written in [es6], transpiled with [traceur], using [react] on the client
 
-the server is written in [coco], which transpiles to javascript
-
-uses [mtgimage] and [mtgjson]
-
-[wiki]: https://github.com/aeosynth/draft/wiki/_pages
-[coco]: https://github.com/satyr/coco
-[mtgimage]: http://mtgimage.com/
-[mtgjson]: http://mtgjson.com/
+[es6]: https://github.com/lukehoban/es6features
+[traceur]: https://github.com/google/traceur-compiler
+[react]: https://github.com/facebook/react

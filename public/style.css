@@ -92,3 +92,7 @@ textarea {
   left: 0;
   transform: rotate(180deg);
 }
+
+#stats th, #stats td {
+  padding-right: 5px;
+}

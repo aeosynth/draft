@@ -1,44 +1,40 @@
-/** @jsx React.DOM */
+var d = React.DOM
+
 var Lobby = React.createClass({
   render() {
-    return <div>
-      <a href="https://github.com/aeosynth/draft"><img id="github" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"/></a>
-      <Chat/>
-      <h1>drafts.in</h1>
-      <div><small>unaffiliated with wizards of the coast</small></div>
-      <Create/>
-      <p className="err">{this.props.err}</p>
-    </div>;
+    return d.div({},
+      d.a({href:'https://github.com/aeosynth/draft'}, d.img({id: 'github', src:'https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67', alt:'Fork me on GitHub', 'data-canonical-src':'https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png'})),
+      Chat(),
+      d.h1({}, 'drafts.in'),
+      d.div({}, d.small({}, 'unaffiliated with wizards of the coast')),
+      Create(),
+      d.p({className: 'err'}, App.state.err)
+    )
   }
 });
 
 var Chat = React.createClass({
   getInitialState() {
     return {
-      items: []
+      messages: []
     };
   },
 
   componentDidMount() {
-    this.fire = new Firebase('https://draft.firebaseio.com/');
-    this.fire
-      .limit(15)
-      .on('child_added', this.addFire)
-    ;
     this.refs.chat.getDOMNode().focus();
+    App.on('say', this.hear)
+    App.on('set', this.setState.bind(this))
+    App.send('join', 'lobby')
   },
 
   componentWillUnmount() {
-    Firebase.goOffline();
+    App.off('say', this.hear)
+    App.off('set')
   },
 
-  addFire(snapshot) {
-    this.add(snapshot.val());
-  },
-
-  add(item) {
-    var items = this.state.items.concat(item);
-    this.setState({ items });
+  hear(msg) {
+    var messages = this.state.messages.concat(msg);
+    this.setState({ messages });
   },
 
   pad(n) {
@@ -54,18 +50,14 @@ var Chat = React.createClass({
     el.value = '';
 
     if (text[0] !== '/')
-      return this.fire.push({
-        time: Firebase.ServerValue.TIMESTAMP,
-        name: App.state.name,
-        text
-      });
+      return App.send('say', text)
 
     var match = text.match(/^\/nick (\S+)/);
     var text = match ?
       `hello, ${match[1]}` :
       'only /nick is supported';
 
-    this.add({
+    App.send('say', {
       time: Date.now(),
       name: '',
       text
@@ -77,46 +69,38 @@ var Chat = React.createClass({
 
   render() {
     var {pad} = this;
-    var items = this.state.items.map(x => {
+    var messages = this.state.messages.map(x => {
+      if (!x)
+        return null
       var date = new Date(x.time);
       var time = pad(date.getHours()) + ':' + pad(date.getMinutes());
-      return <div>
-        <span className="time">{time}</span>&nbsp;
-        <span className="name">{x.name}</span>&nbsp;
-        {x.text}
-      </div>;
+
+      return d.div({},
+        d.span({className:'time'}, time),
+        ' ',
+        d.span({className:'name'}, x.name),
+        ' ',
+        x.text)
     });
 
-    return <div id="chat">
-      {items}
-        <input ref="name" placeholder="name" />
-      <form onSubmit={this.submit}>
-        <input ref="chat" placeholder="chat" />
-      </form>
-    </div>;
+    return d.div({id:'chat'},
+      messages,
+      d.input({ref:'name', placeholder:'name'}),
+      d.form({onSubmit:this.submit},
+        d.input({ref:'chat', placeholder:'chat'})))
   }
 });
 
 var Create = React.createClass({
-  onload(e) {
-    var {status, response} = e.target;
-    if (status !== 200)
-      return App.err(response);
-
-    location.hash = 'q/' + response;
-  },
-
   start() {
-    var x = new XMLHttpRequest;
-    x.open('post', '/create');
-    x.setRequestHeader('Content-Type', 'application/json');
-    x.onload = this.onload;
-
     var {id, seats, type} = App.state;
+    seats = Number(seats)
     var opts = { id, seats, type };
 
     if (/cube/.test(type)) {
       var {list, cards, packs} = App.state;
+      cards = Number(cards);
+      packs = Number(packs);
 
       list = list
         .split('\n')
@@ -140,7 +124,7 @@ var Create = React.createClass({
       opts.sets = sets;
     }
 
-    x.send(JSON.stringify(opts));
+    App.send('create', opts);
   },
 
   genSets() {
@@ -152,15 +136,13 @@ var Create = React.createClass({
         opts = [];
         type = SETS[typeName];
         for (setName in type)
-          opts.push(<option value={type[setName]}>{setName}</option>);
-        groups.push(<optgroup label={typeName}>{opts}</optgroup>);
+          opts.push(d.option({value:type[setName]}, setName))
+        groups.push(d.optgroup({label:typeName}, opts))
       }
-      return (
-        <select
-          onChange={App.change('sets', i)}
-          value={selectedSet}
-        >{groups}</select>
-      );
+      return d.select({
+        onChange: App.change('sets', i),
+        value: selectedSet},
+        groups)
     });
   },
 
@@ -178,68 +160,60 @@ var Create = React.createClass({
     var setsTop = sets.slice(0, 3);
     var setsBot = sets.slice(3);
 
-    var cube = <div>
-      <div>enter one card per line</div>
-      <textarea
-        value={list}
-        onChange={App.change('list')}
-      ></textarea>
-    </div>;
-    var cardsEl = this.seq(15, 8).map(x => <option>{x}</option>);
-    var packsEl = this.seq(5,  3).map(x => <option>{x}</option>);
+    var cube = d.div({},
+      d.div({}, 'enter one card per line'),
+      d.textarea({
+        value: list,
+        onChange: App.change('list')}))
+
+    var cardsEl = this.seq(15, 8).map(x => d.option({}, x))
+    var packsEl = this.seq(5,  3).map(x => d.option({}, x))
 
     switch(type) {
-      case 'draft': return <div>
-        {setsTop}
-      </div>;
-      case 'sealed': return <div>
-        <div>{setsTop}</div>
-        <div>{setsBot}</div>
-      </div>;
-      case 'cube draft': return <div>
-        {cube}
-        <select
-          onChange={App.change('cards')}
-          value={cards}
-        >{cardsEl}</select>
-        cards,
-        <select
-          onChange={App.change('packs')}
-          value={packs}
-        >{packsEl}</select>
-        packs
-      </div>;
-      case 'cube sealed': return <div>
-        {cube}
-      </div>;
+      case 'draft': return d.div({}, setsTop)
+      case 'sealed': return d.div({},
+        d.div({}, setsTop),
+        d.div({}, setsBot))
+      case 'cube draft': return d.div({},
+        cube,
+        d.select({
+          onChange: App.change('cards'),
+          value: cards},
+          cardsEl),
+        'cards',
+        d.select({
+          onChange: App.change('packs'),
+          value: packs},
+          packsEl),
+        'packs')
+      case 'cube sealed': return d.div({}, cube)
     }
   },
 
   render() {
     var {type} = App.state;
     var typeEl = ['draft', 'sealed', 'cube draft', 'cube sealed'].map(x =>
-      <button
-        disabled={x === type}
-        onClick={App.change('type')}
-        >{x}</button>);
+      d.button({
+        disabled: x === type,
+        onClick: App.change('type')},
+        x))
 
-    var seats = this.seq(8, 2).map(x => <option>{x}</option>);
+    var seats = this.seq(8, 2).map(x => d.option({}, x))
 
-    return <div>
-      <div>
-        <button onClick={this.start}>create</button>
-        room for
-        <select
-          onChange={App.change('seats')}
-          value={App.state.seats}
-          >{seats}
-        </select>
-        <a href="#help">help</a>
-      </div>
-      <div>
-        {typeEl}
-      </div>
-      {this.getTab()}
-    </div>;
+    return d.div({},
+        d.div({},
+          d.button({
+            onClick: this.start},
+            'create'),
+          'room for',
+          d.select({
+            onChange: App.change('seats'),
+            value: App.state.seats},
+            seats),
+          d.a({
+            href: '#help'},
+            'help')),
+        d.div({}, typeEl),
+        this.getTab())
   }
 });

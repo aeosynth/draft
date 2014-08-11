@@ -6,6 +6,9 @@ var EventEmitter = {
     return this;
   },
   off(event, cb) {
+    if (!cb)
+      return this.events[event] = []
+
     var index = this.events[event].indexOf(cb);
     if (index > -1)
       this.events[event].splice(index, 1);

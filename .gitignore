@@ -1,11 +1,6 @@
-node_modules
-.DS_Store
 *.swp
+.DS_Store
+node_modules
 
-lib
-data/AllSets.json
-data/sets.json
-data/cards.json
-
-public/js
-public/css/normalize.css
+data
+public/out
