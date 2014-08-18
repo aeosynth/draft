@@ -1,9 +1,9 @@
 var spawn = require('child_process').spawn
 var gulp = require('gulp')
-var traceur = require('gulp-traceur')
 
 try {
   var lr = require('gulp-livereload')
+  var traceur = require('gulp-traceur')
 } catch(err) {}
 
 function build(e) {
