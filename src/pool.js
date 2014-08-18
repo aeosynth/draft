@@ -1,5 +1,5 @@
 var _ = require('./_')
-var {Cards, Sets} = require('./data')
+var {Cards, Sets, mws} = require('./data')
 
 function selectRarity(set) {
   //fibonacci, because why not
@@ -55,7 +55,7 @@ function toCards(pool, code) {
     var {sets} = card
     if (isCube)
       [code] = Object.keys(sets)
-    card.code = code
+    card.code = mws[code] || code
 
     var set = sets[code]
     delete card.sets
