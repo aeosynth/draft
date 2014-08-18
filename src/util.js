@@ -11,7 +11,10 @@ var BASICS = [
 
 function transform(cube) {
   var list = cube.list
-    .map(x => util.name(x.trim()).toLowerCase())
+    .map(x =>
+      util.name(x.trim())
+      .replace(/^(\d+.)?\s*/, '')
+      .toLowerCase())
     .filter(x => x)
 
   var bad = []
