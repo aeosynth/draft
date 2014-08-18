@@ -106,6 +106,7 @@ var Create = React.createClass({
         .map(x => x
           .trim()
           .replace(/^(\d+.)?\s*/, '')
+          .replace(/\s*\/+\s*/g, ' // ')
           .toLowerCase())
         .filter(x => x)
 
