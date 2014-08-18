@@ -10,19 +10,20 @@ var router = require('./src/router')
 var server = http.createServer(serve('public')).listen(PORT)
 var eioServer = eio(server).on('connection', router)
 
-console.log('[%s] port', (new Date).toUTCString(), PORT)
-
 var HOUR_S = 60 * 60 // hour in seconds
 
+console.log('listening on port', PORT)
+
 ;(function log() {
-  var up = (process.uptime() / HOUR_S).toFixed(1)
+  var now = (new Date).toUTCString()
+  var up = Math.floor(process.uptime() / HOUR_S)
   var mem = process.memoryUsage()
   var count = eioServer.clientsCount
 
   for (var key in mem)
     mem[key] = (mem[key] / 1e6).toFixed(2)
 
-  console.log(up, count, mem)
+  console.log('[%s]', now, up, count, mem.rss, mem.heapTotal, mem.heapUsed)
 
   setTimeout(log, 1000 * HOUR_S)
 })()
