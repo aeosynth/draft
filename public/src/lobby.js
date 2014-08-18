@@ -103,9 +103,11 @@ var Create = React.createClass({
 
       list = list
         .split('\n')
-        .map(x => x.trim())
-        .filter(x => x.length)
-        ;
+        .map(x => x
+          .trim()
+          .replace(/^(\d+.)?\s*/, '')
+          .toLowerCase())
+        .filter(x => x)
 
       var min = type === 'cube draft' ?
         seats * cards * packs :
@@ -114,6 +116,7 @@ var Create = React.createClass({
         return App.err('this cube needs between ' + min +
             ' and 1000 cards; it has ' + list.length);
 
+      list = list.join('\n') // easier for server to type check
       opts.cube = { list, cards, packs };
     }
     else {
