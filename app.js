@@ -23,7 +23,8 @@ console.log('listening on port', PORT)
   for (var key in mem)
     mem[key] = (mem[key] / 1e6).toFixed(2)
 
-  console.log('[%s]', now, up, count, mem.rss, mem.heapTotal, mem.heapUsed)
+  console.log('[%s]\t%d\t%d\t%s\t%s\t%s',
+    now, up, count, mem.rss, mem.heapTotal, mem.heapUsed)
 
   setTimeout(log, 1000 * HOUR_S)
 })()
