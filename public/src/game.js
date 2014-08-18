@@ -15,44 +15,122 @@ var Game = React.createClass({
       junk: []
     };
   },
+
+  events: {
+    join(room) {
+      this.setState(this.getInitialState());
+      App.send('join', room);
+    },
+    add([card, isJunk]) {
+      var state = {};
+      var zone = isJunk ? 'junk' : App.state.zone
+      state[zone] = this.state[zone].concat(card);
+      this.setState(state);
+    },
+    set(state) {
+      if (state.pool) {
+        state[App.state.zone] = state.pool;
+        delete state.pool;
+      }
+      if (state.pack && App.state.beep)
+        this.refs.audio.getDOMNode().play();
+      this.setState(state);
+    },
+    start() {
+      App.send('start', App.state.bots);
+    },
+    clickPack(index) {
+      if (this.state.selected !== index)
+        return this.state.selected = index;
+
+      App.send('pick', index);
+      this.setState({pack: [], selected: null});
+    },
+
+    clickPool(index, zoneName, e) {
+      var {land, main, side, junk} = this.state;
+      var from = this.state[zoneName];
+      var card = from[index];
+
+      if (card.key) {
+        var {key} = card;
+        land[zoneName][key]--;
+        this.setLand(land);
+        return;
+      }
+
+      var to;
+      if (e.shiftKey)
+        to = zoneName === 'junk' ? main : junk;
+      else
+        to = zoneName === 'side' ? main : side;
+
+      from.splice(index, 1);
+      to.push(card);
+      this.setState({ main, side, junk });
+    },
+    download() {
+      var {filename, filetype} = App.state;
+
+      var fileText = this.generate(filetype);
+
+      var link = document.createElement('a');
+      link.download = filename + '.' + filetype;
+      link.href = 'data:,' + encodeURIComponent(fileText);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    },
+    generate(filetype) {
+      var deck = {
+        main: {},
+        side: {}
+      };
+      var codes = {};
+      ZONES.forEach(zone => {
+        this.state[zone].forEach(card => {
+          var {code, name} = card;
+          codes[name] = code;
+          deck[zone][name] || (deck[zone][name] = 0);
+          deck[zone][name]++;
+        });
+      });
+
+      App.send('hash', deck)
+
+      return this.gen[filetype].call(this, deck, codes);
+    },
+    changeLand(color, zoneName, e) {
+      var {land} = this.state;
+      land[zoneName][color] = parseInt(e.target.value);
+      this.setLand(land);
+    },
+
+    changeZone(e) {
+      var {value} = e.target;
+      var {main, side} = this.state;
+      var all = main.concat(side).filter(x => !x.key)
+      value === 'main' ?
+        (main = all, side = []) :
+        (main = [],  side = all);
+
+      var land = this.resetLand();
+
+      this.setState({ land, main, side });
+      App.save('zone', value);
+    }
+  },
+
   componentDidMount() {
     this.decrement();
+    for (var event in this.events)
+      App.on(event, this.events[event].bind(this))
 
-    App.on('join', this.join)
-    App.on('add', this.add);
-    App.on('set', this.set);
-
-    this.join(this.props.room);
+    App.send('join', this.props.room)
   },
   componentWillUnmount() {
     clearTimeout(this.timeoutID);
     App.off()
-  },
-
-  join(room) {
-    this.setState(this.getInitialState());
-    App.send('join', room);
-  },
-
-  add([card, isJunk]) {
-    var state = {};
-    var zone = isJunk ? 'junk' : App.state.zone
-    state[zone] = this.state[zone].concat(card);
-    this.setState(state);
-  },
-
-  set(state) {
-    if (state.pool) {
-      state[App.state.zone] = state.pool;
-      delete state.pool;
-    }
-    if (state.pack && App.state.beep)
-      this.refs.audio.getDOMNode().play();
-    this.setState(state);
-  },
-
-  start() {
-    App.send('start', App.state.bots);
   },
 
   decrement() {
@@ -72,37 +150,6 @@ var Game = React.createClass({
     g: { cmc: 0, code: 'UNH', color: 'A', rarity: 5, type: 'Land', key: 'g', url: 'http://mtgimage.com/multiverseid/73946.jpg', name: 'Forest'   }
   },
 
-  clickPack(index) {
-    if (this.state.selected !== index)
-      return this.state.selected = index;
-
-    App.send('pick', index);
-    this.setState({pack: [], selected: null});
-  },
-
-  clickPool(index, zoneName, e) {
-    var {land, main, side, junk} = this.state;
-    var from = this.state[zoneName];
-    var card = from[index];
-
-    if (card.key) {
-      var {key} = card;
-      land[zoneName][key]--;
-      this.setLand(land);
-      return;
-    }
-
-    var to;
-    if (e.shiftKey)
-      to = zoneName === 'junk' ? main : junk;
-    else
-      to = zoneName === 'side' ? main : side;
-
-    from.splice(index, 1);
-    to.push(card);
-    this.setState({ main, side, junk });
-  },
-
   setLand(land) {
     ZONES.forEach(zoneName => {
       var zone = this.state[zoneName].filter(x => !x.key)
@@ -117,26 +164,6 @@ var Game = React.createClass({
     this.forceUpdate();
   },
 
-  changeLand(color, zoneName, e) {
-    var {land} = this.state;
-    land[zoneName][color] = parseInt(e.target.value);
-    this.setLand(land);
-  },
-
-  changeZone(e) {
-    var {value} = e.target;
-    var {main, side} = this.state;
-    var all = main.concat(side).filter(x => !x.key)
-    value === 'main' ?
-      (main = all, side = []) :
-      (main = [],  side = all);
-
-    var land = this.resetLand();
-
-    this.setState({ land, main, side });
-    App.save('zone', value);
-  },
-
   resetLand() {
     var land = {};
     ZONES.forEach(zoneName => {
@@ -145,39 +172,6 @@ var Game = React.createClass({
         land[zoneName][color] = 0);
     });
     return land;
-  },
-
-  download() {
-    var {filename, filetype} = App.state;
-
-    var fileText = this.generate(filetype);
-
-    var link = document.createElement('a');
-    link.download = filename + '.' + filetype;
-    link.href = 'data:,' + encodeURIComponent(fileText);
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-  },
-
-  generate(filetype) {
-    var deck = {
-      main: {},
-      side: {}
-    };
-    var codes = {};
-    ZONES.forEach(zone => {
-      this.state[zone].forEach(card => {
-        var {code, name} = card;
-        codes[name] = code;
-        deck[zone][name] || (deck[zone][name] = 0);
-        deck[zone][name]++;
-      });
-    });
-
-    App.send('hash', deck)
-
-    return this.gen[filetype].call(this, deck, codes);
   },
 
   gen: {
@@ -239,26 +233,15 @@ ${fn(deck.side)}
         ref: 'audio',
         src: '/beep.wav'}),
       Settings({
-        changeLand: this.changeLand,
-        changeZone: this.changeZone,
-        download: this.download,
-        generate: this.generate,
-        set: this.set,
-
         land: this.state.land,
         round: this.state.round}),
       Stats({
-        start: this.start,
-
         isHost: this.state.isHost,
         players: this.state.players,
         round: this.state.round,
         self: this.state.self,
         title: this.state.title}),
       Cards({
-        clickPack: this.clickPack,
-        clickPool: this.clickPool,
-
         pack: this.state.pack,
         main: this.state.main,
         side: this.state.side,
@@ -292,8 +275,8 @@ var Settings = React.createClass({
           name: 'zone',
           value: x,
           checked: App.state.zone === x,
-          onChange: this.props.changeZone},
-          x)))
+          onChange: App.e('changeZone')}),
+        x))
 
     var lands = {};
     ZONES.forEach(zoneName => {
@@ -303,7 +286,7 @@ var Settings = React.createClass({
             type: 'number',
             min: 0,
             value: this.props.land[zoneName][x],
-            onChange: this.props.changeLand.bind(null, x, zoneName)})))})
+            onChange: App.e('changeLand', x, zoneName)})))})
 
     return d.div({ className: 'settings' },
       d.table({},
@@ -324,7 +307,7 @@ var Settings = React.createClass({
       d.div({},
         d.button({
           disabled: this.props.round !== -1,
-          onClick: this.props.download},
+          onClick: App.e('download')},
           'download'),
         d.input({
           placeholder: 'filename',
@@ -340,7 +323,7 @@ var Settings = React.createClass({
       d.div({},
         d.button({
           disabled: this.props.round !== -1,
-          onClick: this.copy},
+          onClick: App.e('copy')},
           'copy'),
         d.textarea({
           placeholder: 'decklist',
@@ -427,7 +410,7 @@ var Stats = React.createClass({
       d.div({
         hidden: this.props.round || !this.props.isHost},
         d.button({
-          onClick: this.props.start},
+          onClick: App.e('start')},
           'start'),
         d.label({},
           'add bots',
@@ -468,13 +451,13 @@ var Cards = React.createClass({
   },
 
   show(arr, zone) {
-    var cb = zone === 'pack' ?
-      this.props.clickPack:
-      this.props.clickPool;
+    var event = zone === 'pack'
+      ? 'clickPack'
+      : 'clickPool'
 
     return arr.map((card, i) =>
       d.img({
-        onClick: cb.bind(null, i, zone),
+        onClick: App.e(event, i, zone),
         src: card.url}))
   },
 

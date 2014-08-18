@@ -147,6 +147,9 @@ var App = {
   err(err) {
     this.state.err = err
     this.route('');
+  },
+  e(...args) {
+    return e => this.emit.apply(this, args.concat(e))
   }
 };
 
