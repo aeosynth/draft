@@ -83,7 +83,7 @@ module.exports = function (src, playerCount, isSealed) {
         ? toCards(src.list.splice(-size))
         : [].concat(...src.map(toPack)))
   else
-    for (var code of src)
+    for (var code of src.reverse())
       for (var i = 0; i < playerCount; i++)
         pools.push(toPack(code))
 
