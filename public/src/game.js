@@ -239,7 +239,6 @@ ${fn(deck.side)}
         ref: 'audio',
         src: '/beep.wav'}),
       Settings({
-        change: this.change,
         changeLand: this.changeLand,
         changeZone: this.changeZone,
         download: this.download,
@@ -249,7 +248,6 @@ ${fn(deck.side)}
         land: this.state.land,
         round: this.state.round}),
       Stats({
-        change: this.change,
         start: this.start,
 
         isHost: this.state.isHost,
