@@ -1,7 +1,7 @@
 var fs = require('fs')
 var _ = require('../_')
 var util = require('../util')
-var {raw} = require('../data')
+var raw = require('../../data/raw')
 
 var Cards = {}
 var Sets = {}
