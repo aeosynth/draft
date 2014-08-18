@@ -26,10 +26,7 @@ var Game = React.createClass({
   },
   componentWillUnmount() {
     clearTimeout(this.timeoutID);
-
-    App.off('join', this.join);
-    App.off('add', this.add);
-    App.off('set', this.set);
+    App.off()
   },
 
   join(room) {

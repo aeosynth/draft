@@ -5,13 +5,8 @@ var EventEmitter = {
     this.events[event].push(cb);
     return this;
   },
-  off(event, cb) {
-    if (!cb)
-      return this.events[event] = []
-
-    var index = this.events[event].indexOf(cb);
-    if (index > -1)
-      this.events[event].splice(index, 1);
+  off() {
+    this.events = {}
     return this;
   },
   emit(event, ...args) {

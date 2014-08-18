@@ -15,6 +15,7 @@
     "traceur": "0.0.58"
   },
   "devDependencies": {
-    "gulp-livereload": "^2.1.0"
+    "gulp-livereload": "^2.1.0",
+    "gulp-traceur": "^0.13.0"
   }
 }

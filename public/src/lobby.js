@@ -28,8 +28,7 @@ var Chat = React.createClass({
   },
 
   componentWillUnmount() {
-    App.off('say', this.hear)
-    App.off('set')
+    App.off()
   },
 
   hear(msg) {

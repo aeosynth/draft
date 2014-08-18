@@ -42,9 +42,9 @@ var App = {
       id = localStorage.id = Math.random().toString(36).slice(2);
     state.id = id;
 
+    React.renderComponent(View(), document.body);
     addEventListener('hashchange', this.doRoute.bind(this));
     this.doRoute()
-    React.renderComponent(View(), document.body);
     this.connect();
 
     this.getHelpHTML()
@@ -55,7 +55,7 @@ var App = {
     x.onload = e => {
       this.helpHTML = e.target.response
       if (this.state.component instanceof Help)
-        this.emit('update')
+        this.update()
     }
     x.send()
   },
@@ -119,8 +119,8 @@ var App = {
       }
       component = Lobby();
     }
-    App.state.component = component
-    this.emit('update')
+    this.state.component = component
+    this.update()
   },
   change(key, path) {
     return e => {
@@ -142,7 +142,7 @@ var App = {
   save(key, val) {
     localStorage[key] = JSON.stringify(val);
     this.state[key] = val
-    this.emit('update')
+    this.update()
   },
   err(err) {
     this.state.err = err

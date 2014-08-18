@@ -1,5 +1,6 @@
 var spawn = require('child_process').spawn
 var gulp = require('gulp')
+var traceur = require('gulp-traceur')
 
 try {
   var lr = require('gulp-livereload')
@@ -7,6 +8,7 @@ try {
 
 function build(e) {
   gulp.src(e.path)
+  .pipe(traceur())
   .pipe(gulp.dest('public/out'))
   .pipe(lr({ auto: false }))
 }
