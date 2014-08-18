@@ -33,14 +33,14 @@ var games = {}
 
 module.exports = class Game extends EventEmitter {
   constructor({id, seats, type, sets, cube}) {
-    if (/cube/.test(type)) {
-      Object.assign(this, { cube,
-        title: type
-      })
-    } else {
+    if (sets)
       Object.assign(this, { sets,
-        title: sets.join(' / ')
-      })
+        title: sets.join(' / ')})
+    else {
+      var title = type
+      if (type === 'cube draft')
+        title += ' ' + cube.packs + 'x' + cube.cards
+      Object.assign(this, { cube, title })
     }
 
     var gameID = _.id()
