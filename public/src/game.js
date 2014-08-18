@@ -418,8 +418,8 @@ var Stats = React.createClass({
         className: className},
         d.td({}, i + 1),
         td,
-        d.td({}, p.time),
         d.td({}, p.packs),
+        d.td({}, p.time),
         d.td({}, p.hash && p.hash.cock),
         d.td({}, p.hash && p.hash.mws))
     })
@@ -442,8 +442,8 @@ var Stats = React.createClass({
         d.tr({},
           d.th({}, '#'),
           d.th({}, 'name'),
-          d.th({}, 'time'),
           d.th({}, 'packs'),
+          d.th({}, 'time'),
           d.th({}, 'cock'),
           d.th({}, 'mws')),
         players)))
