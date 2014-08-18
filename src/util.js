@@ -11,10 +11,7 @@ var BASICS = [
 
 function transform(cube) {
   var list = cube.list
-    .map(x =>
-      util.name(x.trim())
-      .replace(/^(\d+.)?\s*/, '')
-      .toLowerCase())
+    .map(x => util.name(x, true))
     .filter(x => x)
 
   var bad = []
@@ -33,8 +30,8 @@ function transform(cube) {
 }
 
 var util = module.exports = {
-  name(s) {
-    return s.replace(/[Æâàáéíöúû’]/g, c => {
+  name(s, isCube) {
+    s = s.replace(/[Æâàáéíöúû’]/g, c => {
       switch (c) {
       case 'Æ': return 'AE'
       case 'â': case 'à': case 'á': return 'a'
@@ -45,6 +42,12 @@ var util = module.exports = {
       case '’': return "'"
       }
     })
+    if (isCube)
+      s = s
+        .trim()
+        .replace(/^(\d+.)?\s*/, '')
+        .toLowerCase())
+    return s
   },
   deck(deck, pool) {
     pool = _.count(pool, 'name')
