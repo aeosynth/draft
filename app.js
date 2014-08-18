@@ -12,8 +12,10 @@ var eioServer = eio(server).on('connection', router)
 
 console.log('[%s] port', (new Date).toUTCString(), PORT)
 
+var HOUR_S = 60 * 60 // hour in seconds
+
 ;(function log() {
-  var up = process.uptime().toFixed(2)
+  var up = (process.uptime() / HOUR_S).toFixed(1)
   var mem = process.memoryUsage()
   var count = eioServer.clientsCount
 
@@ -22,5 +24,5 @@ console.log('[%s] port', (new Date).toUTCString(), PORT)
 
   console.log(up, count, mem)
 
-  setTimeout(log, 1000 * 60 * 60)
+  setTimeout(log, 1000 * HOUR_S)
 })()

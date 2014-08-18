@@ -7,7 +7,6 @@ try {
 
 function build(e) {
   gulp.src(e.path)
-  .pipe(react({ harmony: true }))
   .pipe(gulp.dest('public/out'))
   .pipe(lr({ auto: false }))
 }
