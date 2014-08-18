@@ -8,7 +8,7 @@ try {
 
 var mws = require('../data/mws')
 for (var code in mws)
-  Sets[code] = Sets[mws[code]]
+  Sets[mws[code]] = Sets[code]
 
 module.exports = { Cards, Sets,
   raw: require('../data/raw')
