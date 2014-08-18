@@ -350,6 +350,9 @@ var Settings = React.createClass({
           readOnly: true,
           value: this.state.decklist})),
       d.div({},
+        'add cards to',
+        zone),
+      d.div({},
         d.label({},
           'beep when receiving packs',
           d.input({
