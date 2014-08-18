@@ -13,6 +13,10 @@ function build(e) {
   .pipe(lr({ auto: false }))
 }
 
+gulp.task('build', function() {
+  build({ path: 'public/src/*' })
+})
+
 function run() {
   spawn('node', ['app.js'], { stdio: 'inherit' })
   .on('close', run)
@@ -20,11 +24,10 @@ function run() {
 
 gulp.task('run', run)
 
-gulp.task('default', function() {
+gulp.task('default', ['build'], function() {
   spawn('node', ['app.js'], { stdio: 'inherit' })
 
   lr.listen()
-  build({ path: 'public/src/*' })
   gulp.watch('public/src/*', build)
   gulp.watch(['public/style.css', 'public/index.html'], lr.changed)
 })

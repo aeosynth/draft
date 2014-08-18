@@ -16,7 +16,7 @@ function selectRarity(set) {
 function toPack(code) {
   var set = Sets[code]
   var {common, uncommon, rare, mythic, special, size} = set
-  if (mythic && _.rand(8))
+  if (mythic && !_.rand(8))
     rare = mythic
 
   var pack = [].concat(
