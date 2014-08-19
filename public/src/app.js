@@ -152,5 +152,3 @@ var App = {
     return e => this.emit.apply(this, args.concat(e))
   }
 };
-
-App.init();

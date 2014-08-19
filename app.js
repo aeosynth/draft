@@ -21,9 +21,9 @@ console.log('listening on port', PORT)
   var count = eioServer.clientsCount
 
   for (var key in mem)
-    mem[key] = (mem[key] / 1e6).toFixed(2)
+    mem[key] = Math.round(mem[key] / 1e6)
 
-  console.log('[%s]\t%d\t%d\t%s\t%s\t%s',
+  console.log('[%s]\t%d\t%d\t%d\t%d\t%d',
     now, up, count, mem.rss, mem.heapTotal, mem.heapUsed)
 
   setTimeout(log, 1000 * HOUR_S)
