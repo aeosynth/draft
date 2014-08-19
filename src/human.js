@@ -18,7 +18,7 @@ module.exports = class extends EventEmitter {
     if (this.sock)
       this.sock.ws.close()
 
-    this.sock = sock
+    sock.mixin(this)
     sock.on('name', this._name.bind(this))
     sock.on('pick', this._pick.bind(this))
     if (!this.hash)
@@ -73,8 +73,5 @@ module.exports = class extends EventEmitter {
   pickRand() {
     var index = _.rand(this.packs[0].length)
     this.pick(index, true)
-  }
-  send(type, data) {
-    this.sock.send(type, data)
   }
 }

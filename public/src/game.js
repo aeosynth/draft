@@ -118,6 +118,10 @@ var Game = React.createClass({
 
       this.setState({ land, main, side });
       App.save('zone', value);
+    },
+
+    kick(i) {
+      App.send('kick', i)
     }
   },
 
@@ -384,8 +388,15 @@ var Stats = React.createClass({
       } else
         td = d.td({}, p.name)
 
+      if (this.props.isHost)
+        var kicker = d.td({},
+            d.button({
+              onClick: App.e('kick', i)},
+              'X'))
+
       return d.tr({
         className: className},
+        kicker,
         d.td({}, i + 1),
         td,
         d.td({}, p.packs),
@@ -410,6 +421,7 @@ var Stats = React.createClass({
       d.table({}, d.tbody({
         id: 'stats'},
         d.tr({},
+          this.props.isHost && d.th({}, 'kick'),
           d.th({}, '#'),
           d.th({}, 'name'),
           d.th({}, 'packs'),

@@ -120,7 +120,7 @@ module.exports = class Game extends EventEmitter {
   }
 
   kill(msg) {
-    this.players.forEach(p => p.send('error', msg))
+    this.players.forEach(p => p.err(msg))
     delete games[this.id]
     this.emit('kill')
   }

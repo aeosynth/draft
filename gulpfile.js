@@ -6,9 +6,14 @@ try {
   var traceur = require('gulp-traceur')
 } catch(err) {}
 
+function log(e) {
+  console.log(e.message)
+}
+
 function build(e) {
   gulp.src(e.path)
   .pipe(traceur())
+  .on('error', log)
   .pipe(gulp.dest('public/out'))
   .pipe(lr({ auto: false }))
 }
