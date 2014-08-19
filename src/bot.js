@@ -21,4 +21,5 @@ module.exports = class extends EventEmitter {
     this.emit('pass', pack)
   }
   send(){}
+  err(){}
 }
