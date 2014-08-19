@@ -13,7 +13,7 @@ var games = {}
 ;(function playerTimer() {
   for (var id in games) {
     var game = games[id]
-    if (!game.round)
+    if (game.round < 1)
       continue
     for (var p of game.players)
       if (p.time && !--p.time)
