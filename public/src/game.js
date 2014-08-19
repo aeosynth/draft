@@ -81,25 +81,6 @@ var Game = React.createClass({
       link.click();
       link.remove();
     },
-    generate(filetype) {
-      var deck = {
-        main: {},
-        side: {}
-      };
-      var codes = {};
-      ZONES.forEach(zone => {
-        this.state[zone].forEach(card => {
-          var {code, name} = card;
-          codes[name] = code;
-          deck[zone][name] || (deck[zone][name] = 0);
-          deck[zone][name]++;
-        });
-      });
-
-      App.send('hash', deck)
-
-      return this.gen[filetype].call(this, deck, codes);
-    },
     changeLand(color, zoneName, e) {
       var {land} = this.state;
       land[zoneName][color] = parseInt(e.target.value);
@@ -176,6 +157,26 @@ var Game = React.createClass({
         land[zoneName][color] = 0);
     });
     return land;
+  },
+
+  generate(filetype) {
+    var deck = {
+      main: {},
+      side: {}
+    };
+    var codes = {};
+    ZONES.forEach(zone => {
+      this.state[zone].forEach(card => {
+        var {code, name} = card;
+        codes[name] = code;
+        deck[zone][name] || (deck[zone][name] = 0);
+        deck[zone][name]++;
+      });
+    });
+
+    App.send('hash', deck)
+
+    return this.gen[filetype].call(this, deck, codes);
   },
 
   gen: {
