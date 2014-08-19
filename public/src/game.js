@@ -4,6 +4,7 @@ var ZONES = ['main', 'side'];
 var Game = React.createClass({
   getInitialState() {
     return {
+      decklist: '',
       isHost: false,
       selected: null,
       self: null,
@@ -17,6 +18,12 @@ var Game = React.createClass({
   },
 
   events: {
+    copy() {
+      this.setState({
+        decklist: this.generate('txt')
+      })
+    },
+
     join(room) {
       this.setState(this.getInitialState());
       App.send('join', room);
@@ -244,18 +251,6 @@ ${fn(deck.side)}
 });
 
 var Settings = React.createClass({
-  getInitialState() {
-    return {
-      decklist: ''
-    };
-  },
-
-  copy() {
-    var state = { decklist: this.props.generate('txt') };
-    var cb = () => this.refs.decklist.getDOMNode().select();
-    this.setState(state, cb);
-  },
-
   render() {
     var sort = ['cmc', 'color', 'rarity', 'type'].map(x =>
       d.button({
@@ -323,7 +318,7 @@ var Settings = React.createClass({
           placeholder: 'decklist',
           ref: 'decklist',
           readOnly: true,
-          value: this.state.decklist})),
+          value: this.props.decklist})),
       d.div({},
         'add cards to',
         zone),
