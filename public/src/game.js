@@ -18,10 +18,9 @@ var Game = React.createClass({
   },
 
   events: {
-    copy() {
-      this.setState({
-        decklist: this.generate('txt')
-      })
+    copy(ref) {
+      this.setState({decklist: this.generate('txt')},
+        ()=> ref.getDOMNode().select())
     },
 
     join(room) {
@@ -312,7 +311,7 @@ var Settings = React.createClass({
       d.div({},
         d.button({
           disabled: this.props.round !== -1,
-          onClick: App.e('copy')},
+          onClick: App.e('copy', this.refs.decklist)},
           'copy'),
         d.textarea({
           placeholder: 'decklist',
