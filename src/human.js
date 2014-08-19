@@ -51,14 +51,8 @@ module.exports = class extends EventEmitter {
       this.sendPack(pack)
   }
   sendPack(pack) {
-    if (!pack)
-      return this.time = 0
-
-    if (pack.length > 1) {
-      this.time = 20 + 5 * pack.length
-      this.send('set', { pack })
-    } else
-      this.pick(0, true)
+    this.time = 20 + 5 * pack.length
+    this.send('set', { pack })
   }
   pick(index, isJunk) {
     var pack = this.packs.shift()
@@ -66,12 +60,26 @@ module.exports = class extends EventEmitter {
 
     this.pool.push(card)
     this.send('add', [card, isJunk])
-    this.sendPack(this.packs[0])
+
+    var next = this.packs[0]
+    if (!next)
+      this.time = 0
+    else if (next.length > 1)
+      this.sendPack(next)
+    else
+      this.pick(0, true)
 
     this.emit('pass', pack)
   }
   pickRand() {
     var index = _.rand(this.packs[0].length)
     this.pick(index, true)
+  }
+  kick() {
+    this.send = ()=>{}
+    while(this.packs.length)
+      this.pickRand()
+    this.sendPack = this.pickRand
+    this.isBot = true
   }
 }

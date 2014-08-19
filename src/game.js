@@ -78,12 +78,26 @@ module.exports = class Game extends EventEmitter {
     if (h.id === this.hostID) {
       h.isHost = true
       sock.once('start', this.start.bind(this))
+      sock.on('kick', this.kick.bind(this))
     }
     sock.once('exit', this.exit.bind(this, h))
     h.on('meta', this.meta.bind(this))
     this.players.push(h)
     this.greet(h)
     this.meta()
+  }
+
+  kick(i) {
+    var h = this.players[i]
+    if (!h || h.isBot)
+      return
+
+    if (this.round)
+      h.kick()
+    else
+      h.exit()
+
+    h.err('you were kicked')
   }
 
   greet(h) {
