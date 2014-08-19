@@ -232,20 +232,9 @@ ${fn(deck.side)}
       d.audio({
         ref: 'audio',
         src: '/beep.wav'}),
-      Settings({
-        land: this.state.land,
-        round: this.state.round}),
-      Stats({
-        isHost: this.state.isHost,
-        players: this.state.players,
-        round: this.state.round,
-        self: this.state.self,
-        title: this.state.title}),
-      Cards({
-        pack: this.state.pack,
-        main: this.state.main,
-        side: this.state.side,
-        junk: this.state.junk}))
+      Settings(this.state),
+      Stats(this.state),
+      Cards(this.state))
   }
 });
 
