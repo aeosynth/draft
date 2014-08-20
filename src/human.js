@@ -52,17 +52,17 @@ module.exports = class extends EventEmitter {
   }
   sendPack(pack) {
     if (pack.length === 1)
-      return this.pick(0, true)
+      return this.pick(0)
 
     this.time = 20 + 5 * pack.length
     this.send('set', { pack })
   }
-  pick(index, isJunk) {
+  pick(index) {
     var pack = this.packs.shift()
     var card = pack.splice(index, 1)[0]
 
     this.pool.push(card)
-    this.send('add', [card, isJunk])
+    this.send('add', card)
 
     var [next] = this.packs
     if (!next)
@@ -74,7 +74,7 @@ module.exports = class extends EventEmitter {
   }
   pickRand() {
     var index = _.rand(this.packs[0].length)
-    this.pick(index, true)
+    this.pick(index)
   }
   kick() {
     this.send = ()=>{}

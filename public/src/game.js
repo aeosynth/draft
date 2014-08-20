@@ -27,9 +27,9 @@ var Game = React.createClass({
       this.setState(this.getInitialState());
       App.send('join', room);
     },
-    add([card, isJunk]) {
+    add(card) {
       var state = {};
-      var zone = isJunk ? 'junk' : App.state.zone
+      var {zone} = App.state
       state[zone] = this.state[zone].concat(card);
       this.setState(state);
     },
