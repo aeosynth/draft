@@ -247,7 +247,9 @@ ${fn(deck.side)}
   },
 
   render() {
-    var pack = GridRow({ zone: this.state.pack, zoneName: 'pack' })
+    var {pack} = this.state
+    if (pack.length)
+      pack = GridRow({ zone: pack, zoneName: 'pack' })
     var pool = App.state.columns ? Cols : Grid
 
     return d.div({},
