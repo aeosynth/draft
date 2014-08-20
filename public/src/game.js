@@ -142,11 +142,11 @@ var Game = React.createClass({
   },
 
   lands: {
-    w: { cmc: 0, code: 'UNH', color: 'A', rarity: 5, type: 'Land', key: 'w', url: 'http://mtgimage.com/multiverseid/73963.jpg', name: 'Plains'   },
-    u: { cmc: 0, code: 'UNH', color: 'A', rarity: 5, type: 'Land', key: 'u', url: 'http://mtgimage.com/multiverseid/73951.jpg', name: 'Island'   },
-    b: { cmc: 0, code: 'UNH', color: 'A', rarity: 5, type: 'Land', key: 'b', url: 'http://mtgimage.com/multiverseid/73973.jpg', name: 'Swamp'    },
-    r: { cmc: 0, code: 'UNH', color: 'A', rarity: 5, type: 'Land', key: 'r', url: 'http://mtgimage.com/multiverseid/73958.jpg', name: 'Mountain' },
-    g: { cmc: 0, code: 'UNH', color: 'A', rarity: 5, type: 'Land', key: 'g', url: 'http://mtgimage.com/multiverseid/73946.jpg', name: 'Forest'   }
+    w: { cmc: 0, code: 'UNH', color: 'colorless', rarity: 'basic', type: 'Land', key: 'w', url: 'http://mtgimage.com/multiverseid/73963.jpg', name: 'Plains'   },
+    u: { cmc: 0, code: 'UNH', color: 'colorless', rarity: 'basic', type: 'Land', key: 'u', url: 'http://mtgimage.com/multiverseid/73951.jpg', name: 'Island'   },
+    b: { cmc: 0, code: 'UNH', color: 'colorless', rarity: 'basic', type: 'Land', key: 'b', url: 'http://mtgimage.com/multiverseid/73973.jpg', name: 'Swamp'    },
+    r: { cmc: 0, code: 'UNH', color: 'colorless', rarity: 'basic', type: 'Land', key: 'r', url: 'http://mtgimage.com/multiverseid/73958.jpg', name: 'Mountain' },
+    g: { cmc: 0, code: 'UNH', color: 'colorless', rarity: 'basic', type: 'Land', key: 'g', url: 'http://mtgimage.com/multiverseid/73946.jpg', name: 'Forest'   }
   },
 
   setLand(land) {
@@ -526,7 +526,7 @@ var Cols = React.createClass({
         .filter(key => keys.indexOf(key) > -1)
       break
     case 'rarity':
-      keys = ['common', 'uncommon', 'rare', 'mythic', 'special']
+      keys = ['basic', 'common', 'uncommon', 'rare', 'mythic', 'special']
         .filter(key => keys.indexOf(key) > -1)
       break
     case 'cmc':
