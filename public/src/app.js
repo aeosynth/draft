@@ -3,6 +3,7 @@ var App = {
 
   state: {
     component: null,
+    columns: false,
     name: 'newfriend',
 
     seats: 8,

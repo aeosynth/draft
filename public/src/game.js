@@ -45,18 +45,25 @@ var Game = React.createClass({
     start() {
       App.send('start', App.state.bots);
     },
-    clickPack(index) {
-      if (this.state.selected !== index)
-        return this.state.selected = index;
+    clickPack(name) {
+      if (this.state.selected !== name)
+        return this.state.selected = name;
 
-      App.send('pick', index);
+      var {pack} = this.state
+      for (var i = 0; i < pack.length; i++)
+        if (pack[i].name === name)
+          break
+      App.send('pick', i);
       this.setState({pack: [], selected: null});
     },
 
-    clickPool(index, zoneName, e) {
+    clickPool(cardName, zoneName, e) {
       var {land, main, side, junk} = this.state;
       var from = this.state[zoneName];
-      var card = from[index];
+      for (var i = 0; i < from.length; i++)
+        if (from[i].name === cardName)
+          break
+      var card = from[i];
 
       if (card.key) {
         var {key} = card;
@@ -71,7 +78,7 @@ var Game = React.createClass({
       else
         to = zoneName === 'side' ? main : side;
 
-      from.splice(index, 1);
+      from.splice(i, 1);
       to.push(card);
       this.setState({ main, side, junk });
     },
@@ -239,13 +246,17 @@ ${fn(deck.side)}
   },
 
   render() {
+    var pack = GridRow({ zone: this.state.pack, zoneName: 'pack' })
+    var pool = App.state.columns ? Cols : Grid
+
     return d.div({},
       d.audio({
         ref: 'audio',
         src: '/beep.wav'}),
       Settings(this.state),
       Stats(this.state),
-      Cards(this.state))
+      pack,
+      pool(this.state))
   }
 });
 
@@ -321,6 +332,13 @@ var Settings = React.createClass({
       d.div({},
         'add cards to',
         zone),
+      d.div({},
+        d.label({},
+          'column view',
+          d.input({
+            type: 'checkbox',
+            checked: App.state.columns,
+            onChange: App.change('columns')}))),
       d.div({},
         d.label({},
           'beep when receiving packs',
@@ -427,57 +445,156 @@ var Stats = React.createClass({
   }
 });
 
-var Cards = React.createClass({
-  sort(arr) {
-    var {sort} = App.state;
+var GridRow = React.createClass({
+  sort(a, b) {
+    var {sort} = App.state
 
-    return arr.sort((a, b) => {
-      if (a[sort] < b[sort])
-        return -1;
-      if (a[sort] > b[sort])
-        return +1;
+    if (a[sort] < b[sort])
+      return -1;
+    if (a[sort] > b[sort])
+      return +1;
 
-      if (a.name < b.name)
-        return -1;
-      if (a.name > b.name)
-        return +1;
+    if (a.name < b.name)
+      return -1;
+    if (a.name > b.name)
+      return +1;
 
-      return 0;
-    });
+    return 0;
   },
-
-  show(arr, zone) {
-    var event = zone === 'pack'
+  render() {
+    var {zone, zoneName} = this.props
+    var event = zoneName === 'pack'
       ? 'clickPack'
       : 'clickPool'
 
-    return arr.map((card, i) =>
+    var view = zone.slice().sort(this.sort).map(x =>
       d.img({
-        onClick: App.e(event, i, zone),
-        src: card.url}))
+        src: x.url,
+        onClick: App.e(event, x.name)
+      }))
+
+    return d.div({className: 'cards'},
+      d.h1({}, zoneName + ' ' + zone.length),
+      view)
+  }
+})
+
+var Grid = React.createClass({
+  render() {
+    var {main, side, junk} = this.props;
+
+    return d.div({ className: 'cards'},
+      GridRow({ zone: main, zoneName: 'main' }),
+      GridRow({ zone: side, zoneName: 'side' }),
+      GridRow({ zone: junk, zoneName: 'junk' }))
+  }
+});
+
+var Cols = React.createClass({
+  getInitialState() {
+    return { hidden: true }
+  },
+
+  group(arr, attr) {
+    var o = {}
+    arr.forEach(x => {
+      var key = x[attr]
+      o[key] || (o[key] = [])
+      o[key].push(x)
+    })
+    for (var key in o)
+      o[key].sort(this.sort)
+    return o
+  },
+  sort(a, b) {
+    if (a.name < b.name)
+      return -1
+    if (a.name > b.name)
+      return +1
+
+    return 0
+  },
+  keys(pool) {
+    var {sort} = App.state
+    var keys = Object.keys(pool)
+    switch (sort) {
+    case 'color':
+      keys = ['colorless', 'white', 'blue', 'black', 'red', 'green', 'multicolor']
+        .filter(key => keys.indexOf(key) > -1)
+      break
+    case 'rarity':
+      keys = ['common', 'uncommon', 'rare', 'mythic', 'special']
+        .filter(key => keys.indexOf(key) > -1)
+      break
+    case 'cmc':
+      keys = keys.filter(key => {
+        if (parseInt(key) < 7)
+          return true
+        pool['6'] || (pool['6'] = [])
+        pool['6'] = pool['6'].concat(pool[key])
+      })
+    default:
+      keys = keys.sort()
+    }
+    return keys
+  },
+
+  enter(url, e) {
+    var edge = document.documentElement.clientWidth - 240
+    var {right} = e.target.getBoundingClientRect()
+    if (right > edge) {
+      var left = 0
+      right = null
+    } else {
+      left = null
+      right = 0
+    }
+    var style = { left, right }
+    this.setState({ url, style, hidden: false })
+  },
+  hide() {
+    this.setState({ hidden: true })
+  },
+
+  view(pool, zoneName) {
+    var {sort} = App.state
+    var {length} = pool
+    pool = this.group(pool, sort)
+
+    var cols = this.keys(pool).map(key => {
+      var list = pool[key].map((x, i) =>
+        d.div({
+          className: x.color,
+          onMouseOver: this.enter.bind(null, x.url),
+          onClick: App.e('clickPool', x.name, zoneName)},
+          x.name))
+      return d.div({ className: 'col' },
+        list.length + ' - ' + key,
+        list)
+    })
+
+    return d.div({},
+      d.h1({}, zoneName + ' ' + length),
+      cols
+    )
   },
 
   render() {
-    var {pack, main, side, junk} = this.props;
-    pack = this.show(pack, 'pack');
-    main = this.show(this.sort(main), 'main');
-    side = this.show(this.sort(side), 'side');
-    junk = this.show(this.sort(junk), 'junk');
+    var {main, side, junk} = this.props
+    main = this.view(main, 'main')
+    side = this.view(side, 'side')
+    junk = this.view(junk, 'junk')
 
-    return d.div({
-      className: 'cards'},
-      d.div({
-        hidden: !pack.length},
-        d.h1({}, 'pack ' + pack.length),
-        pack),
-      d.div({},
-        d.h1({}, 'main ' + main.length),
-        main),
-      d.div({},
-        d.h1({}, 'side ' + side.length),
-        side),
-      d.div({},
-        d.h1({}, 'junk ' + junk.length),
-        junk))
+    var {hidden, url, style} = this.state
+    var img = d.img({ style, hidden,
+      onMouseEnter: this.hide,
+      id: 'preview',
+      src: url})
+
+    return d.div({ className: 'cards' },
+        img,
+        main,
+        side,
+        junk)
   }
-});
+})

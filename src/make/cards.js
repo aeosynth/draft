@@ -142,26 +142,15 @@ function doCard(rawCard, cards, code, set) {
       var card = cards[name]
       card.cmc += rawCard.cmc
       if (card.color !== rawCard.color)
-        card.color = 'Y'
+        card.color = 'multicolor'
     }
     return
   }
 
   var {colors} = rawCard
-  var color = !colors ? 'A' :
-    colors.length > 1 ? 'Y' :
-    colors[0] === 'Blue' ? 'U' :
-    colors[0][0]
-
-  set[rarity].push(name.toLowerCase())
-
-  rarity = {
-    special: 0,
-    mythic: 1,
-    rare: 2,
-    uncommon: 3,
-    common: 4
-  }[rarity]
+  var color = !colors ? 'colorless' :
+    colors.length > 1 ? 'multicolor' :
+    colors[0].toLowerCase()
 
   cards[name] = { color, name,
     type: rawCard.types[rawCard.types.length - 1],
@@ -172,4 +161,6 @@ function doCard(rawCard, cards, code, set) {
       }
     }
   }
+
+  set[rarity].push(name.toLowerCase())
 }

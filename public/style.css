@@ -17,7 +17,8 @@ textarea {
 }
 
 .cards > div {
-  border: 1px solid black;
+  border-top: 1px solid black;
+  clear: both;
 }
 
 .cards img {
@@ -82,6 +83,27 @@ textarea {
   color: #393;
 }
 
+.col {
+  float: left;
+  width: 182px;
+  overflow: hidden;
+  white-space: nowrap;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+}
+
+.colorless  { background-color: rgba(  0,   0,   0, .1) }
+.red        { background-color: rgba(255,   0,   0, .1) }
+.green      { background-color: rgba(  0, 255,   0, .1) }
+.blue       { background-color: rgba(  0,   0, 255, .1) }
+.multicolor { background-color: rgba(255, 255,   0, .1) }
+.black {
+  background-color: black;
+  color: white;
+}
+
+
 #github {
   position: fixed;
   bottom: 0;
@@ -91,4 +113,9 @@ textarea {
 
 #stats th, #stats td {
   padding-right: 5px;
+}
+
+#preview {
+  position: fixed;
+  bottom: 0;
 }

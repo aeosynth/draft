@@ -31,5 +31,4 @@ gulp.task('default', function() {
   lr.listen()
   build({ path: 'public/src/*' })
   gulp.watch('public/src/*', build)
-  gulp.watch(['public/style.css', 'public/index.html'], lr.changed)
 })
