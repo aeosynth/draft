@@ -51,6 +51,9 @@ module.exports = class extends EventEmitter {
       this.sendPack(pack)
   }
   sendPack(pack) {
+    if (pack.length === 1)
+      return this.pick(0, true)
+
     this.time = 20 + 5 * pack.length
     this.send('set', { pack })
   }
@@ -61,13 +64,11 @@ module.exports = class extends EventEmitter {
     this.pool.push(card)
     this.send('add', [card, isJunk])
 
-    var next = this.packs[0]
+    var [next] = this.packs
     if (!next)
       this.time = 0
-    else if (next.length > 1)
-      this.sendPack(next)
     else
-      this.pick(0, true)
+      this.sendPack(next)
 
     this.emit('pass', pack)
   }
