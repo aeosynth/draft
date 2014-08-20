@@ -60,6 +60,7 @@ var Game = React.createClass({
     clickPool(cardName, zoneName, e) {
       var {land, main, side, junk} = this.state;
       var from = this.state[zoneName];
+
       for (var i = 0; i < from.length; i++)
         if (from[i].name === cardName)
           break
@@ -470,7 +471,7 @@ var GridRow = React.createClass({
     var view = zone.slice().sort(this.sort).map(x =>
       d.img({
         src: x.url,
-        onClick: App.e(event, x.name)
+        onClick: App.e(event, x.name, zoneName)
       }))
 
     return d.div({className: 'cards'},
