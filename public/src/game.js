@@ -448,13 +448,29 @@ var Stats = React.createClass({
   }
 });
 
+var RARITIES = {
+  'special': 0,
+  'mythic': 1,
+  'rare': 2,
+  'uncommon': 3,
+  'common': 4,
+  'basic': 5
+}
+
 var GridRow = React.createClass({
   sort(a, b) {
     var {sort} = App.state
 
-    if (a[sort] < b[sort])
+    var _a = a[sort]
+    var _b = b[sort]
+    if (sort === 'rarity') {
+      _a = RARITIES[_a]
+      _b = RARITIES[_b]
+    }
+
+    if (_a < _b)
       return -1;
-    if (a[sort] > b[sort])
+    if (_a > _b)
       return +1;
 
     if (a.name < b.name)
