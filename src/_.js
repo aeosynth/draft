@@ -14,7 +14,11 @@ module.exports = {
     return count
   },
   choose(n, arr) {
-    //http://en.wikipedia.org/wiki/Fisher–Yates_shuffle
+    // arr.slice(0) copies the entire array
+    if (n === 0)
+      return []
+
+    // http://en.wikipedia.org/wiki/Fisher–Yates_shuffle
     var i = arr.length
     var end = i - n
     while (i > end) {
