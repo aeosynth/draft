@@ -476,7 +476,7 @@ var GridRow = React.createClass({
         onClick: App.e(event, x.name, zoneName)
       }))
 
-    return d.div({className: 'cards'},
+    return d.div({className: 'zone'},
       d.h1({}, zoneName + ' ' + zone.length),
       view)
   }
@@ -486,7 +486,7 @@ var Grid = React.createClass({
   render() {
     var {main, side, junk} = this.props;
 
-    return d.div({ className: 'cards'},
+    return d.div({},
       GridRow({ zone: main, zoneName: 'main' }),
       GridRow({ zone: side, zoneName: 'side' }),
       GridRow({ zone: junk, zoneName: 'junk' }))
@@ -576,7 +576,7 @@ var Cols = React.createClass({
         list)
     })
 
-    return d.div({},
+    return d.div({className: 'zone'},
       d.h1({}, zoneName + ' ' + length),
       cols
     )
@@ -594,7 +594,7 @@ var Cols = React.createClass({
       id: 'preview',
       src: url})
 
-    return d.div({ className: 'cards' },
+    return d.div({},
         img,
         main,
         side,

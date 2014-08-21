@@ -16,12 +16,12 @@ textarea {
   cursor: pointer;
 }
 
-.cards > div {
+.zone {
   border-top: 1px solid black;
   clear: both;
 }
 
-.cards img {
+#preview, .zone img {
   cursor: pointer;
   width:  240px;
   height: 340px;
