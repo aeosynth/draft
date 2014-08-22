@@ -20,7 +20,7 @@ function create(opts) {
   rooms[g.id] = g
   g.once('kill', kill)
 
-  var url = base + encodeURIComponent('drafts.in/q/#' + g.id)
+  var url = base + encodeURIComponent('drafts.in/#q/' + g.id)
   get(url, (err, data) => {
     if (err)
       this.err(err)
