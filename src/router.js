@@ -1,3 +1,5 @@
+var get = require('get')
+var {base} = require('./data')
 var Game = require('./game')
 var Room = require('./room')
 var Sock = require('./sock')
@@ -16,8 +18,15 @@ function create(opts) {
 
   var g = new Game(opts)
   rooms[g.id] = g
-  this.send('route', 'q/' + g.id)
   g.once('kill', kill)
+
+  var url = base + encodeURIComponent('drafts.in/q/#' + g.id)
+  get(url, (err, data) => {
+    if (err)
+      this.err(err)
+    else
+      this.send('set', { url: data })
+  })
 }
 
 function join(roomID) {

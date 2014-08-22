@@ -30,6 +30,7 @@ var Lobby = React.createClass({
       Chat(this.state),
       d.h1({}, 'drafts.in'),
       d.p({className: 'err'}, App.state.err),
+      d.p({}, d.a({ href: this.state.url }, this.state.url)),
       d.div({}, d.small({}, 'unaffiliated with wizards of the coast')),
       Create())
   }
