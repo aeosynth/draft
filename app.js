@@ -4,7 +4,9 @@ var serve = require('serve')
 var eio = require('engine.io')
 var traceur = require('traceur')
 
-traceur.require.makeDefault()
+traceur.require.makeDefault(function(path) {
+  return path.indexOf('node_modules') === -1
+})
 var router = require('./src/router')
 
 var server = http.createServer(serve('public')).listen(PORT)

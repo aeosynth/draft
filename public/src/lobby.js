@@ -1,10 +1,33 @@
 var d = React.DOM
 
 var Lobby = React.createClass({
+  getInitialState() {
+    return {
+      messages: []
+    };
+  },
+  componentDidMount() {
+    App.send('join', 'lobby')
+    for (var event in this.events)
+      App.on(event, this.events[event].bind(this))
+  },
+  componentWillUnmount() {
+    App.off()
+  },
+  events: {
+    set(state) {
+      this.setState(state)
+    },
+    say(msg) {
+      var messages = this.state.messages.concat(msg)
+      this.setState({ messages })
+    },
+  },
+
   render() {
     return d.div({},
       d.a({href:'https://github.com/aeosynth/draft'}, d.img({id: 'github', src:'https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67', alt:'Fork me on GitHub', 'data-canonical-src':'https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png'})),
-      Chat(),
+      Chat(this.state),
       d.h1({}, 'drafts.in'),
       d.p({className: 'err'}, App.state.err),
       d.div({}, d.small({}, 'unaffiliated with wizards of the coast')),
@@ -13,26 +36,8 @@ var Lobby = React.createClass({
 })
 
 var Chat = React.createClass({
-  getInitialState() {
-    return {
-      messages: []
-    };
-  },
-
   componentDidMount() {
     this.refs.chat.getDOMNode().focus();
-    App.on('say', this.hear)
-    App.on('set', this.setState.bind(this))
-    App.send('join', 'lobby')
-  },
-
-  componentWillUnmount() {
-    App.off()
-  },
-
-  hear(msg) {
-    var messages = this.state.messages.concat(msg);
-    this.setState({ messages });
   },
 
   pad(n) {
@@ -67,7 +72,7 @@ var Chat = React.createClass({
 
   render() {
     var {pad} = this;
-    var messages = this.state.messages.map(x => {
+    var messages = this.props.messages.map(x => {
       if (!x)
         return null
       var date = new Date(x.time);
