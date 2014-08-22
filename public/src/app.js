@@ -66,7 +66,7 @@ var App = {
       query: { id, name }
     };
 
-    var ws = this.ws = eio('ws://' + location.host, options);
+    var ws = this.ws = eio('ws://sock.drafts.in', options);
     ws.on('open', App.onOpen.bind(App))
     ws.on('message', (msg) => {
       var [type, data] = JSON.parse(msg);
