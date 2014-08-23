@@ -9,7 +9,7 @@ var Sets = {}
 before()
 
 var types = ['core', 'expansion', 'commander', 'planechase', 'starter', 'un']
-var codes = ['HHO', 'MMA', 'VMA', 'CNS']
+var codes = ['pHHO', 'MMA', 'VMA', 'CNS']
 for (var code in raw) {
   var set = raw[code]
   if (types.indexOf(set.type) > -1
@@ -53,10 +53,10 @@ function before() {
 
 function after() {
   //no multiverseid
-  for (var card of raw.HHO.cards) {
+  for (var card of raw.pHHO.cards) {
     var {name} = card
     var lc = (card.names ? card.names.join(' // ') : name).toLowerCase()
-    Cards[lc].sets.HHO.url = `http://mtgimage.com/card/${name}.jpg`
+    Cards[lc].sets.pHHO.url = `http://mtgimage.com/card/${name}.jpg`
   }
 
   var {DGM} = Sets
