@@ -1,8 +1,7 @@
-var get = require('get')
-var {base} = require('./data')
 var Game = require('./game')
 var Room = require('./room')
 var Sock = require('./sock')
+var botnet = require('./botnet')
 var util = require('./util')
 
 var rooms = {
@@ -20,12 +19,11 @@ function create(opts) {
   rooms[g.id] = g
   g.once('kill', kill)
 
-  var url = base + encodeURIComponent('drafts.in/#q/' + g.id)
-  get(url, (err, data) => {
-    if (err)
-      this.err(err)
-    else
-      this.send('set', { url: data })
+  botnet(g.id, (err, url) => {
+    if (!err)
+      return this.send('set', { url })
+    console.log(err.message)
+    this.send('route', 'q/' + g.id)
   })
 }
 

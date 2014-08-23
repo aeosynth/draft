@@ -7,6 +7,6 @@ try {
 }
 
 module.exports = { Cards, Sets,
-  mws: require('../data/mws'),
-  base: require('../data/base')
+  ads: require('../data/ads'),
+  mws: require('../data/mws')
 }
