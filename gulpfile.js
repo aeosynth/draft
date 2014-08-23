@@ -1,10 +1,7 @@
 var spawn = require('child_process').spawn
 var gulp = require('gulp')
-
-try {
-  var lr = require('gulp-livereload')
-  var traceur = require('gulp-traceur')
-} catch(err) {}
+var lr = require('gulp-livereload')
+var traceur = require('gulp-traceur')
 
 function log(e) {
   console.log(e.message)
@@ -17,13 +14,6 @@ function build(e) {
   .pipe(gulp.dest('public/out'))
   .pipe(lr({ auto: false }))
 }
-
-function run() {
-  spawn('node', ['app.js'], { stdio: 'inherit' })
-  .on('close', run)
-}
-
-gulp.task('run', run)
 
 gulp.task('default', function() {
   spawn('node', ['app.js'], { stdio: 'inherit' })

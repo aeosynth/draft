@@ -1,7 +1,10 @@
 all: install cards score js
 
+live: export NODE_ENV=production
+live: all
+
 install:
-	npm install --production
+	npm install
 	ln -sf ${PWD}/node_modules/normalize.css/normalize.css public/out
 	ln -sf ${PWD}/node_modules/react/dist/react.js public/out
 	ln -sf ${PWD}/node_modules/engine.io-client/engine.io.js public/out
@@ -19,4 +22,4 @@ js:
 	node_modules/.bin/traceur --modules=commonjs --dir public/src public/out
 
 run: js
-	node_modules/.bin/gulp run
+	node run
