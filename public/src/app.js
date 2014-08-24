@@ -5,6 +5,7 @@ var App = {
     component: null,
     columns: false,
     name: 'newfriend',
+    chat: true,
 
     seats: 8,
     type: 'sealed',
@@ -80,10 +81,8 @@ var App = {
           this.emit(type, data);
       }
     });
-    ws.on('close', ()=> console.log('close'))
   },
   onOpen() {
-    console.log('open')
     this.send = function (type, data) {
       this.ws.send(JSON.stringify([type, data]));
     }

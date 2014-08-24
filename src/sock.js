@@ -30,9 +30,10 @@ module.exports = class extends EventEmitter {
     ws.on('message', message.bind(this))
     ws.on('close', this.exit)
   }
-  mixin(dest) {
-    dest.sock = this
+  mixin(h) {
+    h.sock = this
+    this.h = h
     for (var key in mixins)
-      dest[key] = this[key]
+      h[key] = this[key]
   }
 }

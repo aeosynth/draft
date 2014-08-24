@@ -3,6 +3,8 @@ var ZONES = ['main', 'side'];
 var Game = React.createClass({
   getInitialState() {
     return {
+      messages: [],
+
       decklist: '',
       isHost: false,
       selected: null,
@@ -31,6 +33,10 @@ var Game = React.createClass({
       var {zone} = App.state
       state[zone] = this.state[zone].concat(card);
       this.setState(state);
+    },
+    hear(msg) {
+      var messages = this.state.messages.concat(msg)
+      this.setState({ messages })
     },
     set(state) {
       if (state.pool) {
@@ -251,10 +257,14 @@ ${fn(deck.side)}
       pack = GridRow({ zone: pack, zoneName: 'pack' })
     var pool = App.state.columns ? Cols : Grid
 
-    return d.div({},
+    if (App.state.chat)
+      var className = 'chat'
+
+    return d.div({ className, id: 'game' },
       d.audio({
         ref: 'audio',
         src: '/beep.wav'}),
+      Chat(this.state),
       Settings(this.state),
       Stats(this.state),
       pack,
@@ -290,6 +300,14 @@ var Settings = React.createClass({
             onChange: App.e('changeLand', x, zoneName)})))})
 
     return d.div({ className: 'settings' },
+      d.div({},
+        d.label({},
+          'chat',
+          d.input({
+            checked: App.state.chat,
+            type: 'checkbox',
+            onChange: App.change('chat')
+          }))),
       d.table({},
         d.tbody({},
           d.tr({},

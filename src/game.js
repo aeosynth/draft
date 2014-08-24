@@ -1,8 +1,8 @@
-var {EventEmitter} = require('events')
 var _ = require('./_')
 var Bot = require('./bot')
 var Human = require('./human')
 var Pool = require('./pool')
+var Room = require('./room')
 
 var SECOND = 1000
 var MINUTE = 1000 * 60
@@ -31,8 +31,10 @@ var games = {}
   setTimeout(gameTimer, MINUTE)
 })()
 
-module.exports = class Game extends EventEmitter {
+module.exports = class Game extends Room {
   constructor({id, seats, type, sets, cube}) {
+    super()
+
     if (sets)
       Object.assign(this, { sets,
         title: sets.join(' / ')})
@@ -67,6 +69,7 @@ module.exports = class Game extends EventEmitter {
         p.attach(sock)
         this.greet(p)
         this.meta()
+        super(sock)
         return
       }
     }
@@ -74,13 +77,14 @@ module.exports = class Game extends EventEmitter {
     if (this.round)
       return sock.err('game started')
 
+    super(sock)
+
     var h = new Human(sock)
     if (h.id === this.hostID) {
       h.isHost = true
       sock.once('start', this.start.bind(this))
       sock.on('kick', this.kick.bind(this))
     }
-    sock.once('exit', this.exit.bind(this, h))
     h.on('meta', this.meta.bind(this))
     this.players.push(h)
     this.greet(h)
@@ -109,12 +113,12 @@ module.exports = class Game extends EventEmitter {
     })
   }
 
-  exit(h) {
+  exit(sock) {
     if (this.round)
       return
 
-    h.sock.removeAllListeners('start')
-    var index = this.players.indexOf(h)
+    sock.removeAllListeners('start')
+    var index = this.players.indexOf(sock.h)
     this.players.splice(index, 1)
 
     this.players.forEach((p, i) =>

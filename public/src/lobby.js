@@ -18,7 +18,7 @@ var Lobby = React.createClass({
     set(state) {
       this.setState(state)
     },
-    say(msg) {
+    hear(msg) {
       var messages = this.state.messages.concat(msg)
       this.setState({ messages })
     },

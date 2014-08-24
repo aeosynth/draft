@@ -25,6 +25,6 @@ module.exports = class extends EventEmitter {
     this.messages.shift()
     this.messages.push(msg)
     for (sock of this.socks)
-      sock.send('say', msg)
+      sock.send('hear', msg)
   }
 }
