@@ -1,4 +1,3 @@
-var d = React.DOM
 var ZONES = ['main', 'side'];
 
 var Game = React.createClass({

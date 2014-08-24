@@ -28,6 +28,7 @@ var App = {
     zone: 'main'
   },
   init() {
+    window.d = React.DOM
     console.log('%chttps://github.com/aeosynth/draft', 'font-size:20pt');
 
     var key, val, state = this.state;
