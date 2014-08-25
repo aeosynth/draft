@@ -9,10 +9,16 @@ var BASICS = [
   'Swamp'
 ]
 
-function transform(cube) {
-  assert(typeof cube.list === 'string', 'typeof cube.list')
+function transform(cube, seats, type) {
+  var {list, cards, packs} = cube
 
-  var list = cube.list.split('\n').map(util.name)
+  assert(typeof list === 'string', 'typeof list')
+  assert(typeof cards === 'number', 'typeof cards')
+  assert(8 <= cards && cards <= 15, 'cards range')
+  assert(typeof packs === 'number', 'typeof packs')
+  assert(3 <= packs && packs <= 5, 'packs range')
+
+  list = cube.list.split('\n').map(util.name)
 
   var bad = []
   for (var cardName of list)
@@ -25,6 +31,12 @@ function transform(cube) {
       err += `; and ${bad.length} more`
     throw Error(err)
   }
+
+  var min = type === 'cube draft'
+    ? seats * cards * packs
+    : seats * 90
+  assert(min <= list.length && list.length <= 1e3,
+    `this cube needs between ${min} and 1000 cards; it has ${list.length}`)
 
   cube.list = list
 }
@@ -70,14 +82,9 @@ var util = module.exports = {
     assert(['draft', 'sealed', 'cube draft', 'cube sealed'].indexOf(type) > -1,
       'indexOf type')
 
-    if (!/cube/.test(type))
-      return sets.forEach(set => assert(set in Sets, `${set} in Sets`))
-
-    var {cards, packs} = cube
-    assert(typeof cards === 'number', 'typeof cards')
-    assert(8 <= cards && cards <= 15, 'cards range')
-    assert(typeof packs === 'number', 'typeof packs')
-    assert(3 <= packs && packs <= 5, 'packs range')
-    transform(cube)
+    if (/cube/.test(type))
+      transform(cube, seats, type)
+    else
+      sets.forEach(set => assert(set in Sets, `${set} in Sets`))
   }
 }
