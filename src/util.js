@@ -18,7 +18,13 @@ function transform(cube, seats, type) {
   assert(typeof packs === 'number', 'typeof packs')
   assert(3 <= packs && packs <= 5, 'packs range')
 
-  list = cube.list.split('\n').map(util.name)
+  list = list.split('\n').map(util.name)
+
+  var min = type === 'cube draft'
+    ? seats * cards * packs
+    : seats * 90
+  assert(min <= list.length && list.length <= 1e3,
+    `this cube needs between ${min} and 1000 cards; it has ${list.length}`)
 
   var bad = []
   for (var cardName of list)
@@ -26,17 +32,11 @@ function transform(cube, seats, type) {
       bad.push(cardName)
 
   if (bad.length) {
-    var err = `invalid cards: ${bad.splice(-10).join('; ')}`
+    var msg = `invalid cards: ${bad.splice(-10).join('; ')}`
     if (bad.length)
-      err += `; and ${bad.length} more`
-    throw Error(err)
+      msg += `; and ${bad.length} more`
+    throw Error(msg)
   }
-
-  var min = type === 'cube draft'
-    ? seats * cards * packs
-    : seats * 90
-  assert(min <= list.length && list.length <= 1e3,
-    `this cube needs between ${min} and 1000 cards; it has ${list.length}`)
 
   cube.list = list
 }
