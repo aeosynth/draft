@@ -7,6 +7,16 @@ textarea {
   vertical-align: top;
 }
 
+footer {
+  position: fixed;
+  bottom: 0;
+}
+
+.icon {
+  font-size: 32px;
+  margin: 8px;
+}
+
 .err {
   color: red;
 }
