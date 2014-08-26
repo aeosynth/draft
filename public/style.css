@@ -7,6 +7,16 @@ textarea {
   vertical-align: top;
 }
 
+footer {
+  position: fixed;
+  bottom: 0;
+}
+
+.icon {
+  font-size: 32px;
+  margin: 8px;
+}
+
 .err {
   color: red;
 }
@@ -54,28 +64,6 @@ textarea {
   background-color: rgba(255, 0, 0, .1);
 }
 
-#chat {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 20px;
-  width: 350px;
-  border-left: 1px solid black;
-  overflow: auto;
-}
-
-#chat input {
-  position: fixed;
-  bottom: 0;
-  right: 0;
-  height: 20px;
-  width: 350px;
-  padding: 0;
-  border: 0;
-  border-top: 1px solid black;
-  border-left: 1px solid black;
-}
-
 .time {
   color: #999;
 }
@@ -103,6 +91,27 @@ textarea {
   color: white;
 }
 
+#chat {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 20px;
+  width: 350px;
+  border-left: 1px solid black;
+  overflow: auto;
+}
+
+#chat input {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  height: 20px;
+  width: 350px;
+  padding: 0;
+  border: 0;
+  border-top: 1px solid black;
+  border-left: 1px solid black;
+}
 
 #github {
   position: fixed;
@@ -118,4 +127,12 @@ textarea {
 #preview {
   position: fixed;
   bottom: 0;
+}
+
+#game.chat {
+  margin-right: 351px;
+}
+
+#game:not(.chat) #chat {
+  display: none;
 }

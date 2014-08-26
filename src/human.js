@@ -19,7 +19,6 @@ module.exports = class extends EventEmitter {
       this.sock.ws.close()
 
     sock.mixin(this)
-    sock.on('name', this._name.bind(this))
     sock.on('pick', this._pick.bind(this))
     if (!this.hash)
       sock.once('hash', this._hash.bind(this))
@@ -33,12 +32,6 @@ module.exports = class extends EventEmitter {
       return
 
     this.hash = hash(deck)
-    this.emit('meta')
-  }
-  _name(name) {
-    if (typeof name !== 'string')
-      return
-    this.name = this.sock.name = name.slice(0, 15)
     this.emit('meta')
   }
   _pick(index) {

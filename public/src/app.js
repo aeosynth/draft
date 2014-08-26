@@ -5,6 +5,7 @@ var App = {
     component: null,
     columns: false,
     name: 'newfriend',
+    chat: true,
 
     seats: 8,
     type: 'sealed',
@@ -28,6 +29,7 @@ var App = {
     zone: 'main'
   },
   init() {
+    window.d = React.DOM
     console.log('%chttps://github.com/aeosynth/draft', 'font-size:20pt');
 
     var key, val, state = this.state;
@@ -79,10 +81,8 @@ var App = {
           this.emit(type, data);
       }
     });
-    ws.on('close', ()=> console.log('close'))
   },
   onOpen() {
-    console.log('open')
     this.send = function (type, data) {
       this.ws.send(JSON.stringify([type, data]));
     }

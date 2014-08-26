@@ -18,7 +18,7 @@ var Lobby = React.createClass({
     set(state) {
       this.setState(state)
     },
-    say(msg) {
+    hear(msg) {
       var messages = this.state.messages.concat(msg)
       this.setState({ messages })
     },
@@ -26,74 +26,20 @@ var Lobby = React.createClass({
 
   render() {
     return d.div({},
-      d.a({href:'https://github.com/aeosynth/draft'}, d.img({id: 'github', src:'https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67', alt:'Fork me on GitHub', 'data-canonical-src':'https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png'})),
       Chat(this.state),
       d.h1({}, 'drafts.in'),
       d.p({className: 'err'}, App.state.err),
       d.p({}, d.a({ href: this.state.url }, this.state.url)),
-      d.div({}, d.small({}, 'unaffiliated with wizards of the coast')),
-      Create())
+      Create(),
+      d.footer({},
+        d.div({},
+          d.a({ className: 'icon ion-social-github', href: 'https://github.com/aeosynth/draft' }),
+          d.a({ className: 'icon ion-social-twitter', href: 'https://twitter.com/aeosynth' }),
+          d.a({ className: 'icon ion-android-mail', href: 'mailto:james.r.campos@gmail.com' })),
+        d.div({},
+          d.small({}, 'unaffiliated with wizards of the coast'))))
   }
 })
-
-var Chat = React.createClass({
-  componentDidMount() {
-    this.refs.chat.getDOMNode().focus();
-  },
-
-  pad(n) {
-    return n < 10 ? '0' + n : n;
-  },
-
-  submit(e) {
-    e.preventDefault();
-
-    var el = this.refs.chat.getDOMNode();
-    var text = el.value.trim().slice(0, 1e3);
-    if (!text) return;
-    el.value = '';
-
-    if (text[0] !== '/')
-      return App.send('say', text)
-
-    var match = text.match(/^\/nick (\S+)/);
-    var text = match ?
-      `hello, ${match[1]}` :
-      'only /nick is supported';
-
-    App.send('say', {
-      time: Date.now(),
-      name: '',
-      text
-    });
-
-    if (match)
-      App.save('name', match[1]);
-  },
-
-  render() {
-    var {pad} = this;
-    var messages = this.props.messages.map(x => {
-      if (!x)
-        return null
-      var date = new Date(x.time);
-      var time = pad(date.getHours()) + ':' + pad(date.getMinutes());
-
-      return d.div({},
-        d.span({className:'time'}, time),
-        ' ',
-        d.span({className:'name'}, x.name),
-        ' ',
-        x.text)
-    });
-
-    return d.div({id:'chat'},
-      messages,
-      d.input({ref:'name', placeholder:'name'}),
-      d.form({onSubmit:this.submit},
-        d.input({ref:'chat', placeholder:'chat'})))
-  }
-});
 
 var Create = React.createClass({
   start() {
