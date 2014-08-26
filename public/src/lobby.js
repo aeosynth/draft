@@ -25,11 +25,14 @@ var Lobby = React.createClass({
   },
 
   render() {
+    if (this.state.url)
+      var text = 'follow me'
+
     return d.div({},
       Chat(this.state),
       d.h1({}, 'drafts.in'),
       d.p({className: 'err'}, App.state.err),
-      d.p({}, d.a({ href: this.state.url }, this.state.url)),
+      d.p({}, d.a({ href: this.state.url }, text)),
       Create(),
       d.footer({},
         d.div({},
