@@ -23,14 +23,15 @@ var Chat = React.createClass({
       `hello, ${match[1]}` :
       'only /nick is supported';
 
-    App.send('say', {
+    App.emit('hear', { text,
       time: Date.now(),
       name: '',
-      text
-    });
+    })
 
-    if (match)
+    if (match) {
       App.save('name', match[1]);
+      App.send('name', match[1])
+    }
   },
 
   render() {

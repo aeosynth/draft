@@ -9,7 +9,13 @@ module.exports = class extends EventEmitter {
     this.socks.push(sock)
     sock.once('exit', this.exit.bind(this))
     sock.on('say', this.say.bind(this))
+    sock.on('name', this.name.bind(this))
     sock.send('set', { messages: this.messages })
+  }
+  name(name, sock) {
+    if (typeof name !== 'string')
+      return
+    sock.name = name.slice(0, 15)
   }
   exit(sock) {
     sock.removeAllListeners('say')

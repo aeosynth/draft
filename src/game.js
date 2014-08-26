@@ -62,6 +62,12 @@ module.exports = class Game extends Room {
     this.expires = Date.now() + HOUR
   }
 
+  name(name, sock) {
+    super(name, sock)
+    sock.h.name = sock.name
+    this.meta()
+  }
+
   join(sock) {
     for (var i = 0; i < this.players.length; i++) {
       var p = this.players[i]
