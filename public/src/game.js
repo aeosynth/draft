@@ -299,11 +299,12 @@ var Settings = React.createClass({
             value: this.props.land[zoneName][x],
             onChange: App.e('changeLand', x, zoneName)})))})
 
+    var direction = App.state.chat ? 'right' : 'left'
     return d.div({ className: 'settings' },
       d.div({},
-        d.label({},
-          'chat',
+        d.label({ className: `icon ion-arrow-${direction}-b` },
           d.input({
+            hidden: true,
             checked: App.state.chat,
             type: 'checkbox',
             onChange: App.change('chat')
