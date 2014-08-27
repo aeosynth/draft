@@ -25,14 +25,18 @@ var Lobby = React.createClass({
   },
 
   render() {
+    // i can't believe this needs documentation
     if (this.state.url)
-      var text = 'follow me'
+      var link = d.p({},
+        'click ',
+        d.a({ href: this.state.url }, 'here'),
+        ", wait 5s, then click the button in the top right")
 
     return d.div({},
       Chat(this.state),
       d.h1({}, 'drafts.in'),
       d.p({className: 'err'}, App.state.err),
-      d.p({}, d.a({ href: this.state.url }, text)),
+      link,
       Create(),
       d.footer({},
         d.div({},
