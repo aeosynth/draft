@@ -106,6 +106,7 @@ module.exports = class Game extends Room {
       h.kick()
     else
       h.exit()
+    this.meta()
 
     h.err('you were kicked')
   }
