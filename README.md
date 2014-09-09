@@ -14,6 +14,11 @@ unaffiliated with wizards of the coast
 
 - <http://localhost:1337>
 
+# updating
+
+generally you can update with `git pull && make js`; if that doesn't work,
+rerun `make`; if that still doesn't work, please file an issue
+
 # etc
 
 written in [es6], transpiled with [traceur], using [react] on the client

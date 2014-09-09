@@ -1,4 +1,4 @@
-all: install cards score js
+all: install clean cards score js
 
 live: export NODE_ENV=production
 live: all
@@ -9,11 +9,14 @@ install:
 	ln -sf ${CURDIR}/node_modules/react/dist/react.js public/out
 	ln -sf ${CURDIR}/node_modules/engine.io-client/engine.io.js public/out
 
+clean:
+	rm data/AllSets.json
+
 cards: data/raw.json
 	node src/make cards
 
 data/raw.json:
-	curl -so data/raw.json http://mtgjson.com/json/AllSets.json
+	curl -so data/AllSets.json http://mtgjson.com/json/AllSets.json
 
 score:
 	node src/make score
