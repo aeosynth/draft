@@ -204,7 +204,7 @@ module.exports = class Game extends Room {
     this.meta()
   }
 
-  start(addBots) {
+  start([addBots, useTimer]) {
     var src = this.cube ? this.cube : this.sets
     var {players} = this
     var p
@@ -223,6 +223,9 @@ module.exports = class Game extends Room {
       }
       return
     }
+
+    for (p of players)
+      p.useTimer = useTimer
 
     if (addBots)
       while (players.length < this.seats)
