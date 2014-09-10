@@ -48,7 +48,7 @@ var Game = React.createClass({
       this.setState(state);
     },
     start() {
-      App.send('start', App.state.bots);
+      App.send('start', [App.state.bots, App.state.useTimer]);
     },
     clickPack(name) {
       if (this.state.selected !== name)
@@ -441,17 +441,25 @@ var Stats = React.createClass({
 
     return d.div({},
       d.div({}, d.strong({}, this.props.title)),
-      d.div({
-        hidden: this.props.round || !this.props.isHost},
-        d.button({
-          onClick: App.e('start')},
-          'start'),
-        d.label({},
-          'add bots',
-          d.input({
-            type: 'checkbox',
-            checked: App.state.bots,
-            onChange: App.change('bots')}))),
+      d.div({ hidden: this.props.round || !this.props.isHost },
+        d.div({},
+          d.button({
+            onClick: App.e('start')},
+            'start')),
+        d.div({},
+          d.label({},
+            d.input({
+              type: 'checkbox',
+              checked: App.state.bots,
+              onChange: App.change('bots')}),
+            'add bots')),
+        d.div({},
+          d.label({},
+            d.input({
+              type: 'checkbox',
+              checked: App.state.useTimer,
+              onChange: App.change('useTimer')}),
+              'use timer'))),
       d.table({}, d.tbody({
         id: 'stats'},
         d.tr({},

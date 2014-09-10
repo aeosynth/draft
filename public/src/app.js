@@ -26,6 +26,7 @@ var App = {
     filename: 'filename',
     filetype: 'txt',
     sort: 'color',
+    useTimer: true,
     zone: 'main'
   },
   init() {
