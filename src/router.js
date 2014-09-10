@@ -22,7 +22,7 @@ function create(opts) {
   botnet(g.id, (err, url) => {
     if (!err)
       return this.send('set', { url })
-    console.log(err.message)
+    console.log('botnet', err.message)
     this.send('route', 'q/' + g.id)
   })
 }
