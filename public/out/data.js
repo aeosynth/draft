@@ -1,5 +1,6 @@
 var SETS = {
   expansion: {
+    "Khans of Tarkir": "KTK",
     "Journey into Nyx": "JOU",
     "Born of the Gods": "BNG",
     "Theros": "THS",

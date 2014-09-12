@@ -10,12 +10,12 @@ var App = {
     seats: 8,
     type: 'sealed',
     sets: [
-      'M15',
-      'M15',
-      'M15',
-      'M15',
-      'M15',
-      'M15'
+      'KTK',
+      'KTK',
+      'KTK',
+      'KTK',
+      'KTK',
+      'KTK'
     ],
     list: '',
     cards: 15,
