@@ -1,4 +1,4 @@
-all: install clean cards score js
+all: install clean cards spoiler score js
 
 live: export NODE_ENV=production
 live: all
@@ -11,9 +11,14 @@ install:
 
 clean:
 	rm data/AllSets.json
+	rm data/cards.json
+	rm data/sets.json
 
-cards: data/raw.json
+cards: data/AllSets.json
 	node src/make cards
+
+spoiler:
+	node src/make spoiler
 
 data/raw.json:
 	curl -so data/AllSets.json http://mtgjson.com/json/AllSets.json
