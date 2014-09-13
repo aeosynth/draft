@@ -24,6 +24,10 @@ function parse() {
     return
 
   var name = $el.attr('id')
+  var url = images[name]
+  if (!url)
+    return
+
   var type = $el
     .find('.t-spoiler-type')
     .text()
@@ -43,16 +47,9 @@ function parse() {
     : !/^(.)\1*$/.test(colors) ? 'multicolor'
     : COLORS[colors[0]]
 
-  Cards[name] = {
-    cmc: cmc,
-    color: color,
-    name: name,
-    type: type,
+  Cards[name] = { cmc, color, name, type,
     sets: {
-      [code]: {
-        rarity: rarity,
-        url: images[name]
-      }
+      [code]: { rarity, url }
     }
   }
 }
