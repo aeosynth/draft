@@ -8,9 +8,7 @@ var COLORS = {
   R: 'red',
   G: 'green'
 }
-var $
-var code
-var images
+var $, code, images
 
 function parse() {
   var $el = $(this)
@@ -32,7 +30,7 @@ function parse() {
     .find('.t-spoiler-type')
     .text()
     .split(' - ')[0]
-    .match(/\w+/)[0]
+    .match(/\w+$/)[0]
 
   var cost = $el
     .find('.t-spoiler-mana')
