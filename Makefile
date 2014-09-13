@@ -10,9 +10,7 @@ install:
 	ln -sf ${CURDIR}/node_modules/engine.io-client/engine.io.js public/out
 
 clean:
-	rm data/AllSets.json
-	rm data/cards.json
-	rm data/sets.json
+	rm -f data/AllSets.json
 
 cards: data/AllSets.json
 	node src/make cards
@@ -20,7 +18,7 @@ cards: data/AllSets.json
 spoiler:
 	node src/make spoiler
 
-data/raw.json:
+data/AllSets.json:
 	curl -so data/AllSets.json http://mtgjson.com/json/AllSets.json
 
 score:
