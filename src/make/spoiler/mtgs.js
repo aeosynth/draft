@@ -8,9 +8,7 @@ var COLORS = {
   R: 'red',
   G: 'green'
 }
-var $
-var code
-var images
+var $, code, images
 
 function parse() {
   var $el = $(this)
@@ -24,11 +22,15 @@ function parse() {
     return
 
   var name = $el.attr('id')
+  var url = images[name]
+  if (!url)
+    return
+
   var type = $el
     .find('.t-spoiler-type')
     .text()
     .split(' - ')[0]
-    .match(/\w+/)[0]
+    .match(/\w+$/)[0]
 
   var cost = $el
     .find('.t-spoiler-mana')
@@ -43,16 +45,9 @@ function parse() {
     : !/^(.)\1*$/.test(colors) ? 'multicolor'
     : COLORS[colors[0]]
 
-  Cards[name] = {
-    cmc: cmc,
-    color: color,
-    name: name,
-    type: type,
+  Cards[name] = { cmc, color, name, type,
     sets: {
-      [code]: {
-        rarity: rarity,
-        url: images[name]
-      }
+      [code]: { rarity, url }
     }
   }
 }
