@@ -1,7 +1,4 @@
-all: install clean cards spoiler score js
-
-live: export NODE_ENV=production
-live: all
+all: install clean cards score js
 
 install:
 	npm install
