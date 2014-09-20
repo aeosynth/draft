@@ -8,6 +8,7 @@ install:
 	ln -sf ${node}/react/dist/react.js public/lib
 	ln -sf ${node}/engine.io-client/engine.io.js public/lib
 	ln -sf ${node}/traceur/bin/traceur.js public/lib
+	ln -sf ${node}/traceur/bin/traceur-runtime.js public/lib
 	ln -sf ${node}/ee/ee.js public/lib
 	ln -sf ${node}/utils/utils.js public/lib
 
