@@ -9,10 +9,17 @@ export default React.createClass({
     App.send('join', 'lobby')
   },
   render() {
+    if (App.state.url)
+      var link = d.p({},
+        'click ',
+        d.a({ href: App.state.url }, 'here'),
+        ', wait 5s, then click the button in the top right')
+
     return d.div({},
       Chat(),
       d.h1({}, 'drafts.in'),
       d.p({ className: 'error' }, App.err),
+      link,
       Create(),
       Tabs(),
       d.footer({},
