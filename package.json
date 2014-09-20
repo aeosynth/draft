@@ -7,15 +7,14 @@
   "dependencies": {
     "ask": "git://github.com/aeosynth/ask",
     "cheerio": "^0.17.0",
+    "ee": "git://github.com/aeosynth/ee",
     "engine.io": "^1.4.0",
     "engine.io-client": "^1.4.0",
     "serve": "git://github.com/aeosynth/serve",
-    "traceur": "0.0.62"
+    "traceur": "0.0.65",
+    "utils": "git://github.com/aeosynth/utils"
   },
   "devDependencies": {
-    "gulp": "^3.8.7",
-    "gulp-livereload": "^2.1.0",
-    "gulp-traceur": "^0.13.0",
     "normalize.css": "^3.0.1",
     "react": "^0.11.1"
   }

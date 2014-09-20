@@ -1,14 +1,20 @@
+import _ from '../lib/utils'
+import EventEmitter from '../lib/ee'
+
+function message(msg) {
+  var args = JSON.parse(msg)
+  App.emit(...args)
+}
+
 var App = {
-  __proto__: EventEmitter,
+  __proto__: new EventEmitter,
 
   state: {
-    component: null,
-    columns: false,
+    id: null,
     name: 'newfriend',
-    chat: true,
 
     seats: 8,
-    type: 'sealed',
+    type: 'draft',
     sets: [
       'KTK',
       'KTK',
@@ -21,136 +27,104 @@ var App = {
     cards: 15,
     packs: 3,
 
-    beep: false,
     bots: true,
+    timer: true,
+
+    beep: false,
+    chat: true,
+    cols: false,
     filename: 'filename',
     filetype: 'txt',
+    side: false,
     sort: 'color',
-    useTimer: true,
-    zone: 'main'
   },
-  init() {
-    window.d = React.DOM
-    console.log('%chttps://github.com/aeosynth/draft', 'font-size:20pt');
 
-    var key, val, state = this.state;
-    for (key in state) {
-      if (val = localStorage[key])
+  init(router) {
+    App.on('set', App.set)
+    App.on('error', App.error)
+    App.on('route', App.route)
+
+    App.restore()
+    App.connect()
+    router(App)
+  },
+  restore() {
+    for (var key in this.state) {
+      var val = localStorage[key]
+      if (val) {
         try {
-          state[key] = JSON.parse(val);
-        } catch(err) {}
+          this.state[key] = JSON.parse(val)
+        } catch(e) {
+          delete localStorage[key]
+        }
+      }
     }
 
-    var {id} = localStorage;
-    if (!id)
-      id = localStorage.id = Math.random().toString(36).slice(2);
-    state.id = id;
-
-    React.renderComponent(View(), document.body);
-    addEventListener('hashchange', this.doRoute.bind(this));
-    this.doRoute()
-    this.connect();
-
-    this.getHelpHTML()
-  },
-  getHelpHTML() {
-    var x = new XMLHttpRequest()
-    x.open('get', 'out/help.html')
-    x.onload = e => {
-      this.helpHTML = e.target.response
-      if (this.state.component instanceof Help)
-        this.update()
+    if (!this.state.id) {
+      this.state.id = _.uid()
+      localStorage.id = JSON.stringify(this.state.id)
     }
-    x.send()
   },
   connect() {
-    var {id, name} = App.state;
+    var {id, name} = App.state
     var options = {
       query: { id, name }
-    };
-
-    var ws = this.ws = eio('ws://' + location.host, options);
-    ws.on('open', App.onOpen.bind(App))
-    ws.on('message', (msg) => {
-      var [type, data] = JSON.parse(msg);
-      switch(type) {
-        case 'error':
-          return App.err(data);
-        case 'route':
-          return App.route(data);
-        default:
-          this.emit(type, data);
-      }
-    });
-  },
-  onOpen() {
-    this.send = function (type, data) {
-      this.ws.send(JSON.stringify([type, data]));
     }
-    if (this._send) {
-      this.send(this._send[0], this._send[1]);
-      delete this._send;
-    }
+    var ws = this.ws = eio(location.host, options)
+    ws.on('open' , ()=> console.log('open'))
+    ws.on('close', ()=> console.log('close'))
+    ws.on('message', message)
   },
-  send(type, data) {
-    this._send = [type, data]
+  send(...args) {
+    var msg = JSON.stringify(args)
+    this.ws.send(msg)
+  },
+  error(err) {
+    App.err = err
+    App.route('')
   },
   route(path) {
-    if (location.hash === path)
-      this.doRoute();
+    if (path === location.hash.slice(1))
+      App.update()
     else
-      location.hash = path;
-  },
-  doRoute() {
-    var hash = location.hash.slice(1);
-    var component;
-    if (hash === 'help') {
-      this.state.err = null
-      component = Help();
-    }
-    else if (hash.slice(0,2) === 'q/') {
-      this.state.err = null
-      var room = hash.slice(2);
-      this.emit('join', room)
-      component = Game({ room });
-    }
-    else {
-      if (hash) {
-        this.state.err = `room ${hash} not found`;
-        return this.route('')
-      }
-      component = Lobby();
-    }
-    this.state.component = component
-    this.update()
-  },
-  change(key, path) {
-    return e => {
-      var {target} = e
-      var val;
-      switch (target.type) {
-        case 'checkbox': val = target.checked; break;
-        case 'submit': val = target.textContent; break;
-        default: val = target.value;
-      }
-      if (path !== void 0) {
-        var tmp = this.state[key];
-        tmp[path] = val;
-        val = tmp;
-      }
-      this.save(key, val);
-    }
+      location.hash = path
   },
   save(key, val) {
-    localStorage[key] = JSON.stringify(val);
     this.state[key] = val
-    this.update()
+    localStorage[key] = JSON.stringify(val)
+    App.update()
   },
-  err(err) {
-    this.state.err = err
-    this.route('');
+  set(state) {
+    Object.assign(App.state, state)
+    App.update()
   },
-  e(...args) {
-    return e => this.emit.apply(this, args.concat(e))
-  }
-};
+  update() {
+    React.renderComponent(App.component, document.body)
+  },
+  _emit(...args) {
+    return App.emit.bind(App, ...args)
+  },
+  _save(key, val) {
+    return App.save.bind(App, key, val)
+  },
+  link(key, index) {
+    var hasIndex = index !== void 0
+
+    var value = App.state[key]
+    if (hasIndex)
+      value = value[index]
+
+    function requestChange(val) {
+      if (hasIndex) {
+        var tmp = App.state[key]
+        tmp[index] = val
+        val = tmp
+      }
+      App.save(key, val)
+    }
+
+    return { requestChange, value }
+  },
+}
+
+export default App

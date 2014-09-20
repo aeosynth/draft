@@ -3,26 +3,19 @@
 <head>
   <meta charset="utf-8">
   <title>draft</title>
-  <link rel="stylesheet" href="out/normalize.css">
+  <link rel="stylesheet" href="lib/normalize.css">
   <!-- https://github.com/driftyco/ionicons/issues/129 -->
   <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css">
   <link rel="stylesheet" href="style.css">
+  <script src="lib/react.js"></script>
+  <script src="lib/engine.io.js"></script>
+  <script src="lib/traceur.js"></script>
 </head>
 <body>
-  <script src="out/react.js"></script>
-  <script src="out/engine.io.js"></script>
-
-  <script src="out/events.js"></script>
-
-  <script src="out/app.js"></script>
-  <script src="out/chat.js"></script>
-  <script src="out/data.js"></script>
-  <script src="out/game.js"></script>
-  <script src="out/help.js"></script>
-  <script src="out/lobby.js"></script>
-  <script src="out/view.js"></script>
-  <script>App.init()</script>
-
-  <script src="http://localhost:35729/livereload.js"></script>
+  <script>
+    System
+    .import('./src/init')
+    .catch(function(err) { console.log(err.message) })
+  </script>
 </body>
 </html>

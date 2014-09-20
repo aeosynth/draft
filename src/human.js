@@ -22,10 +22,11 @@ module.exports = class extends EventEmitter {
     sock.on('pick', this._pick.bind(this))
     if (!this.hash)
       sock.once('hash', this._hash.bind(this))
-    this.send('set', {
-      pack: this.packs[0] || [],
-      pool: this.pool
-    })
+
+    var [pack] = this.packs
+    if (pack)
+      this.send('pack', pack)
+    this.send('pool', this.pool)
   }
   _hash(deck) {
     if (!util.deck(deck, this.pool))
@@ -50,14 +51,14 @@ module.exports = class extends EventEmitter {
     if (this.useTimer)
       this.time = 20 + 5 * pack.length
 
-    this.send('set', { pack })
+    this.send('pack', pack)
   }
   pick(index) {
     var pack = this.packs.shift()
     var card = pack.splice(index, 1)[0]
 
     this.pool.push(card)
-    this.send('add', card)
+    this.send('add', card.name)
 
     var [next] = this.packs
     if (!next)

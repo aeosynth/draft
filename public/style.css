@@ -1,3 +1,8 @@
+footer {
+  position: fixed;
+  bottom: 0;
+}
+
 label {
   cursor: pointer;
 }
@@ -7,132 +12,123 @@ textarea {
   vertical-align: top;
 }
 
-footer {
-  position: fixed;
-  bottom: 0;
+time {
+  color: #999;
 }
 
 .icon {
   font-size: 32px;
-  margin: 8px;
+  margin: 16px;
 }
 
-.err {
-  color: red;
+.chat {
+  margin-right: 351px;
 }
 
-.link {
-  color: blue;
-  cursor: pointer;
-}
-
-.zone {
-  border-top: 1px solid black;
-  clear: both;
-}
-
-#preview, .zone img {
-  cursor: pointer;
-  width:  240px;
-  height: 340px;
-}
-
-.settings {
-  float: right;
-  text-align: right;
-}
-
-.settings table {
-  margin-left: auto;
-}
-
-.settings img {
-  width:  25px;
-  height: 25px;
-  float: left;
-}
-
-.settings table input {
-  width: 3em;
-}
-
-.self {
-  background-color: rgba(0, 255, 0, .1);
-}
-
-.opponent {
-  background-color: rgba(255, 0, 0, .1);
-}
-
-.time {
-  color: #999;
-}
 .name {
   color: #393;
 }
 
-.col {
-  float: left;
-  width: 182px;
-  overflow: hidden;
-  white-space: nowrap;
-  user-select: none;
-  -moz-user-select: none;
-  -webkit-user-select: none;
-}
-
-.colorless  { background-color: rgba(  0,   0,   0, .1) }
-.red        { background-color: rgba(255,   0,   0, .1) }
-.green      { background-color: rgba(  0, 255,   0, .1) }
-.blue       { background-color: rgba(  0,   0, 255, .1) }
-.multicolor { background-color: rgba(255, 255,   0, .1) }
+.colorless  { background-color: rgba(  0,   0,   0, .1); }
+.red        { background-color: rgba(255,   0,   0, .1); }
+.green      { background-color: rgba(  0, 255,   0, .1); }
+.blue       { background-color: rgba(  0,   0, 255, .1); }
+.multicolor { background-color: rgba(255, 255,   0, .1); }
 .black {
   background-color: black;
   color: white;
 }
 
+.col {
+  float: left;
+  width: 180px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.error {
+  color: red;
+}
+
+.zone {
+  border-top: 1px solid black;
+  clear: both;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+}
+
+.zone img, #img {
+  height: 340px;
+  width: 240px;
+}
+
+.self {
+  background-color: rgba(0, 255, 0, .1);
+}
+.opp {
+  background-color: rgba(255, 0, 0, .1);
+}
+
+#img {
+  position: fixed;
+  bottom: 0;
+}
+#img.left {
+  left: 0;
+}
+#img.right {
+  right: 0;
+}
+
+#players th, #players td {
+  padding-right: .5em;
+}
+
+#settings {
+  float: right;
+  text-align: right;
+}
+
+#settings table {
+  margin-left: auto;
+}
+
+#settings table input {
+  width: 3em;
+}
+
+#settings tr:first-of-type {
+  text-align: left;
+}
+
+#settings img {
+  height: 32px;
+  width:  32px;
+}
+
 #chat {
+  border-left: 1px solid black;
   position: fixed;
   top: 0;
   right: 0;
-  bottom: 20px;
+  bottom: 0;
   width: 350px;
-  border-left: 1px solid black;
+
+  display: flex;
+  flex-direction: column;
+}
+
+#chat[hidden] {
+  /* flexbox breaks the hidden attribute? */
+  display: none;
+}
+
+#messages {
   overflow: auto;
+  flex-grow: 1;
 }
 
 #chat input {
-  position: fixed;
-  bottom: 0;
-  right: 0;
-  height: 20px;
-  width: 350px;
-  padding: 0;
-  border: 0;
-  border-top: 1px solid black;
-  border-left: 1px solid black;
-}
-
-#github {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  transform: rotate(180deg);
-}
-
-#stats th, #stats td {
-  padding-right: 5px;
-}
-
-#preview {
-  position: fixed;
-  bottom: 0;
-}
-
-#game.chat {
-  margin-right: 351px;
-}
-
-#game:not(.chat) #chat {
-  display: none;
+  flex-shrink: 0
 }

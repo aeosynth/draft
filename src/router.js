@@ -14,9 +14,10 @@ function create(opts) {
     return this.err(err.message)
   }
 
+  opts.id = this.id
   var g = new Game(opts)
   rooms[g.id] = g
-  this.send('route', 'q/' + g.id)
+  this.send('route', 'g/' + g.id)
   g.once('kill', kill)
 }
 
