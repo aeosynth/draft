@@ -216,10 +216,8 @@ module.exports = class Game extends Room {
       var pools = Pool(src, players.length, true)
       for (p of players) {
         p.pool = pools.pop()
-        p.send('set', {
-          pool: p.pool,
-          round: -1
-        })
+        p.send('pool', p.pool)
+        p.send('set', { round: -1 })
       }
       return
     }

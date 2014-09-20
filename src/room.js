@@ -10,7 +10,7 @@ module.exports = class extends EventEmitter {
     sock.once('exit', this.exit.bind(this))
     sock.on('say', this.say.bind(this))
     sock.on('name', this.name.bind(this))
-    sock.send('set', { messages: this.messages })
+    sock.send('chat', this.messages)
   }
   name(name, sock) {
     if (typeof name !== 'string')

@@ -1,4 +1,4 @@
-var SETS = {
+export default {
   expansion: {
     "Khans of Tarkir": "KTK",
     "Journey into Nyx": "JOU",
@@ -96,4 +96,4 @@ var SETS = {
     "Portal Second Age": "PO2",
     "Portal": "POR"
   }
-};
+}
