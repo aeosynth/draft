@@ -1,7 +1,7 @@
 import _ from '../lib/utils'
 import App from './app'
 
-var Cards = {
+let Cards = {
   Plains:   { url: 'http://mtgimage.com/multiverseid/73963.jpg', name: 'Plains'   },
   Island:   { url: 'http://mtgimage.com/multiverseid/73951.jpg', name: 'Island'   },
   Swamp:    { url: 'http://mtgimage.com/multiverseid/73973.jpg', name: 'Swamp'    },
@@ -9,9 +9,9 @@ var Cards = {
   Forest:   { url: 'http://mtgimage.com/multiverseid/73946.jpg', name: 'Forest'   }
 }
 
-export var BASICS = Object.keys(Cards)
+export let BASICS = Object.keys(Cards)
 
-for (var name in Cards)
+for (let name in Cards)
   Object.assign(Cards[name], {
     cmc: 0,
     code: 'UNH',
@@ -20,8 +20,8 @@ for (var name in Cards)
     type: 'Land'
   })
 
-var rawPack, clicked
-export var Zones = {
+let rawPack, clicked
+export let Zones = {
   pack: {},
   main: {},
   side: {},
@@ -29,17 +29,17 @@ export var Zones = {
 }
 
 function hash() {
-  var {self, players} = App.state
+  let {self, players} = App.state
   if (players[self].hash)
     return
 
-  var {main, side} = Zones
+  let {main, side} = Zones
   App.send('hash', { main, side })
 }
 
-var events = {
+let events = {
   add(cardName) {
-    var zone = Zones[App.state.side ? 'side' : 'main']
+    let zone = Zones[App.state.side ? 'side' : 'main']
     zone[cardName] || (zone[cardName] = 0)
     zone[cardName]++
     App.update()
@@ -48,8 +48,8 @@ var events = {
     if (zoneName === 'pack')
       return clickPack(cardName)
 
-    var src = Zones[zoneName]
-    var dst = Zones[e.shiftKey
+    let src = Zones[zoneName]
+    let dst = Zones[e.shiftKey
       ? zoneName === 'junk' ? 'main' : 'junk'
       : zoneName === 'side' ? 'main' : 'side']
 
@@ -64,42 +64,42 @@ var events = {
     App.update()
   },
   copy(ref) {
-    var node = ref.getDOMNode()
+    let node = ref.getDOMNode()
     node.value = filetypes.txt()
     node.select()
     hash()
   },
   download() {
-    var {filename, filetype} = App.state
-    var data = filetypes[filetype]()
+    let {filename, filetype} = App.state
+    let data = filetypes[filetype]()
     _.download(data, filename + '.' + filetype)
     hash()
   },
   start() {
-    var {bots, timer} = App.state
-    var options = [bots, timer]
+    let {bots, timer} = App.state
+    let options = [bots, timer]
     App.send('start', options)
   },
   pack(cards) {
     rawPack = cards
-    var {pack} = Zones
+    let {pack} = Zones
 
-    for (var card of cards) {
-      var {name} = card
+    for (let card of cards) {
+      let {name} = card
       Cards[name] = card
       pack[name] = 1
     }
     App.update()
   },
   create() {
-    var {type, seats} = App.state
+    let {type, seats} = App.state
     seats = Number(seats)
-    var options = { type, seats }
+    let options = { type, seats }
 
     if (/cube/.test(type))
       options.cube = cube()
     else {
-      var {sets} = App.state
+      let {sets} = App.state
       if (type === 'draft')
         sets = sets.slice(0, 3)
       options.sets = sets
@@ -110,12 +110,12 @@ var events = {
   pool(cards) {
     ['main', 'side', 'junk'].forEach(zoneName => Zones[zoneName] = {})
 
-    var zone = Zones[App.state.side
+    let zone = Zones[App.state.side
       ? 'side'
       : 'main']
 
-    for (var card of cards) {
-      var {name} = card
+    for (let card of cards) {
+      let {name} = card
       Cards[name] = card
 
       zone[name] || (zone[name] = 0)
@@ -124,7 +124,7 @@ var events = {
     App.update()
   },
   land(zoneName, cardName, e) {
-    var n = Number(e.target.value)
+    let n = Number(e.target.value)
     if (n)
       Zones[zoneName][cardName] = n
     else
@@ -133,17 +133,17 @@ var events = {
   },
 }
 
-for (var event in events)
+for (let event in events)
   App.on(event, events[event])
 
 function codify(zone) {
-  var arr = []
-  for (var name in zone)
+  let arr = []
+  for (let name in zone)
     arr.push(`    <card number="${zone[name]}" name="${name}"/>`)
   return arr.join('\n')
 }
 
-var filetypes = {
+let filetypes = {
   cod() {
     return `\
 <?xml version="1.0" encoding="UTF-8"?>
@@ -158,13 +158,13 @@ ${codify(Zones.side)}
 </cockatrice_deck>`
   },
   mwdeck() {
-    var arr = []
+    let arr = []
     ;['main', 'side'].forEach(zoneName => {
-      var prefix = zoneName === 'side' ? 'SB: ' : ''
-      var zone = Zones[zoneName]
-      for (var name in zone) {
-        var {code} = Cards[name]
-        var count = zone[name]
+      let prefix = zoneName === 'side' ? 'SB: ' : ''
+      let zone = Zones[zoneName]
+      for (let name in zone) {
+        let {code} = Cards[name]
+        let count = zone[name]
         name = name.replace(' // ', '/')
         arr.push(`${prefix}${count} [${code}] ${name}`)
       }
@@ -172,17 +172,17 @@ ${codify(Zones.side)}
     return arr.join('\n')
   },
   json() {
-    var {main, side} = Zones
+    let {main, side} = Zones
     return JSON.stringify({ main, side }, null, 2)
   },
   txt() {
-    var arr = []
+    let arr = []
     ;['main', 'side'].forEach(zoneName => {
       if (zoneName === 'side')
         arr.push('Sideboard')
-      var zone = Zones[zoneName]
-      for (var name in zone) {
-        var count = zone[name]
+      let zone = Zones[zoneName]
+      for (let name in zone) {
+        let count = zone[name]
         arr.push(count + ' ' + name)
       }
     })
@@ -191,7 +191,7 @@ ${codify(Zones.side)}
 }
 
 function cube() {
-  var {list, cards, packs} = App.state
+  let {list, cards, packs} = App.state
   cards = Number(cards)
   packs = Number(packs)
 
@@ -212,7 +212,7 @@ function clickPack(cardName) {
   if (clicked !== cardName)
     return clicked = cardName
 
-  var index = rawPack.findIndex(x => x.name === cardName)
+  let index = rawPack.findIndex(x => x.name === cardName)
   clicked = null
   Zones.pack = {}
   App.update()
@@ -220,12 +220,12 @@ function clickPack(cardName) {
 }
 
 function Key(groups, sort) {
-  var keys = Object.keys(groups)
+  let keys = Object.keys(groups)
 
   switch(sort) {
     case 'cmc':
-      var arr = []
-      for (var key in groups)
+      let arr = []
+      for (let key in groups)
         if (parseInt(key) > 6) {
           ;[].push.apply(arr, groups[key])
           delete groups[key]
@@ -252,23 +252,23 @@ function Key(groups, sort) {
       break
   }
 
-  var o = {}
-  for (var key of keys)
+  let o = {}
+  for (let key of keys)
     o[key] = groups[key]
   return o
 }
 
 export function getZone(zoneName) {
-  var zone = Zones[zoneName]
+  let zone = Zones[zoneName]
 
-  var cards = []
-  for (var cardName in zone)
-    for (var i = 0; i < zone[cardName]; i++)
+  let cards = []
+  for (let cardName in zone)
+    for (let i = 0; i < zone[cardName]; i++)
       cards.push(Cards[cardName])
 
-  var {sort} = App.state
-  var groups = _.group(cards, sort)
-  for (var key in groups)
+  let {sort} = App.state
+  let groups = _.group(cards, sort)
+  for (let key in groups)
     _.sort(groups[key], 'name')
 
   groups = Key(groups, sort)

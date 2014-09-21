@@ -2,11 +2,11 @@ import _ from '../lib/utils'
 import EventEmitter from '../lib/ee'
 
 function message(msg) {
-  var args = JSON.parse(msg)
+  let args = JSON.parse(msg)
   App.emit(...args)
 }
 
-var App = {
+let App = {
   __proto__: new EventEmitter,
 
   state: {
@@ -49,8 +49,8 @@ var App = {
     router(App)
   },
   restore() {
-    for (var key in this.state) {
-      var val = localStorage[key]
+    for (let key in this.state) {
+      let val = localStorage[key]
       if (val) {
         try {
           this.state[key] = JSON.parse(val)
@@ -66,17 +66,17 @@ var App = {
     }
   },
   connect() {
-    var {id, name} = App.state
-    var options = {
+    let {id, name} = App.state
+    let options = {
       query: { id, name }
     }
-    var ws = this.ws = eio(location.host, options)
+    let ws = this.ws = eio(location.host, options)
     ws.on('open' , ()=> console.log('open'))
     ws.on('close', ()=> console.log('close'))
     ws.on('message', message)
   },
   send(...args) {
-    var msg = JSON.stringify(args)
+    let msg = JSON.stringify(args)
     this.ws.send(msg)
   },
   error(err) {
@@ -108,15 +108,15 @@ var App = {
     return App.save.bind(App, key, val)
   },
   link(key, index) {
-    var hasIndex = index !== void 0
+    let hasIndex = index !== void 0
 
-    var value = App.state[key]
+    let value = App.state[key]
     if (hasIndex)
       value = value[index]
 
     function requestChange(val) {
       if (hasIndex) {
-        var tmp = App.state[key]
+        let tmp = App.state[key]
         tmp[index] = val
         val = tmp
       }

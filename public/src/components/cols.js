@@ -1,6 +1,6 @@
 import App from '../app'
 import {getZone} from '../cards'
-var d = React.DOM
+let d = React.DOM
 
 export default React.createClass({
   getInitialState() {
@@ -10,8 +10,8 @@ export default React.createClass({
     }
   },
   render() {
-    var zones = this.props.zones.map(this.zone)
-    var img = d.img({
+    let zones = this.props.zones.map(this.zone)
+    let img = d.img({
       className: this.state.className,
       id: 'img',
       onMouseEnter: this.enter.bind(this, this.state.url),
@@ -21,25 +21,25 @@ export default React.createClass({
   },
 
   enter(url, e) {
-    var {offsetLeft} = e.target
-    var {clientWidth} = document.documentElement
+    let {offsetLeft} = e.target
+    let {clientWidth} = document.documentElement
 
-    var imgWidth = 240
-    var colWidth = 180
+    let imgWidth = 240
+    let colWidth = 180
 
-    var className = offsetLeft + colWidth > clientWidth - imgWidth
+    let className = offsetLeft + colWidth > clientWidth - imgWidth
       ? 'left'
       : 'right'
 
     this.setState({ url, className })
   },
   zone(zoneName) {
-    var zone = getZone(zoneName)
+    let zone = getZone(zoneName)
 
-    var sum = 0
-    var cols = []
-    for (var key in zone) {
-      var items = zone[key].map(card =>
+    let sum = 0
+    let cols = []
+    for (let key in zone) {
+      let items = zone[key].map(card =>
         d.div({
           className: card.color,
           onClick: App._emit('click', zoneName, card.name),
