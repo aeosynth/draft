@@ -14,7 +14,6 @@ export default React.createClass({
       d.h1({}, 'drafts.in'),
       d.p({ className: 'error' }, App.err),
       Create(),
-      Tabs(),
       d.footer({},
         d.div({},
           d.a({ className: 'icon ion-social-github', href: 'https://github.com/aeosynth/draft' }),
@@ -70,24 +69,21 @@ function content() {
   }
 }
 
-function Tabs() {
+function Create() {
+  let seats = _.seq(8, 2).map(x =>
+    d.option({}, x))
+
   let types = ['draft', 'sealed', 'cube draft', 'cube sealed'].map(type =>
     d.button({
       disabled: type === App.state.type,
       onClick: App._save('type', type)
     }, type))
-  return [
-    d.div({}, types),
-    d.div({}, content())
-  ]
-}
-
-function Create() {
-  let seats = _.seq(8, 2).map(x =>
-    d.option({}, x))
 
   return d.div({},
-    d.button({ onClick: App._emit('create') }, 'create'),
-    ' room for ',
-    d.select({ valueLink: App.link('seats') }, seats))
+    d.div({},
+      d.button({ onClick: App._emit('create') }, 'create'),
+      ' room for ',
+      d.select({ valueLink: App.link('seats') }, seats)),
+    d.div({}, types),
+    content())
 }
