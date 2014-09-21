@@ -16,7 +16,7 @@ unaffiliated with wizards of the coast
 
 # updating
 
-generally you can update with `git pull && make js`; if that doesn't work,
+generally you can update with `git pull`; if that doesn't work,
 rerun `make`; if that still doesn't work, please file an issue
 
 # etc
