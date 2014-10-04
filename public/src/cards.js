@@ -29,10 +29,6 @@ export let Zones = {
 }
 
 function hash() {
-  let {self, players} = App.state
-  if (players[self].hash)
-    return
-
   let {main, side} = Zones
   App.send('hash', { main, side })
 }

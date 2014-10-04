@@ -20,8 +20,7 @@ module.exports = class extends EventEmitter {
 
     sock.mixin(this)
     sock.on('pick', this._pick.bind(this))
-    if (!this.hash)
-      sock.once('hash', this._hash.bind(this))
+    sock.on('hash', this._hash.bind(this))
 
     var [pack] = this.packs
     if (pack)
