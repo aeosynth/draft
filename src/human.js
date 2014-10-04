@@ -15,7 +15,7 @@ module.exports = class extends EventEmitter {
     this.attach(sock)
   }
   attach(sock) {
-    if (this.sock)
+    if (this.sock && this.sock !== sock)
       this.sock.ws.close()
 
     sock.mixin(this)
