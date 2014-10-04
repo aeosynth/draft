@@ -82,7 +82,7 @@ let events = {
   },
   pack(cards) {
     rawPack = cards
-    let {pack} = Zones
+    let pack = Zones.pack = {}
 
     for (let card of cards) {
       let {name} = card
