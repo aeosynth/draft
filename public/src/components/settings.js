@@ -58,10 +58,25 @@ export default React.createClass({
       Lands(),
       Download(),
       this.Copy(),
-      RBox('side', 'add cards to side'),
+      this.Side(),
       RBox('beep', 'beep for new packs'),
       RBox('cols', 'column view'),
       Sort())
+  },
+  SideCB(e) {
+    let side = e.target.checked
+    App.save('side', side)
+    App.emit('side')
+  },
+  Side() {
+    return d.div({},
+      d.label({},
+        'add cards to side ',
+        d.input({
+          checked: App.state.side,
+          onChange: this.SideCB,
+          type: 'checkbox'
+        })))
   },
   Copy() {
     return d.div({},
