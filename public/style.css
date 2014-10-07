@@ -58,6 +58,15 @@ time {
   -webkit-user-select: none;
 }
 
+.manacost {
+  padding-right: 5px;
+}
+
+.zone img.manasymbol {
+  height: 12px;
+  width: 12px;
+}
+
 .zone img, #img {
   height: 340px;
   width: 240px;

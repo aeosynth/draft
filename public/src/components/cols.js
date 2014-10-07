@@ -38,13 +38,23 @@ export default React.createClass({
 
     let sum = 0
     let cols = []
+
     for (let key in zone) {
       let items = zone[key].map(card =>
         d.div({
           className: card.color,
           onClick: App._emit('click', zoneName, card.name),
-          onMouseEnter: this.enter.bind(this, card.url)
-        }, card.name))
+          onMouseEnter: this.enter.bind(this, card.url)}
+        ,d.span({
+          className: 'manacost'
+          }, card.manaCost.map(mana =>
+          d.img({
+            className: 'manasymbol',
+            src: `http://mtgimage.com/symbol/mana/${mana}.svg`
+          })))
+        ,card.name
+        )
+      )
 
       sum += items.length
       cols.push(d.div({ className: 'col' },
