@@ -26,7 +26,7 @@ data/AllSets.json:
 	curl -so data/AllSets.json http://mtgjson.com/json/AllSets.json
 
 score:
-	node src/make score
+	-node src/make score #ignore errors
 
 js:
 	node_modules/.bin/traceur --out public/lib/app.js public/src/init.js
