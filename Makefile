@@ -1,4 +1,4 @@
-all: install clean cards score js
+all: install clean cards score spoiler js
 
 node := ${CURDIR}/node_modules
 

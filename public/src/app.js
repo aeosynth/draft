@@ -16,10 +16,10 @@ let App = {
     seats: 8,
     type: 'draft',
     sets: [
+      'FRF',
       'KTK',
       'KTK',
-      'KTK',
-      'KTK',
+      'FRF',
       'KTK',
       'KTK'
     ],
