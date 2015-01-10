@@ -2,9 +2,12 @@ var fs = require('fs')
 var ask = require('ask')
 var {Cards} = require('../data')
 
-var URL = 'http://aeosynth.iriscouch.com/draft/_design/draft/_view/score?group=true'
+var opts = {
+  url: 'http://aeosynth.iriscouch.com/draft/_design/draft/_view/score?group=true',
+  headers: { 'User-Agent': 'curl' } // WTF
+}
 
-ask(URL, (err, data) => {
+ask(opts, (err, data) => {
   if (err)
     throw err
 
