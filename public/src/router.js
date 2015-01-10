@@ -1,6 +1,6 @@
 import Lobby from './components/lobby'
 import Game  from './components/game'
-var App
+let App
 
 export default function(_App) {
   App = _App
@@ -9,9 +9,9 @@ export default function(_App) {
 }
 
 function route() {
-  var path = location.hash.slice(1)
-  var [route, id] = path.split('/')
-  var component
+  let path = location.hash.slice(1)
+  let [route, id] = path.split('/')
+  let component
 
   switch(route) {
     case 'g':

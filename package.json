@@ -8,14 +8,14 @@
     "ask": "git://github.com/aeosynth/ask",
     "cheerio": "^0.17.0",
     "ee": "git://github.com/aeosynth/ee",
-    "engine.io": "^1.4.0",
-    "engine.io-client": "^1.4.0",
+    "engine.io": "^1.4.1",
+    "engine.io-client": "^1.4.1",
     "serve": "git://github.com/aeosynth/serve",
     "traceur": "0.0.65",
     "utils": "git://github.com/aeosynth/utils"
   },
   "devDependencies": {
     "normalize.css": "^3.0.1",
-    "react": "^0.11.1"
+    "react": "^0.11.2"
   }
 }

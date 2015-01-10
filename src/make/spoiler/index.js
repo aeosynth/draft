@@ -4,10 +4,10 @@ var {Cards, Sets} = require('../../data')
 var mtgs = require('./mtgs')
 var wiz = require('./wiz')
 
-var code = 'KTK'
+var code = 'FRF'
 
-var imagesURL = 'http://magic.wizards.com/en/articles/archive/ktk-cig-en'
-var cardsURL = 'http://www.mtgsalvation.com/spoilers/144-khans-of-tarkir'
+var imagesURL = 'http://magic.wizards.com/en/articles/archive/frf-cig-en'
+var cardsURL = 'http://www.mtgsalvation.com/spoilers/146-fate-reforged'
 
 ask(imagesURL, (err, html) => {
   if (err)

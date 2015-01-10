@@ -6,7 +6,7 @@ import Cols from './cols'
 import Grid from './grid'
 import Settings from './settings'
 import {LBox} from './checkbox'
-var d = React.DOM
+let d = React.DOM
 
 export default React.createClass({
   componentWillMount() {
@@ -26,9 +26,9 @@ export default React.createClass({
     App.send('join', id)
   },
   render() {
-    var {chat} = App.state
+    let {chat} = App.state
     if (chat)
-      var className = 'chat'
+      let className = 'chat'
 
     return d.div({ className },
       Chat({ hidden: !chat }),
@@ -41,9 +41,9 @@ export default React.createClass({
 
   Cards() {
     if (Object.keys(Zones.pack).length)
-      var pack = Grid({ zones: ['pack'] })
-    var component = App.state.cols ? Cols : Grid
-    var pool = component({ zones: ['main', 'side', 'junk'] })
+      let pack = Grid({ zones: ['pack'] })
+    let component = App.state.cols ? Cols : Grid
+    let pool = component({ zones: ['main', 'side', 'junk'] })
     return [pack, pool]
   },
   Start() {
@@ -57,7 +57,7 @@ export default React.createClass({
       LBox('timer', 'timer'))
   },
   Players() {
-    var rows = App.state.players.map(row)
+    let rows = App.state.players.map(row)
     return d.table({ id: 'players' },
       d.tr({},
         d.th({}, '#'),
@@ -71,13 +71,13 @@ export default React.createClass({
 })
 
 function row(p, i) {
-  var {players, self} = App.state
-  var {length} = players
+  let {players, self} = App.state
+  let {length} = players
 
   if (length % 2 === 0)
-    var opp = (self + length/2) % length
+    let opp = (self + length/2) % length
 
-  var className
+  let className
     = i === self ? 'self'
     : i === opp  ? 'opp'
     : null
@@ -92,7 +92,7 @@ function row(p, i) {
 }
 
 function decrement() {
-  for (var p of App.state.players)
+  for (let p of App.state.players)
     if (p.time)
       p.time--
   App.update()

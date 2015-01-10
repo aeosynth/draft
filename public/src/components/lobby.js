@@ -2,7 +2,7 @@ import _ from '../../lib/utils'
 import App from '../app'
 import data from '../data'
 import Chat from './chat'
-var d = React.DOM
+let d = React.DOM
 
 export default React.createClass({
   componentDidMount() {
@@ -21,7 +21,6 @@ export default React.createClass({
       d.p({ className: 'error' }, App.err),
       link,
       Create(),
-      Tabs(),
       d.footer({},
         d.div({},
           d.a({ className: 'icon ion-social-github', href: 'https://github.com/aeosynth/draft' }),
@@ -33,12 +32,12 @@ export default React.createClass({
 })
 
 function Sets(selectedSet, index) {
-  var groups = []
-  for (var label in data) {
-    var sets = data[label]
-    var options = []
-    for (var name in sets) {
-      var code = sets[name]
+  let groups = []
+  for (let label in data) {
+    let sets = data[label]
+    let options = []
+    for (let name in sets) {
+      let code = sets[name]
       options.push(d.option({ value: code }, name))
     }
     groups.push(d.optgroup({ label }, options))
@@ -49,11 +48,11 @@ function Sets(selectedSet, index) {
 }
 
 function content() {
-  var sets = App.state.sets.map(Sets)
-  var setsTop = d.div({}, sets.slice(0, 3))
-  var setsBot = d.div({}, sets.slice(3))
+  let sets = App.state.sets.map(Sets)
+  let setsTop = d.div({}, sets.slice(0, 3))
+  let setsBot = d.div({}, sets.slice(3))
 
-  var cube = [
+  let cube = [
     d.div({}, 'one card per line'),
     d.textarea({
       placeholder: 'cube list',
@@ -61,9 +60,9 @@ function content() {
     })
   ]
 
-  var cards = _.seq(15, 8).map(x => d.option({}, x))
-  var packs = _.seq( 5, 3).map(x => d.option({}, x))
-  var cubeDraft = d.div({},
+  let cards = _.seq(15, 8).map(x => d.option({}, x))
+  let packs = _.seq( 5, 3).map(x => d.option({}, x))
+  let cubeDraft = d.div({},
     d.select({ valueLink: App.link('cards') }, cards),
     ' cards ',
     d.select({ valueLink: App.link('packs') }, packs),
@@ -77,24 +76,21 @@ function content() {
   }
 }
 
-function Tabs() {
-  var types = ['draft', 'sealed', 'cube draft', 'cube sealed'].map(type =>
+function Create() {
+  let seats = _.seq(8, 2).map(x =>
+    d.option({}, x))
+
+  let types = ['draft', 'sealed', 'cube draft', 'cube sealed'].map(type =>
     d.button({
       disabled: type === App.state.type,
       onClick: App._save('type', type)
     }, type))
-  return [
-    d.div({}, types),
-    d.div({}, content())
-  ]
-}
-
-function Create() {
-  var seats = _.seq(8, 2).map(x =>
-    d.option({}, x))
 
   return d.div({},
-    d.button({ onClick: App._emit('create') }, 'create'),
-    ' room for ',
-    d.select({ valueLink: App.link('seats') }, seats))
+    d.div({},
+      d.button({ onClick: App._emit('create') }, 'create'),
+      ' room for ',
+      d.select({ valueLink: App.link('seats') }, seats)),
+    d.div({}, types),
+    content())
 }

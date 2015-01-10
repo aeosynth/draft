@@ -1,5 +1,5 @@
 import App from '../app'
-var d = React.DOM
+let d = React.DOM
 
 export function LBox(key, text) {
   return d.div({},

@@ -1,15 +1,15 @@
 import App from '../app'
 import {BASICS, Zones} from '../cards'
 import {RBox} from './checkbox'
-var d = React.DOM
+let d = React.DOM
 
 function Lands() {
-  var symbols = 'wubrg'.split('').map(x =>
+  let symbols = 'wubrg'.split('').map(x =>
     d.td({},
       d.img({ src: `http://mtgimage.com/symbol/mana/${x}.svg` })))
 
-  var [main, side] = ['main', 'side'].map(zoneName => {
-    var inputs = BASICS.map(cardName =>
+  let [main, side] = ['main', 'side'].map(zoneName => {
+    let inputs = BASICS.map(cardName =>
       d.td({},
         d.input({
           min: 0,
@@ -41,9 +41,9 @@ function Sort() {
 }
 
 function Download() {
-  var filetypes = ['cod', 'json', 'mwdeck', 'txt'].map(filetype =>
+  let filetypes = ['cod', 'json', 'mwdeck', 'txt'].map(filetype =>
     d.option({}, filetype))
-  var select = d.select({ valueLink: App.link('filetype') }, filetypes)
+  let select = d.select({ valueLink: App.link('filetype') }, filetypes)
 
   return d.div({},
     d.button({ onClick: App._emit('download') }, 'download'),
@@ -58,10 +58,25 @@ export default React.createClass({
       Lands(),
       Download(),
       this.Copy(),
-      RBox('side', 'add cards to side'),
+      this.Side(),
       RBox('beep', 'beep for new packs'),
       RBox('cols', 'column view'),
       Sort())
+  },
+  SideCB(e) {
+    let side = e.target.checked
+    App.save('side', side)
+    App.emit('side')
+  },
+  Side() {
+    return d.div({},
+      d.label({},
+        'add cards to side ',
+        d.input({
+          checked: App.state.side,
+          onChange: this.SideCB,
+          type: 'checkbox'
+        })))
   },
   Copy() {
     return d.div({},

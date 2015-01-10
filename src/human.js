@@ -15,13 +15,12 @@ module.exports = class extends EventEmitter {
     this.attach(sock)
   }
   attach(sock) {
-    if (this.sock)
+    if (this.sock && this.sock !== sock)
       this.sock.ws.close()
 
     sock.mixin(this)
     sock.on('pick', this._pick.bind(this))
-    if (!this.hash)
-      sock.once('hash', this._hash.bind(this))
+    sock.on('hash', this._hash.bind(this))
 
     var [pack] = this.packs
     if (pack)

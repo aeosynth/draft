@@ -1,5 +1,6 @@
 export default {
   expansion: {
+    "Fate Reforged": "FRF",
     "Khans of Tarkir": "KTK",
     "Journey into Nyx": "JOU",
     "Born of the Gods": "BNG",

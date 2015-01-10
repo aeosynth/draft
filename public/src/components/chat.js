@@ -1,6 +1,6 @@
 import _ from '../../lib/utils'
 import App from '../app'
-var d = React.DOM
+let d = React.DOM
 
 export default React.createClass({
   getInitialState() {
@@ -19,7 +19,7 @@ export default React.createClass({
   },
   render() {
     // must be mounted to receive messages
-    var {hidden} = this.props
+    let {hidden} = this.props
     return d.div({ hidden, id: 'chat' },
       d.div({ id: 'messages' },
         this.state.messages.map(this.Message)),
@@ -34,10 +34,10 @@ export default React.createClass({
     if (!msg)
       return
 
-    var {time, name, text} = msg
-    var date = new Date(time)
-    var hours   = _.pad(2, '0', date.getHours())
-    var minutes = _.pad(2, '0', date.getMinutes())
+    let {time, name, text} = msg
+    let date = new Date(time)
+    let hours   = _.pad(2, '0', date.getHours())
+    let minutes = _.pad(2, '0', date.getMinutes())
     time = `${hours}:${minutes}`
 
     return d.div({},
@@ -60,8 +60,8 @@ export default React.createClass({
     if (e.key !== 'Enter')
       return
 
-    var el = e.target
-    var text = el.value.trim()
+    let el = e.target
+    let text = el.value.trim()
     el.value = ''
 
     if (!text)
@@ -74,14 +74,14 @@ export default React.createClass({
   },
 
   command(raw) {
-    var [raw, command, arg] = raw.match(/(\w*)\s*(.*)/)
+    let [, command, arg] = raw.match(/(\w*)\s*(.*)/)
     arg = arg.trim()
-    var text
+    let text
 
     switch(command) {
       case 'name':
       case 'nick':
-        var name = arg.slice(0, 15)
+        let name = arg.slice(0, 15)
 
         if (!name) {
           text = 'enter a name'
