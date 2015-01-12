@@ -5,6 +5,7 @@ var raw = require('../../data/AllSets')
 
 var Cards = {}
 var Sets = {}
+var ManaCostRegEx = /{(.*?)}/g;
 
 before()
 
@@ -152,9 +153,17 @@ function doCard(rawCard, cards, code, set) {
     colors.length > 1 ? 'multicolor' :
     colors[0].toLowerCase()
 
+  let manaCost = []
+  let matches = []
+
+  while(matches = ManaCostRegEx.exec(rawCard.manaCost)) {
+    manaCost.push(matches[1]);
+  }
+
   cards[name] = { color, name,
     type: rawCard.types[rawCard.types.length - 1],
     cmc: rawCard.cmc || 0,
+    manaCost: manaCost,
     sets: {
       [code]: { rarity,
         url: `http://mtgimage.com/multiverseid/${rawCard.multiverseid}.jpg`
