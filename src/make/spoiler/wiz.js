@@ -7,6 +7,7 @@ function parse() {
   var $el = $(this)
 
   var name = $el.attr('alt')
+    .replace('’', "'")
   var url = $el.attr('src')
 
   images[name] = url
