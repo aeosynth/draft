@@ -39,12 +39,21 @@ export default React.createClass({
     let sum = 0
     let cols = []
     for (let key in zone) {
-      let items = zone[key].map(card =>
-        d.div({
-          className: card.color,
+      let items = zone[key].map(card => {
+        let content = card.name
+        let className = card.color
+        if (this.props.useImages) {
+          content = d.img({
+            src: card.url
+          })
+          className = null
+        }
+        return d.div({
+          className: className,
           onClick: App._emit('click', zoneName, card.name),
           onMouseEnter: this.enter.bind(this, card.url)
-        }, card.name))
+        }, content)
+      })
 
       sum += items.length
       cols.push(d.div({ className: 'col' },

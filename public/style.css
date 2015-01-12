@@ -29,6 +29,11 @@ time {
   color: #393;
 }
 
+.with_images {
+  float: right;
+  margin-left: 5px;
+}
+
 .colorless  { background-color: rgba(  0,   0,   0, .1); }
 .red        { background-color: rgba(255,   0,   0, .1); }
 .green      { background-color: rgba(  0, 255,   0, .1); }
@@ -61,6 +66,17 @@ time {
 .zone img, #img {
   height: 340px;
   width: 240px;
+  cursor: pointer;
+}
+
+.zone .col div img {
+  height: 255px;
+  width: 180px;
+  margin-bottom: -233px;
+}
+
+.zone .col div:last-child img {
+  margin-bottom: 0px;
 }
 
 .self {

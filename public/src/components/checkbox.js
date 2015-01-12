@@ -11,8 +11,8 @@ export function LBox(key, text) {
       ' ' + text))
 }
 
-export function RBox(key, text) {
-  return d.div({},
+export function RBox(key, text, props) {
+  return d.div(props || {},
     d.label({},
       text + ' ',
       d.input({
