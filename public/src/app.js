@@ -33,7 +33,6 @@ let App = {
     beep: false,
     chat: true,
     cols: false,
-    col_imgs: false,
     filename: 'filename',
     filetype: 'txt',
     side: false,

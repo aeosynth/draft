@@ -43,7 +43,7 @@ export default React.createClass({
     if (Object.keys(Zones.pack).length)
       let pack = Grid({ zones: ['pack'] })
     let component = App.state.cols ? Cols : Grid
-    let pool = component({ zones: ['main', 'side', 'junk'], useImages: App.state.col_imgs })
+    let pool = component({ zones: ['main', 'side', 'junk'] })
     return [pack, pool]
   },
   Start() {

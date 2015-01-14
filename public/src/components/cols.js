@@ -40,19 +40,10 @@ export default React.createClass({
     let cols = []
     for (let key in zone) {
       let items = zone[key].map(card => {
-        let content = card.name
-        let className = card.color
-        if (this.props.useImages) {
-          content = d.img({
-            src: card.url
-          })
-          className = null
-        }
         return d.div({
-          className: className,
           onClick: App._emit('click', zoneName, card.name),
-          onMouseEnter: this.enter.bind(this, card.url)
-        }, content)
+          onMouseOver: this.enter.bind(this, card.url)
+        }, d.img({src: card.url}))
       })
 
       sum += items.length

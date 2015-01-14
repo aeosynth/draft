@@ -29,11 +29,6 @@ time {
   color: #393;
 }
 
-.with_images {
-  float: right;
-  margin-left: 5px;
-}
-
 .colorless  { background-color: rgba(  0,   0,   0, .1); }
 .red        { background-color: rgba(255,   0,   0, .1); }
 .green      { background-color: rgba(  0, 255,   0, .1); }

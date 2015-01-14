@@ -60,7 +60,6 @@ export default React.createClass({
       this.Copy(),
       this.Side(),
       RBox('beep', 'beep for new packs'),
-      RBox('col_imgs', 'with images', {className: 'with_images'}),
       RBox('cols', 'column view'),
       Sort())
   },
