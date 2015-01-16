@@ -45,6 +45,10 @@ function before() {
       || /draft/.test(card.text))
       card.rarity = 'special'
 
+  for (card of raw.FRF.cards)
+    if (/Land/.test(card.type) && (card.name !== 'Crucible of the Spirit Dragon'))
+      card.rarity = 'special'
+
   //http://mtgsalvation.gamepedia.com/Magic_2015/Sample_decks
   // Each sample deck has several cards numbered 270 and higher that do not
   // appear in Magic 2015 booster packs.
@@ -77,12 +81,31 @@ function after() {
     ]
   }
 
+  var {FRF} = Sets
+  FRF.special = {
+    common: FRF.special,
+    fetch: [
+      'flooded strand',
+      'bloodstained mire',
+      'wooded foothills',
+      'windswept heath',
+      'polluted delta',
+    ]
+  }
+
   DGM.mythic.splice(DGM.mythic.indexOf("maze's end"), 1)
   for (var cardName of DGM.special.shock) {
     var {sets} = Cards[cardName]
     var codes = Object.keys(sets)
     var last = codes[codes.length - 1]
     sets.DGM = sets[last]
+  }
+
+  for (var cardName of FRF.special.fetch) {
+    var {sets} = Cards[cardName]
+    var codes = Object.keys(sets)
+    var last = codes[codes.length - 1]
+    sets.FRF = sets[last]
   }
 }
 
