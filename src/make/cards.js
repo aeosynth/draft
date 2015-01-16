@@ -83,13 +83,7 @@ function after() {
 
   var {FRF} = Sets
   FRF.special = {
-    common: [
-      ...FRF.special,
-      'plains',
-      'island',
-      'swamp',
-      'mountain',
-      'forest'],
+    common: FRF.special,
     fetch: [
       'flooded strand',
       'bloodstained mire',
