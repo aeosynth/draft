@@ -40,7 +40,6 @@ function toPack(code) {
       special = selectRarity(set)
     break
   case 'FRF':
-  // Same with DGM
     special = _.rand(20)
       ? special.common
       : special.fetch

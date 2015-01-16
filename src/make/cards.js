@@ -63,6 +63,10 @@ function after() {
     Cards[lc].sets.pHHO.url = `http://mtgimage.com/card/${name}.jpg`
   }
 
+  for (var card of raw.FRF.cards)
+    if (rarity === 'basic')
+      rarity = 'special'
+    
   var {DGM} = Sets
   DGM.special = {
     gate: DGM.special,
@@ -140,7 +144,7 @@ function doSet(rawSet, code) {
 
 function doCard(rawCard, cards, code, set) {
   var rarity = rawCard.rarity.split(' ')[0].toLowerCase()
-  if ((rarity === 'basic') && !(code === 'FRF'))
+  if (rarity === 'basic')
     return
 
   var {name} = rawCard
