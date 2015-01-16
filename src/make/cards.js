@@ -47,7 +47,7 @@ function before() {
 
   for (card of raw.FRF.cards)
     // Includes all possible lands except Crucible of Spirit Dragon, the only rare land.
-    if ((/Land/.test(card.type)) && (!(/Rare/.test(card.rarity)))
+    if ((/Land/.test(card.type)) && (!(/Rare/.test(card.rarity))))
       card.rarity = 'special'
 
   //http://mtgsalvation.gamepedia.com/Magic_2015/Sample_decks
