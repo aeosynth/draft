@@ -84,7 +84,7 @@ function after() {
 
   var {FRF} = Sets
   FRF.special = {
-    common: DGM.special,
+    common: FRF.special,
     fetch: [
       'flooded strand',
       'bloodstained mire',
