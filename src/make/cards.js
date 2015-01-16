@@ -63,10 +63,6 @@ function after() {
     Cards[lc].sets.pHHO.url = `http://mtgimage.com/card/${name}.jpg`
   }
 
-  for (var card of raw.FRF.cards)
-    if (rarity === 'basic')
-      rarity = 'special'
-    
   var {DGM} = Sets
   DGM.special = {
     gate: DGM.special,
@@ -87,7 +83,13 @@ function after() {
 
   var {FRF} = Sets
   FRF.special = {
-    common: FRF.special,
+    common: [
+      FRF.special,
+      'plains',
+      'island',
+      'swamp',
+      'mountain',
+      'forest'],
     fetch: [
       'flooded strand',
       'bloodstained mire',
