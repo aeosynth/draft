@@ -100,6 +100,13 @@ function after() {
     var last = codes[codes.length - 1]
     sets.DGM = sets[last]
   }
+
+  for (var cardName of FRF.special.fetch) {
+    var {sets} = Cards[cardName]
+    var codes = Object.keys(sets)
+    var last = codes[codes.length - 1]
+    sets.FRF = sets[last]
+  }
 }
 
 function doSet(rawSet, code) {
