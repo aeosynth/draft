@@ -84,7 +84,7 @@ function after() {
   var {FRF} = Sets
   FRF.special = {
     common: [
-      FRF.special,
+      ...FRF.special,
       'plains',
       'island',
       'swamp',
