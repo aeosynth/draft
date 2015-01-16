@@ -45,6 +45,11 @@ function before() {
       || /draft/.test(card.text))
       card.rarity = 'special'
 
+  for (card of raw.FRF.cards)
+    // Includes all possible lands except Crucible of Spirit Dragon, the only rare land.
+    if ((/Land/.test(card.type)) && (!(/Rare/.test(card.rarity)))
+      card.rarity = 'special'
+
   //http://mtgsalvation.gamepedia.com/Magic_2015/Sample_decks
   // Each sample deck has several cards numbered 270 and higher that do not
   // appear in Magic 2015 booster packs.
@@ -74,6 +79,18 @@ function after() {
       'temple garden',
       'watery grave',
       'maze\'s end'
+    ]
+  }
+
+  var {FRF} = Sets
+  FRF.special = {
+    common: DGM.special,
+    fetch: [
+      'flooded strand',
+      'bloodstained mire',
+      'wooded foothills',
+      'windswept heath',
+      'polluted delta',
     ]
   }
 
@@ -124,7 +141,7 @@ function doSet(rawSet, code) {
 
 function doCard(rawCard, cards, code, set) {
   var rarity = rawCard.rarity.split(' ')[0].toLowerCase()
-  if (rarity === 'basic')
+  if ((rarity === 'basic') && !(code === 'FRF'))
     return
 
   var {name} = rawCard
