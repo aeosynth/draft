@@ -46,7 +46,8 @@ function before() {
       card.rarity = 'special'
 
   for (card of raw.FRF.cards)
-    if (/Land/.test(card.type) && (card.name !== 'Crucible of the Spirit Dragon'))
+    if (card.types[0] === 'Land'
+      && (card.name !== 'Crucible of the Spirit Dragon'))
       card.rarity = 'special'
 
   //http://mtgsalvation.gamepedia.com/Magic_2015/Sample_decks
@@ -64,6 +65,7 @@ function after() {
   }
 
   var {DGM} = Sets
+  DGM.mythic.splice(DGM.mythic.indexOf("maze's end"), 1)
   DGM.special = {
     gate: DGM.special,
     shock: [
@@ -80,6 +82,7 @@ function after() {
       'maze\'s end'
     ]
   }
+  alias(DGM.special.shock, 'DGM')
 
   var {FRF} = Sets
   FRF.special = {
@@ -92,21 +95,16 @@ function after() {
       'polluted delta',
     ]
   }
+  alias(FRF.special.fetch, 'FRF')
+}
 
-  DGM.mythic.splice(DGM.mythic.indexOf("maze's end"), 1)
-  for (var cardName of DGM.special.shock) {
+function alias(arr, code) {
+  // some boosters contain reprints which are not in the set proper
+  for (var cardName of arr) {
     var {sets} = Cards[cardName]
     var codes = Object.keys(sets)
     var last = codes[codes.length - 1]
-    sets.DGM = sets[last]
-  }
-
-  for (var cardName of FRF.special.fetch) {
-    var {sets} = Cards[cardName]
-    var codes = Object.keys(sets)
-    var last = codes[codes.length - 1]
-    sets.FRF = sets[last]
-  }
+    sets[code] = sets[last]
 }
 
 function doSet(rawSet, code) {
