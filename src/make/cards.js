@@ -105,6 +105,7 @@ function alias(arr, code) {
     var codes = Object.keys(sets)
     var last = codes[codes.length - 1]
     sets[code] = sets[last]
+  }
 }
 
 function doSet(rawSet, code) {
