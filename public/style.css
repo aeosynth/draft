@@ -61,6 +61,17 @@ time {
 .zone img, #img {
   height: 340px;
   width: 240px;
+  cursor: pointer;
+}
+
+.zone .col div img {
+  height: 255px;
+  width: 180px;
+  margin-bottom: -233px;
+}
+
+.zone .col div:last-child img {
+  margin-bottom: 0;
 }
 
 .self {
