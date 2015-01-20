@@ -274,7 +274,7 @@ export function getZone(zoneName) {
   let {sort} = App.state
   let groups = _.group(cards, sort)
   for (let key in groups)
-    _.sort(groups[key], 'name')
+    _.sort(groups[key], 'color', 'cmc', 'name')
 
   groups = Key(groups, sort)
 
