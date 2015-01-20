@@ -39,13 +39,6 @@ time {
   color: white;
 }
 
-.col {
-  float: left;
-  width: 180px;
-  overflow: hidden;
-  white-space: nowrap;
-}
-
 .error {
   color: red;
 }
@@ -61,6 +54,22 @@ time {
 .zone img, #img {
   height: 340px;
   width: 240px;
+  cursor: pointer;
+}
+
+.col {
+  float: left;
+  width: 180px;
+}
+
+.col img {
+  height: 255px;
+  width: 180px;
+  margin-bottom: -235px;
+}
+
+.col div:last-child img {
+  margin-bottom: 0;
 }
 
 .self {

@@ -39,6 +39,11 @@ function toPack(code) {
     if (_.rand(53))
       special = selectRarity(set)
     break
+  case 'FRF':
+    special = _.rand(20)
+      ? special.common
+      : special.fetch
+    break     
   }
 
   if (special)

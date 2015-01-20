@@ -45,6 +45,11 @@ function before() {
       || /draft/.test(card.text))
       card.rarity = 'special'
 
+  for (card of raw.FRF.cards)
+    if (card.types[0] === 'Land'
+      && (card.name !== 'Crucible of the Spirit Dragon'))
+      card.rarity = 'special'
+
   //http://mtgsalvation.gamepedia.com/Magic_2015/Sample_decks
   // Each sample deck has several cards numbered 270 and higher that do not
   // appear in Magic 2015 booster packs.
@@ -60,6 +65,7 @@ function after() {
   }
 
   var {DGM} = Sets
+  DGM.mythic.splice(DGM.mythic.indexOf("maze's end"), 1)
   DGM.special = {
     gate: DGM.special,
     shock: [
@@ -76,14 +82,29 @@ function after() {
       'maze\'s end'
     ]
   }
+  alias(DGM.special.shock, 'DGM')
 
-  DGM.mythic.splice(DGM.mythic.indexOf("maze's end"), 1)
-  for (var cardName of DGM.special.shock) {
+  var {FRF} = Sets
+  FRF.special = {
+    common: FRF.special,
+    fetch: [
+      'flooded strand',
+      'bloodstained mire',
+      'wooded foothills',
+      'windswept heath',
+      'polluted delta',
+    ]
+  }
+  alias(FRF.special.fetch, 'FRF')
+}
+
+function alias(arr, code) {
+  // some boosters contain reprints which are not in the set proper
+  for (var cardName of arr) {
     var {sets} = Cards[cardName]
     var codes = Object.keys(sets)
     var last = codes[codes.length - 1]
-    sets.DGM = sets[last]
-  }
+    sets[code] = sets[last]
 }
 
 function doSet(rawSet, code) {
