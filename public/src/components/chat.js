@@ -34,7 +34,6 @@ export default React.createClass({
         el.scrollTop = el.scrollHeight
       }
     )
-    // document.getElementById('messages').lastChild.scrollIntoView()
   },
   Message(msg) {
     if (!msg)
