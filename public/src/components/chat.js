@@ -28,12 +28,11 @@ export default React.createClass({
 
   hear(msg) {
     this.state.messages.push(msg)
-    this.forceUpdate(
-      () => {
-        let el = document.getElementById('messages')
-        el.scrollTop = el.scrollHeight
-      }
-    )
+    this.forceUpdate(this.scrollChat)
+  },
+  scrollChat() {
+    let el = document.getElementById('messages')
+    el.scrollTop = el.scrollHeight
   },
   Message(msg) {
     if (!msg)
@@ -105,6 +104,6 @@ export default React.createClass({
       time: Date.now(),
       name: ''
     })
-    this.forceUpdate()
+    this.forceUpdate(this.scrollChat)
   }
 })
