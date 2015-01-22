@@ -4,6 +4,7 @@ import {Zones} from '../cards'
 import Chat from './chat'
 import Cols from './cols'
 import Grid from './grid'
+import Audio from './audio'
 import Settings from './settings'
 import {LBox} from './checkbox'
 let d = React.DOM
@@ -32,6 +33,7 @@ export default React.createClass({
 
     return d.div({ className },
       Chat({ hidden: !chat }),
+      Audio(),
       Settings(),
       this.Start(),
       d.div({}, App.state.title),
