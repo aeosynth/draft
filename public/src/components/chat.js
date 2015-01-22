@@ -52,7 +52,7 @@ export default React.createClass({
     return d.input({
       ref: 'entry',
       onKeyDown: this.key,
-      placeholder: 'chat'
+      placeholder: 'type to chat (/help for help)'
     })
   },
 
