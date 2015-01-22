@@ -29,6 +29,7 @@ export default React.createClass({
   hear(msg) {
     this.state.messages.push(msg)
     this.forceUpdate()
+    this.getDOMNode().firstChild.lastChild.scrollIntoView()
   },
   Message(msg) {
     if (!msg)
