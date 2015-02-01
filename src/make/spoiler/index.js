@@ -1,13 +1,13 @@
-var fs = require('fs')
-var fetch = require('node-fetch')
-var {Cards, Sets} = require('../../data')
-var mtgs = require('./mtgs')
-var wiz = require('./wiz')
+let fs = require('fs')
+let fetch = require('node-fetch')
+let {Cards, Sets} = require('../../data')
+let mtgs = require('./mtgs')
+let wiz = require('./wiz')
 
-var code = 'FRF'
+let code = 'FRF'
 
-var imagesURL = 'http://magic.wizards.com/en/articles/archive/frf-cig-en'
-var cardsURL = 'http://www.mtgsalvation.com/spoilers/146-fate-reforged'
+let imagesURL = 'http://magic.wizards.com/en/articles/archive/frf-cig-en'
+let cardsURL = 'http://www.mtgsalvation.com/spoilers/146-fate-reforged'
 
 function ok(res) {
   if (res.ok)
@@ -25,7 +25,7 @@ Promise
   .then(go)
   .catch(console.log)
 
-var set = Sets[code] = {
+let set = Sets[code] = {
   common: [],
   uncommon: [],
   rare: [],
@@ -35,14 +35,14 @@ var set = Sets[code] = {
 }
 
 function go(values) {
-  var images = wiz(values[0])
-  var cards = mtgs(values[1], images, code)
+  let images = wiz(values[0])
+  let cards = mtgs(values[1], images, code)
 
-  for (var name in cards) {
-    var card = cards[name]
-    var lc = name.toLowerCase()
+  for (let name in cards) {
+    let card = cards[name]
+    let lc = name.toLowerCase()
 
-    var {rarity} = card.sets[code]
+    let {rarity} = card.sets[code]
     set[rarity].push(lc)
 
     if (lc in Cards)
