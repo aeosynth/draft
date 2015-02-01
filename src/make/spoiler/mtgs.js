@@ -29,7 +29,7 @@ function parse() {
   var type = $el
     .find('.t-spoiler-type')
     .text()
-    .split(' - ')[0]
+    .split(' - ')[0].trim()
     .match(/\w+$/)[0]
 
   var cost = $el
