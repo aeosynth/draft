@@ -10,7 +10,7 @@
     "engine.io": "^1.4.1",
     "engine.io-client": "^1.4.1",
     "node-fetch": "^1.0.3",
-    "serve": "git://github.com/aeosynth/serve",
+    "send": "^0.11.1",
     "traceur": "0.0.65",
     "utils": "git://github.com/aeosynth/utils"
   },
