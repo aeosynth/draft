@@ -2,7 +2,7 @@ var fs = require('fs')
 var fetch = require('node-fetch')
 var {Cards} = require('../data')
 
-var URL = 'http://aeosynth.iriscouch.com/draft/_design/draft/_view/score?group=true'
+var URL = 'https://aeos.cloudant.com/draft/_design/draft/_view/score?group=true'
 
 fetch(URL)
 .then(res => {
