@@ -21,14 +21,18 @@ export default React.createClass({
     // must be mounted to receive messages
     let {hidden} = this.props
     return d.div({ hidden, id: 'chat' },
-      d.div({ id: 'messages' },
+      d.div({ id: 'messages', ref: 'messages'},
         this.state.messages.map(this.Message)),
       this.Entry())
   },
 
   hear(msg) {
     this.state.messages.push(msg)
-    this.forceUpdate()
+    this.forceUpdate(this.scrollChat)
+  },
+  scrollChat() {
+    let el = this.refs.messages.getDOMNode()
+    el.scrollTop = el.scrollHeight
   },
   Message(msg) {
     if (!msg)
@@ -52,7 +56,7 @@ export default React.createClass({
     return d.input({
       ref: 'entry',
       onKeyDown: this.key,
-      placeholder: 'chat'
+      placeholder: '/nick name'
     })
   },
 
@@ -100,6 +104,6 @@ export default React.createClass({
       time: Date.now(),
       name: ''
     })
-    this.forceUpdate()
+    this.forceUpdate(this.scrollChat)
   }
 })

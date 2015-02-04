@@ -1,17 +1,16 @@
 var fs = require('fs')
-var ask = require('ask')
+var fetch = require('node-fetch')
 var {Cards} = require('../data')
 
-var opts = {
-  url: 'http://aeosynth.iriscouch.com/draft/_design/draft/_view/score?group=true',
-  headers: { 'User-Agent': 'curl' } // WTF
-}
+var URL = 'https://aeos.cloudant.com/draft/_design/draft/_view/score?group=true'
 
-ask(opts, (err, data) => {
-  if (err)
-    throw err
-
-  data = JSON.parse(data)
+fetch(URL)
+.then(res => {
+  if (res.ok)
+    return res.json()
+  throw Error('not ok')
+})
+.then(data => {
   for (var row of data.rows) {
     var {key, value} = row
     var lc = key.toLowerCase()
@@ -24,3 +23,4 @@ ask(opts, (err, data) => {
 
   fs.writeFileSync('data/cards.json', JSON.stringify(Cards, null, 2))
 })
+.catch(console.log)

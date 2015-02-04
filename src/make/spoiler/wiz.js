@@ -1,14 +1,14 @@
-var cheerio = require('cheerio')
+let cheerio = require('cheerio')
 
-var $
-var images = {}
+let $
+let images = {}
 
 function parse() {
-  var $el = $(this)
+  let $el = $(this)
 
-  var name = $el.attr('alt')
+  let name = $el.attr('alt')
     .replace('’', "'")
-  var url = $el.attr('src')
+  let url = $el.attr('src')
 
   images[name] = url
 }

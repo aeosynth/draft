@@ -1,19 +1,19 @@
-var cheerio = require('cheerio')
+let cheerio = require('cheerio')
 
-var Cards = {}
-var COLORS = {
+let Cards = {}
+let COLORS = {
   W: 'white',
   U: 'blue',
   B: 'black',
   R: 'red',
   G: 'green'
 }
-var $, code, images
+let $, code, images
 
 function parse() {
-  var $el = $(this)
+  let $el = $(this)
 
-  var rarity = $el
+  let rarity = $el
     .find('.t-spoiler-rarity span')
     .attr('class')
     .match(/\w+$/)[0]
@@ -21,26 +21,26 @@ function parse() {
   if (rarity === 'land' || rarity === 'unknown')
     return
 
-  var name = $el.attr('id')
-  var url = images[name]
+  let name = $el.attr('id')
+  let url = images[name]
   if (!url)
     return
 
-  var type = $el
+  let type = $el
     .find('.t-spoiler-type')
     .text()
-    .split(' - ')[0]
+    .split(' - ')[0].trim()
     .match(/\w+$/)[0]
 
-  var cost = $el
+  let cost = $el
     .find('.t-spoiler-mana')
     .text()
     .replace(/\s+/g, '')
 
-  var colors = cost.match(/\D*$/)[0].replace('X', '')
-  var cmc = (parseInt(cost) || 0) + colors.length
+  let colors = cost.match(/\D*$/)[0].replace('X', '')
+  let cmc = (parseInt(cost) || 0) + colors.length
 
-  var color
+  let color
     = !colors.length ? 'colorless'
     : !/^(.)\1*$/.test(colors) ? 'multicolor'
     : COLORS[colors[0]]

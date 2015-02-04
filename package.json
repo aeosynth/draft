@@ -5,12 +5,12 @@
   "author": "James Campos <james.r.campos@gmail.com>",
   "repository": "aeosynth/draft",
   "dependencies": {
-    "ask": "git://github.com/aeosynth/ask",
     "cheerio": "^0.17.0",
     "ee": "git://github.com/aeosynth/ee",
     "engine.io": "^1.4.1",
     "engine.io-client": "^1.4.1",
-    "serve": "git://github.com/aeosynth/serve",
+    "node-fetch": "^1.0.3",
+    "send": "^0.11.1",
     "traceur": "0.0.65",
     "utils": "git://github.com/aeosynth/utils"
   },
