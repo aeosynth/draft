@@ -95,8 +95,9 @@ let events = {
       pack[name] = 1
     }
     App.update()
-    if (App.state.beep)
-      document.getElementById('beep').play()
+    if (App.state.beep){
+      self.beep.play()
+    }
   },
   create() {
     let {type, seats} = App.state

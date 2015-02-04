@@ -32,6 +32,7 @@ export default React.createClass({
 
     return d.div({ className },
       Chat({ hidden: !chat }),
+      d.audio({ id : 'beep', ref: 'beep', src : '/media/beep.wav'}),
       Settings(),
       this.Start(),
       d.div({}, App.state.title),
