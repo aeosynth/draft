@@ -52,7 +52,7 @@ export default React.createClass({
     return d.input({
       ref: 'entry',
       onKeyDown: this.key,
-      placeholder: 'chat'
+      placeholder: 'type to chat (/help for help)'
     })
   },
 
@@ -76,30 +76,36 @@ export default React.createClass({
   command(raw) {
     let [, command, arg] = raw.match(/(\w*)\s*(.*)/)
     arg = arg.trim()
-    let text
+    let text = []
 
     switch(command) {
+      case 'help':
+        text.push('supported commands:')
+        text.push('/name <name> - set name')
+        text.push('/nick <name> - set name')
+        break
       case 'name':
       case 'nick':
         let name = arg.slice(0, 15)
 
         if (!name) {
-          text = 'enter a name'
+          text.push('usage: /name <name>')
           break
         }
 
-        text = `hello, ${name}`
+        text.push(`hello, ${name}`)
         App.save('name', name)
         App.send('name', name)
         break
       default:
-        text = `unsupported command: ${command}`
+        text.push(`unsupported command: ${command}`)
     }
 
-    this.state.messages.push({ text,
-      time: Date.now(),
-      name: ''
-    })
+    for ( let line of text )
+      this.state.messages.push({ text : line,
+        time: Date.now(),
+        name: ''
+      })
     this.forceUpdate()
   }
 })
