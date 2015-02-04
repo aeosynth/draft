@@ -21,7 +21,7 @@ export default React.createClass({
     // must be mounted to receive messages
     let {hidden} = this.props
     return d.div({ hidden, id: 'chat' },
-      d.div({ id: 'messages' },
+      d.div({ id: 'messages' , ref: 'messages'},
         this.state.messages.map(this.Message)),
       this.Entry())
   },
@@ -31,7 +31,7 @@ export default React.createClass({
     this.forceUpdate(this.scrollChat)
   },
   scrollChat() {
-    let el = document.getElementById('messages')
+    let el = this.refs.messages.getDOMNode()
     el.scrollTop = el.scrollHeight
   },
   Message(msg) {
