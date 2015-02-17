@@ -61,7 +61,7 @@ function content() {
   ]
 
   let cards = _.seq(15, 8).map(x => d.option({}, x))
-  let packs = _.seq( 5, 3).map(x => d.option({}, x))
+  let packs = _.seq( 7, 3).map(x => d.option({}, x))
   let cubeDraft = d.div({},
     d.select({ valueLink: App.link('cards') }, cards),
     ' cards ',
