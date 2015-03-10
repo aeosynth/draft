@@ -4,9 +4,10 @@ import {RBox} from './checkbox'
 let d = React.DOM
 
 function Lands() {
-  let symbols = 'wubrg'.split('').map(x =>
+  let colors = ['White', 'Blue', 'Black', 'Red', 'Green']
+  let symbols = colors.map(x =>
     d.td({},
-      d.img({ src: `http://mtgimage.com/symbol/mana/${x}.svg` })))
+      d.img({ src: `http://www.wizards.com/Magic/redesign/${x}_Mana.png` })))
 
   let [main, side] = ['main', 'side'].map(zoneName => {
     let inputs = BASICS.map(cardName =>
