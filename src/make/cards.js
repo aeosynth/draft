@@ -9,7 +9,7 @@ var Sets = {}
 before()
 
 var types = ['core', 'expansion', 'commander', 'planechase', 'starter', 'un']
-var codes = ['pHHO', 'MMA', 'VMA', 'CNS']
+var codes = ['MMA', 'VMA', 'CNS']
 for (var code in raw) {
   var set = raw[code]
   if (types.indexOf(set.type) > -1
@@ -57,13 +57,6 @@ function before() {
 }
 
 function after() {
-  //no multiverseid
-  for (var card of raw.pHHO.cards) {
-    var {name} = card
-    var lc = (card.names ? card.names.join(' // ') : name).toLowerCase()
-    Cards[lc].sets.pHHO.url = `http://mtgimage.com/card/${name}.jpg`
-  }
-
   var {DGM} = Sets
   DGM.mythic.splice(DGM.mythic.indexOf("maze's end"), 1)
   DGM.special = {
@@ -179,7 +172,7 @@ function doCard(rawCard, cards, code, set) {
     cmc: rawCard.cmc || 0,
     sets: {
       [code]: { rarity,
-        url: `http://mtgimage.com/multiverseid/${rawCard.multiverseid}.jpg`
+        url: `http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=${rawCard.multiverseid}&type=card`
       }
     }
   }
