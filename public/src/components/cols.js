@@ -5,13 +5,12 @@ let d = React.DOM
 export default React.createClass({
   getInitialState() {
     return {
-      className: 'right',
-      url: 'http://mtgimage.com/card/cardback.jpg'
+      className: 'right'
     }
   },
   render() {
     let zones = this.props.zones.map(this.zone)
-    let img = d.img({
+    let img = this.state.url && d.img({
       className: this.state.className,
       id: 'img',
       onMouseEnter: this.enter.bind(this, this.state.url),
