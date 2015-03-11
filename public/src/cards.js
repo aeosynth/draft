@@ -2,22 +2,23 @@ import _ from '../lib/utils'
 import App from './app'
 
 let Cards = {
-  Plains:   { url: 'http://mtgimage.com/multiverseid/73963.jpg', name: 'Plains'   },
-  Island:   { url: 'http://mtgimage.com/multiverseid/73951.jpg', name: 'Island'   },
-  Swamp:    { url: 'http://mtgimage.com/multiverseid/73973.jpg', name: 'Swamp'    },
-  Mountain: { url: 'http://mtgimage.com/multiverseid/73958.jpg', name: 'Mountain' },
-  Forest:   { url: 'http://mtgimage.com/multiverseid/73946.jpg', name: 'Forest'   }
+  Plains:   { url: '136' },
+  Island:   { url: '137' },
+  Swamp:    { url: '138' },
+  Mountain: { url: '139' },
+  Forest:   { url: '140' }
 }
 
 export let BASICS = Object.keys(Cards)
 
 for (let name in Cards)
-  Object.assign(Cards[name], {
+  Object.assign(Cards[name], { name,
     cmc: 0,
     code: 'UNH',
     color: 'colorless',
     rarity: 'basic',
-    type: 'Land'
+    type: 'Land',
+    url: `http://magiccards.info/scans/en/uh/${Cards[name].url}.jpg`
   })
 
 let rawPack, clicked
