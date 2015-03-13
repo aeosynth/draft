@@ -1,6 +1,6 @@
 export default {
   expansion: {
-    "Dragons of Tarker": "DTK",
+    "Dragons of Tarkir": "DTK",
     "Fate Reforged": "FRF",
     "Khans of Tarkir": "KTK",
     "Journey into Nyx": "JOU",
