@@ -17,11 +17,11 @@ let App = {
     type: 'draft',
     sets: [
       'DTK',
-      'FRF',
-      'KTK',
       'DTK',
       'FRF',
-      'KTK'
+      'DTK',
+      'DTK',
+      'FRF'
     ],
     list: '',
     cards: 15,
