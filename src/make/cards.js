@@ -78,6 +78,8 @@ function after() {
   alias(DGM.special.shock, 'DGM')
 
   var {FRF} = Sets
+  for (let card of FRF.special)
+    Cards[card].sets.FRF.rarity = / /.test(card) ? 'common' : 'basic'
   FRF.special = {
     common: FRF.special,
     fetch: [
