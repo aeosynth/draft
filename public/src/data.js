@@ -88,6 +88,7 @@ export default {
     "Limited Edition Alpha": "LEA"
   },
   other: {
+    "Tempest Remastered": "TPR",
     "Conspiracy": "CNS",
     "Vintage Masters": "VMA",
     "Modern Masters": "MMA",
