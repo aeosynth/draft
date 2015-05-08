@@ -88,6 +88,7 @@ export default {
     "Limited Edition Alpha": "LEA"
   },
   other: {
+    "Modern Masters 2015": "MM2",
     "Conspiracy": "CNS",
     "Vintage Masters": "VMA",
     "Modern Masters": "MMA",
