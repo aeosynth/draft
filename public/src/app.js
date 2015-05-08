@@ -16,12 +16,12 @@ let App = {
     seats: 8,
     type: 'draft',
     sets: [
-      'DTK',
-      'DTK',
-      'FRF',
-      'DTK',
-      'DTK',
-      'FRF'
+      'MM2',
+      'MM2',
+      'MM2',
+      'MM2',
+      'MM2',
+      'MM2'
     ],
     list: '',
     cards: 15,
