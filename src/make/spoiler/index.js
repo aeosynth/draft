@@ -4,10 +4,10 @@ let {Cards, Sets} = require('../../data')
 let mtgs = require('./mtgs')
 let wiz = require('./wiz')
 
-let code = 'DTK'
+let code = 'MM2'
 
-let imagesURL = 'http://magic.wizards.com/en/articles/archive/card-image-gallery/dragonsoftarkir'
-let cardsURL = 'http://www.mtgsalvation.com/spoilers/148-dragons-of-tarkir'
+let imagesURL = 'http://magic.wizards.com/en/articles/archive/card-image-gallery/modernmasters2015edition'
+let cardsURL = 'http://www.mtgsalvation.com/spoilers/147-modern-masters-2015-edition'
 
 function ok(res) {
   if (res.ok)
