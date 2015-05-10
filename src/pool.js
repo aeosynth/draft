@@ -34,6 +34,9 @@ function toPack(code) {
   case 'MMA':
     special = selectRarity(set)
     break
+  case 'MM2':
+    special = selectRarity(set)
+    break
   case 'VMA':
     //http://www.wizards.com/magic/magazine/article.aspx?x=mtg/daily/arcana/1491
     if (_.rand(53))
