@@ -2,13 +2,20 @@ var _ = require('./_')
 var {Cards, Sets, mws} = require('./data')
 
 function selectRarity(set) {
-  //fibonacci, because why not
-  var n = _.rand(10)
+  // average pack contains:
+  // 14 cards
+  // 10 commons
+  // 3 uncommons
+  // 7/8 rare
+  // 1/8 mythic
+  // * 8 -> 112/80/24/7/1
+
+  let n = _.rand(112)
   if (n < 1)
     return set.mythic
-  if (n < 3)
+  if (n < 8)
     return set.rare
-  if (n < 6)
+  if (n < 32)
     return set.uncommon
   return set.common
 }
