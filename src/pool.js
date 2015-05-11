@@ -45,7 +45,7 @@ function toPack(code) {
     break
   case 'VMA':
     //http://www.wizards.com/magic/magazine/article.aspx?x=mtg/daily/arcana/1491
-    if (!_.rand(53))
+    if (_.rand(53))
       special = selectRarity(set)
     break
   case 'FRF':
