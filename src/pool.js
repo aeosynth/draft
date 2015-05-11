@@ -2,13 +2,19 @@ var _ = require('./_')
 var {Cards, Sets, mws} = require('./data')
 
 function selectRarity(set) {
-  //fibonacci, because why not
-  var n = _.rand(10)
+  //using this ratio for a case:
+  //1344 total cards
+  //960 commons 
+  //288 uncommons
+  //84 rares
+  //12 mythics
+  //reduces to 112/80/24/7/1
+  var n = _.rand(112)
   if (n < 1)
     return set.mythic
-  if (n < 3)
+  if (n < 8)
     return set.rare
-  if (n < 6)
+  if (n < 32)
     return set.uncommon
   return set.common
 }
