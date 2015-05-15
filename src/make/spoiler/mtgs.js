@@ -18,12 +18,16 @@ function parse() {
     .attr('class')
     .match(/\w+$/)[0]
 
-  if (rarity === 'land' || rarity === 'unknown')
-    return
-
   let name = $el.attr('id')
   let url = images[name]
   if (!url)
+    return
+
+  /* Hack to fix unknown rarity in MM2 spoiler */
+  if (name === 'Lightning Bolt')
+    rarity = 'uncommon'
+
+  if (rarity === 'land' || rarity === 'unknown')
     return
 
   let type = $el
