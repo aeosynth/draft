@@ -79,7 +79,7 @@ function Create() {
       onClick: App._save('type', type)
     }, type))
 
-  return d.div({},
+  return d.div({ className: 'menu' },
     d.div({},
       d.button({ onClick: App._emit('create') }, 'create'),
       ' room for ',
