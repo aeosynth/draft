@@ -22,7 +22,8 @@ function parse() {
     return
 
   let name = $el.attr('id')
-  let url = images[name]
+  let lc = name.toLowerCase()
+  let url = images[lc]
   if (!url)
     return
 
@@ -45,7 +46,7 @@ function parse() {
     : !/^(.)\1*$/.test(colors) ? 'multicolor'
     : COLORS[colors[0]]
 
-  Cards[name] = { cmc, color, name, type,
+  Cards[lc] = { cmc, color, name, type,
     sets: {
       [code]: { rarity, url }
     }
