@@ -88,6 +88,7 @@ export default {
     "Limited Edition Alpha": "LEA"
   },
   other: {
+    "Magic Origins": "ORI",
     "Modern Masters 2015": "MM2",
     "Tempest Remastered": "TPR",
     "Conspiracy": "CNS",
