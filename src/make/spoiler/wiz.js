@@ -8,6 +8,7 @@ function parse() {
 
   let name = $el.attr('alt')
     .replace('’', "'")
+    .toLowerCase()
   let url = $el.attr('src')
 
   images[name] = url
