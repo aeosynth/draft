@@ -4,10 +4,17 @@ let {Cards, Sets} = require('../../data')
 let mtgs = require('./mtgs')
 let wiz = require('./wiz')
 
-let code = 'MM2'
+let code = 'ORI'
 
-let imagesURL = 'http://magic.wizards.com/en/articles/archive/card-image-gallery/modernmasters2015edition'
-let cardsURL = 'http://www.mtgsalvation.com/spoilers/147-modern-masters-2015-edition'
+let imagesURL = 'http://magic.wizards.com/en/articles/archive/card-image-gallery/magicorigins'
+let cardsURL = 'http://www.mtgsalvation.com/spoilers/149-magic-origins'
+
+function modifySet(cards) {
+  // transformed cards
+  for (let name in cards)
+    if (cards[name].type === 'Planeswalker')
+      delete cards[name]
+}
 
 function ok(res) {
   if (res.ok)
@@ -37,6 +44,8 @@ let set = Sets[code] = {
 function go(values) {
   let images = wiz(values[0])
   let cards = mtgs(values[1], images, code)
+
+  modifySet(cards)
 
   for (let name in cards) {
     let card = cards[name]
