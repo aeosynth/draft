@@ -1,6 +1,5 @@
 var fs = require('fs')
 var _ = require('../_')
-var util = require('../util')
 var raw = require('../../data/AllSets')
 
 var Cards = {}
@@ -152,7 +151,7 @@ function doCard(rawCard, cards, code, set) {
   if (rawCard.layout === 'split')
     name = rawCard.names.join(' // ')
 
-  name = util.name(name)
+  name = _.ascii(name)
 
   if (name in cards) {
     if (rawCard.layout === 'split') {
