@@ -1,4 +1,5 @@
 let cheerio = require('cheerio')
+let _ = require('../../_')
 
 let Cards = {}
 let COLORS = {
@@ -21,7 +22,7 @@ function parse() {
   if (rarity === 'land' || rarity === 'unknown')
     return
 
-  let name = $el.attr('id')
+  let name = _.ascii($el.attr('id'))
   let lc = name.toLowerCase()
   let url = images[lc]
   if (!url)
