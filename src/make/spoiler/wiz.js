@@ -1,4 +1,5 @@
 let cheerio = require('cheerio')
+let _ = require('../../_')
 
 let $
 let images = {}
@@ -6,9 +7,7 @@ let images = {}
 function parse() {
   let $el = $(this)
 
-  let name = $el.attr('alt')
-    .replace('’', "'")
-    .toLowerCase()
+  let name = _.ascii($el.attr('alt')).toLowerCase()
   let url = $el.attr('src')
 
   images[name] = url

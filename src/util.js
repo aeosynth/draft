@@ -18,7 +18,7 @@ function transform(cube, seats, type) {
   assert(typeof packs === 'number', 'typeof packs')
   assert(3 <= packs && packs <= 7, 'packs range')
 
-  list = list.split('\n').map(util.name)
+  list = list.split('\n').map(_.ascii)
 
   var min = type === 'cube draft'
     ? seats * cards * packs
@@ -42,19 +42,6 @@ function transform(cube, seats, type) {
 }
 
 var util = module.exports = {
-  name(s) {
-    return s.replace(/[Æâàáéíöúû’]/g, c => {
-      switch (c) {
-      case 'Æ': return 'AE'
-      case 'â': case 'à': case 'á': return 'a'
-      case 'é': return 'e'
-      case 'í': return 'i'
-      case 'ö': return 'o'
-      case 'ú': case 'û': return 'u'
-      case '’': return "'"
-      }
-    })
-  },
   deck(deck, pool) {
     pool = _.count(pool, 'name')
 
