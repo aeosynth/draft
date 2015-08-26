@@ -66,6 +66,7 @@ function content() {
     case 'sealed': return [setsTop, setsBot]
     case 'cube draft' : return [cube, cubeDraft]
     case 'cube sealed': return cube
+    case 'editor': return d.a({ href: 'http://45.55.61.145:1337/' }, 'editor')
   }
 }
 
@@ -73,11 +74,12 @@ function Create() {
   let seats = _.seq(8, 2).map(x =>
     d.option({}, x))
 
-  let types = ['draft', 'sealed', 'cube draft', 'cube sealed'].map(type =>
-    d.button({
-      disabled: type === App.state.type,
-      onClick: App._save('type', type)
-    }, type))
+  let types = ['draft', 'sealed', 'cube draft', 'cube sealed', 'editor']
+    .map(type =>
+      d.button({
+        disabled: type === App.state.type,
+        onClick: App._save('type', type)
+      }, type))
 
   return d.div({},
     d.div({},
