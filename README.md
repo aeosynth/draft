@@ -23,6 +23,8 @@ rerun `make`; if that still doesn't work, please file an issue
 
 written in [es6], transpiled with [traceur], using [react] on the client
 
+for the editor component, see <https://github.com/aeosynth/editor>
+
 [es6]: https://github.com/lukehoban/es6features
 [traceur]: https://github.com/google/traceur-compiler
 [react]: https://github.com/facebook/react
