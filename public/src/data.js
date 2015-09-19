@@ -1,5 +1,6 @@
 export default {
   expansion: {
+    "Battle for Zendikar": "BFZ",
     "Dragons of Tarkir": "DTK",
     "Fate Reforged": "FRF",
     "Khans of Tarkir": "KTK",

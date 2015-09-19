@@ -16,12 +16,12 @@ let App = {
     seats: 8,
     type: 'draft',
     sets: [
-      'ORI',
-      'ORI',
-      'ORI',
-      'ORI',
-      'ORI',
-      'ORI'
+      'BFZ',
+      'BFZ',
+      'BFZ',
+      'BFZ',
+      'BFZ',
+      'BFZ'
     ],
     list: '',
     cards: 15,
