@@ -19,8 +19,8 @@ clean:
 cards: data/AllSets.json
 	node src/make cards
 
-spoiler:
-	node src/make spoiler
+custom:
+	node src/make custom
 
 data/AllSets.json:
 	curl -so data/AllSets.json http://mtgjson.com/json/AllSets.json
