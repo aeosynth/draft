@@ -30,12 +30,13 @@ cards.forEach(rawCard => {
   if (rarity === 'basic')
     return
 
-  const name = rawCard.name.toLowerCase()
-  set[rarity].push(name)
+  const {name} = rawCard
+  const lc = name.toLowerCase()
+  set[rarity].push(lc)
 
   const sets = {[code]: { rarity, url: rawCard.url }}
-  if (Cards[name])
-    return Cards[name].sets[code] = sets[code]
+  if (Cards[lc])
+    return Cards[lc].sets[code] = sets[code]
 
   const {colors} = rawCard
   const color
@@ -43,7 +44,7 @@ cards.forEach(rawCard => {
     : !colors.length ? 'colorless'
     : 'multicolor'
 
-  Cards[name] = {
+  Cards[lc] = {
     cmc: rawCard.cmc,
     color,
     name,
