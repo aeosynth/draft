@@ -5,7 +5,6 @@
   "author": "James Campos <james.r.campos@gmail.com>",
   "repository": "aeosynth/draft",
   "dependencies": {
-    "cheerio": "^0.17.0",
     "ee": "git://github.com/aeosynth/ee",
     "engine.io": "^1.4.1",
     "engine.io-client": "^1.4.1",
