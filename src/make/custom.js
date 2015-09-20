@@ -38,10 +38,10 @@ cards.forEach(rawCard => {
   if (Cards[lc])
     return Cards[lc].sets[code] = sets[code]
 
-  const {colors} = rawCard
+  const {cid} = rawCard
   const color
-    = colors.length === 1 ? COLORS[colors[0]]
-    : !colors.length ? 'colorless'
+    = cid.length === 1 ? COLORS[colors[0]]
+    : !cid.length ? 'colorless'
     : 'multicolor'
 
   Cards[lc] = {
