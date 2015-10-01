@@ -2,24 +2,25 @@ import _ from '../lib/utils'
 import App from './app'
 
 let Cards = {
-  Plains:   { url: '136' },
-  Island:   { url: '137' },
-  Swamp:    { url: '138' },
-  Mountain: { url: '139' },
-  Forest:   { url: '140' }
+  Plains:   401994,
+  Island:   401927,
+  Swamp:    402059,
+  Mountain: 401961,
+  Forest:   401886
 }
 
 export let BASICS = Object.keys(Cards)
 
 for (let name in Cards)
-  Object.assign(Cards[name], { name,
+  Cards[name] = {name,
     cmc: 0,
-    code: 'UNH',
+    code: 'BFZ',
     color: 'colorless',
     rarity: 'basic',
     type: 'Land',
-    url: `http://magiccards.info/scans/en/uh/${Cards[name].url}.jpg`
-  })
+    url: 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&' +
+      `multiverseid=${Cards[name]}`
+  }
 
 let rawPack, clicked
 export let Zones = {

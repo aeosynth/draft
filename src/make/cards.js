@@ -2,6 +2,14 @@ var fs = require('fs')
 var _ = require('../_')
 var raw = require('../../data/AllSets')
 
+var COLORS = {
+  W: 'White',
+  U: 'Blue',
+  B: 'Black',
+  R: 'Red',
+  G: 'Green'
+}
+
 var Cards = {}
 var Sets = {}
 
@@ -29,6 +37,14 @@ function before() {
 
   raw.PLC.booster = Array(11).fill('common')
   raw.FUT.booster = Array(11).fill('common')
+
+  for (card of raw.BFZ.cards)
+    if (card.text && card.text.startsWith('Devoid'))
+      card.colors = card.manaCost
+        .replace(/[\d{}]/g, '')
+        .replace(/(.)\1+/g, '$1')
+        .split('')
+        .map(c => COLORS[c])
 
   var card
   for (card of raw.ISD.cards)
