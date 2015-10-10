@@ -70,7 +70,7 @@ let App = {
     let options = {
       query: { id, name }
     }
-    var ws = this.ws = eio('ws://sock.drafts.in', options)
+    var ws = this.ws = eio('ws://sock.' + location.host, options)
     ws.on('open' , ()=> console.log('open'))
     ws.on('close', ()=> console.log('close'))
     ws.on('message', message)
