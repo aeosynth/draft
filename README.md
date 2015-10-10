@@ -1,7 +1,5 @@
 # draft
 
-client/server for <http://drafts.in>
-
 unaffiliated with wizards of the coast
 
 # run

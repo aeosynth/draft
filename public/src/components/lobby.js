@@ -66,7 +66,7 @@ function content() {
     case 'sealed': return [setsTop, setsBot]
     case 'cube draft' : return [cube, cubeDraft]
     case 'cube sealed': return cube
-    case 'editor': return d.a({ href: 'http://editor.drafts.in' }, 'editor')
+    case 'editor': return d.a({ href: 'http://editor.draft.wtf' }, 'editor')
   }
 }
 
