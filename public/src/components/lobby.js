@@ -17,7 +17,7 @@ export default React.createClass({
 
     return d.div({},
       Chat(),
-      d.h1({}, 'drafts.in'),
+      d.h1({}, location.host),
       d.p({ className: 'error' }, App.err),
       link,
       Create(),
