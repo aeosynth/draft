@@ -19,8 +19,7 @@ function zone(zoneName) {
     d.img({
       onClick: App._emit('click', zoneName, card.name),
       src: card.url,
-      alt: card.name,
-      title: card.name
+      alt: card.name
     }))
 
   return d.div({ className: 'zone' },
