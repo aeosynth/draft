@@ -42,7 +42,7 @@ export default React.createClass({
         d.div({
           onClick: App._emit('click', zoneName, card.name),
           onMouseOver: this.enter.bind(this, card.url)
-        }, d.img({ src: card.url }))
+        }, d.img({ src: card.url, alt: card.name }))
       )
 
       sum += items.length

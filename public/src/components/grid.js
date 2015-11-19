@@ -18,7 +18,8 @@ function zone(zoneName) {
   let items = cards.map(card =>
     d.img({
       onClick: App._emit('click', zoneName, card.name),
-      src: card.url
+      src: card.url,
+      alt: card.name
     }))
 
   return d.div({ className: 'zone' },
