@@ -1,5 +1,6 @@
 export default {
   expansion: {
+    "Oath of the Gatewatch": "OGW",
     "Battle for Zendikar": "BFZ",
     "Dragons of Tarkir": "DTK",
     "Fate Reforged": "FRF",
