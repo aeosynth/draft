@@ -40,7 +40,7 @@ cards.forEach(rawCard => {
 
   const {cid} = rawCard
   const color
-    = cid.length === 1 ? COLORS[colors[0]]
+    = cid.length === 1 ? COLORS[cid[0]]
     : !cid.length ? 'colorless'
     : 'multicolor'
 
