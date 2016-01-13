@@ -53,5 +53,10 @@ cards.forEach(rawCard => {
   }
 })
 
+//XXX ideally this would be done when generating the set, but that generator
+//keys by name
+if (code === 'OGW')
+  set.common.push('wastes')
+
 fs.writeFileSync('data/cards.json', JSON.stringify(Cards, null, 2))
 fs.writeFileSync('data/sets.json', JSON.stringify(Sets, null, 2))
