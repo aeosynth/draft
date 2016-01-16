@@ -23,7 +23,7 @@ custom:
 	node src/make custom
 
 data/AllSets.json:
-	curl -so data/AllSets.json http://mtgjson.com/json/AllSets.json
+	curl -so data/AllSets.json https://mtgjson.com/json/AllSets.json
 
 score:
 	-node src/make score #ignore errors

@@ -69,6 +69,8 @@ function before() {
   // Each sample deck has several cards numbered 270 and higher that do not
   // appear in Magic 2015 booster packs.
   raw.M15.cards = raw.M15.cards.filter(x => parseInt(x.number) < 270)
+
+  raw.OGW.cards.find(x => x.name === 'Wastes').rarity = 'Common'
 }
 
 function after() {
@@ -106,6 +108,8 @@ function after() {
     ]
   }
   alias(FRF.special.fetch, 'FRF')
+
+  Sets.OGW.common.push('wastes')// wastes are twice as common
 }
 
 function alias(arr, code) {
