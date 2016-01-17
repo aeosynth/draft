@@ -38,13 +38,15 @@ function before() {
   raw.PLC.booster = Array(11).fill('common')
   raw.FUT.booster = Array(11).fill('common')
 
-  for (card of raw.BFZ.cards)
-    if (card.text && card.text.startsWith('Devoid'))
-      card.colors = card.manaCost
-        .replace(/[\d{}]/g, '')
-        .replace(/(.)\1+/g, '$1')
-        .split('')
-        .map(c => COLORS[c])
+  ;['BFZ', 'OGW'].forEach(setName => {
+    for (card of raw[setName].cards)
+      if (card.text && card.text.startsWith('Devoid'))
+        card.colors = card.manaCost
+          .replace(/[\d{}]/g, '')
+          .replace(/(.)\1+/g, '$1')
+          .split('')
+          .map(c => COLORS[c])
+  })
 
   var card
   for (card of raw.ISD.cards)
