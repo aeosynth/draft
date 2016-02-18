@@ -11,14 +11,12 @@ export default React.createClass({
   render() {
     return d.div({},
       Chat(),
-      d.h1({}, 'drafts.in'),
+      d.h1({}, 'dr4ft.com'),
       d.p({ className: 'error' }, App.err),
       Create(),
       d.footer({},
         d.div({},
-          d.a({ className: 'icon ion-social-github', href: 'https://github.com/aeosynth/draft' }),
-          d.a({ className: 'icon ion-social-twitter', href: 'https://twitter.com/aeosynth' }),
-          d.a({ className: 'icon ion-android-mail', href: 'mailto:james.r.campos@gmail.com' })),
+          d.a({ className: 'icon ion-social-github', href: 'https://github.com/aeosynth/draft' })),
         d.div({},
           d.small({}, 'unaffiliated with wizards of the coast'))))
   }
@@ -31,6 +29,7 @@ function Sets(selectedSet, index) {
     let options = []
     for (let name in sets) {
       let code = sets[name]
+      console.log(code)
       options.push(d.option({ value: code }, name))
     }
     groups.push(d.optgroup({ label }, options))
@@ -42,6 +41,7 @@ function Sets(selectedSet, index) {
 
 function content() {
   let sets = App.state.sets.map(Sets)
+
   let setsTop = d.div({}, sets.slice(0, 3))
   let setsBot = d.div({}, sets.slice(3))
 
@@ -60,12 +60,14 @@ function content() {
     ' cards ',
     d.select({ valueLink: App.link('packs') }, packs),
     ' packs')
+  let chaos = d.div({})
 
   switch(App.state.type) {
     case 'draft' : return setsTop
     case 'sealed': return [setsTop, setsBot]
     case 'cube draft' : return [cube, cubeDraft]
     case 'cube sealed': return cube
+    case 'chaos': return chaos
     case 'editor': return d.a({ href: 'http://editor.draft.wtf' }, 'editor')
   }
 }
@@ -74,7 +76,7 @@ function Create() {
   let seats = _.seq(8, 2).map(x =>
     d.option({}, x))
 
-  let types = ['draft', 'sealed', 'cube draft', 'cube sealed', 'editor']
+  let types = ['draft', 'sealed', 'cube draft', 'cube sealed', 'chaos', 'editor']
     .map(type =>
       d.button({
         disabled: type === App.state.type,

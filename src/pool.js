@@ -71,17 +71,18 @@ function toCards(pool, code) {
     if (isCube)
       [code] = Object.keys(sets)
     card.code = mws[code] || code
-
     var set = sets[code]
     delete card.sets
     return Object.assign(card, set)
   })
 }
 
-module.exports = function (src, playerCount, isSealed) {
+module.exports = function (src, playerCount, isSealed, isChaos) {
   if (!(src instanceof Array)) {
-    var isCube = true
-    _.shuffle(src.list)
+    if (!(isChaos)) {
+      var isCube = true
+      _.shuffle(src.list)
+    }
   }
   if (isSealed) {
     var count = playerCount
@@ -92,15 +93,28 @@ module.exports = function (src, playerCount, isSealed) {
   }
   var pools = []
 
-  if (isCube || isSealed)
-    while (count--)
-      pools.push(isCube
-        ? toCards(src.list.splice(-size))
-        : [].concat(...src.map(toPack)))
-  else
+  if (isCube || isSealed) {
+    if (!(isChaos)) {
+      while (count--)
+        pools.push(isCube
+            ? toCards(src.list.splice(-size))
+            : [].concat(...src.map(toPack)))
+    } else {
+      var setlist = []
+      for (var code in Sets)
+        if (code != 'UNH' && code != 'UGL')
+          setlist.push(code)
+      for (var i = 0; i < 3; i++) {
+        for (var j = 0; j < playerCount; j++) {
+          var code = setlist[_.rand(setlist.length)]
+          pools.push(toPack(code))
+        }
+      }
+    }
+  } else {
     for (var code of src.reverse())
       for (var i = 0; i < playerCount; i++)
         pools.push(toPack(code))
-
+  }
   return pools
 }

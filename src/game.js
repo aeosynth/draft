@@ -36,9 +36,14 @@ module.exports = class Game extends Room {
     super()
 
     if (sets)
-      Object.assign(this, { sets,
-        title: sets.join(' / ')})
-    else {
+      if (type != 'chaos') {
+        Object.assign(this, {
+          sets,
+          title: sets.join(' / ')
+        })
+      } else {
+        title: 'CHAOS!'
+      } else {
       var title = type
       if (type === 'cube draft')
         title += ' ' + cube.packs + 'x' + cube.cards
@@ -230,7 +235,11 @@ module.exports = class Game extends Room {
         players.push(new Bot)
     _.shuffle(players)
 
-    this.pool = Pool(src, players.length)
+    if (/chaos/.test(this.type))
+      this.pool = Pool(src, players.length, true, true)
+    else
+      this.pool = Pool(src, players.length)
+
     players.forEach((p, i) => {
       p.on('pass', this.pass.bind(this, p))
       p.send('set', { self: i })
