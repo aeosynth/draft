@@ -1,4 +1,4 @@
-var PORT = 1337
+var PORT = 80
 var http = require('http')
 var eio = require('engine.io')
 var send = require('send')

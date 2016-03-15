@@ -64,7 +64,7 @@ var util = module.exports = {
   },
   game({seats, type, sets, cube}) {
     assert(typeof seats === 'number', 'typeof seats')
-    assert(2 <= seats && seats <= 8, 'seats range')
+    assert(2 <= seats && seats <= 100, 'seats range')
     assert(['draft', 'sealed', 'cube draft', 'cube sealed', 'chaos'].indexOf(type) > -1,
       'indexOf type')
 

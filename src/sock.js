@@ -20,7 +20,7 @@ var mixins = {
 module.exports = class extends EventEmitter {
   constructor(ws) {
     this.ws = ws
-    var {id='', name='newfriend'} = ws.request._query
+    var {id='', name='dr4fter'} = ws.request._query
     this.id = id.slice(0, 25)
     this.name = name.slice(0, 15)
 

@@ -16,7 +16,7 @@ export default React.createClass({
       Create(),
       d.footer({},
         d.div({},
-          d.a({ className: 'icon ion-social-github', href: 'https://github.com/aeosynth/draft' })),
+          d.a({ className: 'icon ion-social-github', href: 'https://github.com/tritoch/draft' })),
         d.div({},
           d.small({}, 'unaffiliated with wizards of the coast'))))
   }
@@ -29,7 +29,6 @@ function Sets(selectedSet, index) {
     let options = []
     for (let name in sets) {
       let code = sets[name]
-      console.log(code)
       options.push(d.option({ value: code }, name))
     }
     groups.push(d.optgroup({ label }, options))
@@ -54,7 +53,7 @@ function content() {
   ]
 
   let cards = _.seq(15, 8).map(x => d.option({}, x))
-  let packs = _.seq( 7, 3).map(x => d.option({}, x))
+  let packs = _.seq(12, 3).map(x => d.option({}, x))
   let cubeDraft = d.div({},
     d.select({ valueLink: App.link('cards') }, cards),
     ' cards ',
@@ -73,7 +72,7 @@ function content() {
 }
 
 function Create() {
-  let seats = _.seq(8, 2).map(x =>
+  let seats = _.seq(100, 2).map(x =>
     d.option({}, x))
 
   let types = ['draft', 'sealed', 'cube draft', 'cube sealed', 'chaos', 'editor']

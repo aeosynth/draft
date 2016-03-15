@@ -27,7 +27,7 @@ function toPack(code) {
     rare = mythic
 
   var pack = [].concat(
-    _.choose(size, common),
+    _.choose(10, common),
     _.choose(3, uncommon),
     _.choose(1, rare)
   )
@@ -106,7 +106,9 @@ module.exports = function (src, playerCount, isSealed, isChaos) {
           setlist.push(code)
       for (var i = 0; i < 3; i++) {
         for (var j = 0; j < playerCount; j++) {
-          var code = setlist[_.rand(setlist.length)]
+	  var setindex = _.rand(setlist.length)
+          var code = setlist[setindex]
+	  setlist.splice(setindex, 1)
           pools.push(toPack(code))
         }
       }

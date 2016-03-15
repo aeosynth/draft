@@ -193,6 +193,8 @@ function doCard(rawCard, cards, code, set) {
   cards[name] = { color, name,
     type: rawCard.types[rawCard.types.length - 1],
     cmc: rawCard.cmc || 0,
+    text: rawCard.text || '',
+    manaCost: rawCard.manaCost || '',
     sets: {
       [code]: { rarity,
         url: `http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=${rawCard.multiverseid}&type=card`
