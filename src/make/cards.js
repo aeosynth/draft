@@ -76,6 +76,60 @@ function before() {
 }
 
 function after() {
+  var {ISD} = Sets
+  ISD.special = {
+    mythic: [
+      'garruk relentless'
+    ],
+    rare: [
+      'bloodline keeper',
+      'daybreak ranger',
+      'instigator gang',
+      'kruin outlaw',
+      'ludevic\'s test subject',
+      'mayor of avabruck'
+    ],
+    uncommon: [
+      'civilized scholar',
+      'cloistered youth',
+      'gatstaf shepherd',
+      'hanweir watchkeep',
+      'reckless waif',
+      'screeching bat',
+      'ulvenwald mystics'
+    ],
+    common: [
+      'delver of secrets',
+      'grizzled outcasts',
+      'thraben sentry',
+      'tormented pariah',
+      'village ironsmith',
+      'villagers of estwald'
+    ]
+  }
+  var {DKA} = Sets
+  DKA.special = {
+    mythic: [
+      'elbrus, the binding blade',
+      'huntmaster of the fells'
+    ],
+    rare: [
+      'mondronen shaman',
+      'ravenous demon'
+    ],
+    uncommon: [
+      'afflicted deserter',
+      'chalice of life',
+      'lambholt elder',
+      'soul seizer'
+    ],
+    common: [
+      'chosen of markov',
+      'hinterland hermit',
+      'loyal cathar',
+      'scorned villager'
+    ]
+  }
   var {DGM} = Sets
   DGM.mythic.splice(DGM.mythic.indexOf("maze's end"), 1)
   DGM.special = {
