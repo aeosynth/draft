@@ -58,11 +58,11 @@ function toPack(code) {
   //http://www.mtgsalvation.com/forums/magic-fundamentals/magic-general/327956-innistrad-block-transforming-card-pack-odds?comment=4
   //121 card sheet, 1 mythic, 12 rare (13), 42 uncommon (55), 66 common
     var specialrnd = _.rand(121)
-    if (specialrnd == 1)
+    if (specialrnd == 0)
       special = special.mythic
-    else if (specialrnd <= 13)
+    else if (specialrnd < 13)
       special = special.rare
-    else if (specialrnd <= 55)
+    else if (specialrnd < 55)
       special = special.uncommon
     else
       special = special.common
@@ -71,11 +71,11 @@ function toPack(code) {
   //http://www.mtgsalvation.com/forums/magic-fundamentals/magic-general/327956-innistrad-block-transforming-card-pack-odds?comment=4
   //80 card sheet, 2 mythic, 6 rare (8), 24 uncommon (32), 48 common
     var specialrnd = _.rand(80)
-    if (specialrnd <= 2)
+    if (specialrnd <= 1)
       special = special.mythic
-    else if (specialrnd <= 8)
+    else if (specialrnd < 8)
       special = special.rare
-    else if (specialrnd <= 32)
+    else if (specialrnd < 32)
       special = special.uncommon
     else
       special = special.common
