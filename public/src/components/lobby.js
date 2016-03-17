@@ -66,6 +66,7 @@ function content() {
     case 'sealed': return [setsTop, setsBot]
     case 'cube draft' : return [cube, cubeDraft]
     case 'cube sealed': return cube
+    case 'cube winston': return [cube, cubeDraft]
     case 'editor': return d.a({ href: 'http://editor.draft.wtf' }, 'editor')
   }
 }
@@ -74,7 +75,7 @@ function Create() {
   let seats = _.seq(8, 2).map(x =>
     d.option({}, x))
 
-  let types = ['draft', 'sealed', 'cube draft', 'cube sealed', 'editor']
+  let types = ['draft', 'sealed', 'cube draft', 'cube sealed', 'cube winston', 'editor']
     .map(type =>
       d.button({
         disabled: type === App.state.type,

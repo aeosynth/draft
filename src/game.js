@@ -40,7 +40,7 @@ module.exports = class Game extends Room {
         title: sets.join(' / ')})
     else {
       var title = type
-      if (type === 'cube draft')
+      if (type === 'cube draft' || type === 'cube winston')
         title += ' ' + cube.packs + 'x' + cube.cards
       Object.assign(this, { cube, title })
     }
@@ -52,7 +52,8 @@ module.exports = class Game extends Room {
       id: gameID,
       players: [],
       round: 0,
-      rounds: cube ? cube.packs : 3
+      rounds: cube ? cube.packs : 3,
+      winston: (type === 'cube winston')
     })
     this.renew()
     games[gameID] = this
@@ -173,6 +174,34 @@ module.exports = class Game extends Room {
       this.meta()
   }
 
+  bumpAp() {
+    return (this.ap + 1) % this.players.length
+  }
+
+  takePile(p) {
+    if (p.id !== this.players[this.ap].id)
+      return
+
+    this.piles[this.pile].forEach((x) => { this.players[this.ap].pool.push(x) })
+    this.piles[this.pile] = [this.pool.pop()]
+    this.players[this.ap].sendPile([])
+
+    this.ap = this.bumpAp()
+    this.pile = 0
+
+    this.startWinstonPileSelection()
+  }
+
+  passPile(p) {
+    if (p.id !== this.players[this.ap].id)
+      return
+
+    this.piles[this.pile].push(this.pool.pop())
+    this.pile++
+
+    this.startWinstonPileSelection()
+  }
+
   startRound() {
     if (this.round++ === this.rounds)
       return this.end()
@@ -199,6 +228,21 @@ module.exports = class Game extends Room {
     this.meta({ round: this.round })
   }
 
+  startWinstonPileSelection() {
+    if ( this.pile >= this.piles.length ) {
+      let topCard = this.pool.pop()
+      this.players[this.ap].pool.push(topCard)
+      this.players[this.ap].sendCard(topCard)
+      this.players[this.ap].sendPile([])
+      this.ap = this.bumpAp()
+      this.pile = 0
+      this.startWinstonPileSelection()
+    }
+    else {
+      this.players[this.ap].sendPile(this.piles[this.pile])
+    }
+  }
+
   hash(h, deck) {
     h.hash = hash(deck)
     this.meta()
@@ -220,6 +264,20 @@ module.exports = class Game extends Room {
         p.send('set', { round: -1 })
       }
       return
+    }
+
+    if (/winston/.test(this.type)) {
+      this.pile = 0
+      this.ap   = 0
+      var [pool] = Pool(src, 1, true)
+      this.pool = pool
+      this.piles = [[this.pool.pop()], [this.pool.pop()], [this.pool.pop()]]
+      players.forEach((p, i) => {
+        p.on('takePile', this.takePile.bind(this, p))
+        p.on('passPile', this.passPile.bind(this, p))
+        p.send('set', { self: i })
+      })
+      return this.startWinstonPileSelection()
     }
 
     for (p of players)

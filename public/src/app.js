@@ -76,6 +76,7 @@ let App = {
     ws.on('message', message)
   },
   send(...args) {
+    console.log('Sending', args)
     let msg = JSON.stringify(args)
     this.ws.send(msg)
   },
