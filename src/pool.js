@@ -35,9 +35,9 @@ function toPack(code) {
   //http://markrosewater.tumblr.com/post/141794840953/if-the-as-fan-of-double-face-cards-is-1125-that
     if (_.rand(8) == 0)
       if (_.rand(15) < 3)
-        pack.push(_.choose(1, special.rare))
-      else
         pack.push(_.choose(1, special.mythic))
+      else
+        pack.push(_.choose(1, special.rare))
     else
       pack.push(_.choose(1, uncommon))
   else
