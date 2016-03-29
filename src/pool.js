@@ -28,11 +28,28 @@ function toPack(code) {
 
   var pack = [].concat(
     _.choose(10, common),
-    _.choose(3, uncommon),
+    _.choose(2, uncommon),
     _.choose(1, rare)
   )
+  if (code == 'SOI')
+  //http://markrosewater.tumblr.com/post/141794840953/if-the-as-fan-of-double-face-cards-is-1125-that
+    if (_.rand(8) == 0)
+      if (_.rand(15) < 3)
+        pack.push(_.choose(1, special.rare))
+      else
+        pack.push(_.choose(1, special.mythic))
+    else
+      pack.push(_.choose(1, uncommon))
+  else
+    pack.push(_.choose(1, uncommon))
 
   switch (code) {
+  case 'SOI':
+    if (_.rand(106) < 38)
+      special = special.uncommon
+    else
+      special = special.common
+    break
   case 'DGM':
     special = _.rand(20)
       ? special.gate
