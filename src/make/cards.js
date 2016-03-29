@@ -76,6 +76,103 @@ function before() {
 }
 
 function after() {
+    var {SOI} = Sets
+  SOI.special = {
+    "mythic": [
+      "archangel avacyn",
+      "startled awake",
+      "arlinn kord"
+    ],
+    "rare": [
+      "hanweir militia captain",
+      "elusive tormentor",
+      "thing in the ice",
+      "geier reach bandit",
+      "sage of ancient lore",
+      "westvale abbey"
+    ],
+    "uncommon": [
+      "avacynian missionaries",
+      "pious evangel",
+      "town gossipmonger",
+      "aberrant researcher",
+      "daring sleuth",
+      "uninvited geist",
+      "accursed witch",
+      "heir of falkenrath",
+      "kindly stranger",
+      "breakneck rider",
+      "skin invatsion",
+      "village messenger",
+      "autumnal gloom",
+      "duskwatch recruiter",
+      "hermit of the natterknolls",
+      "lambholt pacifist",
+      "harvest hand",
+      "neglected heirloom",
+      "thraben gargoyle"
+    ],
+    "common": [
+      "convicted killer",
+      "gatstaf arsonists",
+      "hinterland logger",
+      "solitary hunter"
+    ]
+  }
+  var {ISD} = Sets
+  ISD.special = {
+    mythic: [
+        'garruk relentless'
+    ],
+    rare: [
+        'bloodline keeper',
+        'daybreak ranger',
+        'instigator gang',
+        'kruin outlaw',
+        'ludevic\'s test subject',
+        'mayor of avabruck'
+    ],
+    uncommon: [
+        'civilized scholar',
+        'cloistered youth',
+        'gatstaf shepherd',
+        'hanweir watchkeep',
+        'reckless waif',
+        'screeching bat',
+        'ulvenwald mystics'
+    ],
+    common: [
+        'delver of secrets',
+        'grizzled outcasts',
+        'thraben sentry',
+        'tormented pariah',
+        'village ironsmith',
+        'villagers of estwald'
+    ]
+  }
+  var {DKA} = Sets
+  DKA.special = {
+    mythic: [
+      'elbrus, the binding blade',
+      'huntmaster of the fells'
+    ],
+    rare: [
+      'mondronen shaman',
+      'ravenous demon'
+    ],
+    uncommon: [
+      'afflicted deserter',
+      'chalice of life',
+      'lambholt elder',
+      'soul seizer'
+    ],
+    common: [
+      'chosen of markov',
+      'hinterland hermit',
+      'loyal cathar',
+      'scorned villager'
+    ]
+  }
   var {DGM} = Sets
   DGM.mythic.splice(DGM.mythic.indexOf("maze's end"), 1)
   DGM.special = {
