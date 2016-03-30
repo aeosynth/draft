@@ -221,7 +221,7 @@ function doCard(rawCard, cards, code, set) {
 
   var {name} = rawCard
   if (['double-faced', 'flip'].indexOf(rawCard.layout) > -1
-    && name !== rawCard.names[0])
+    && rawCard.number.indexOf('b') > -1)
     return
 
   if (rawCard.layout === 'split')
