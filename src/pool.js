@@ -26,7 +26,7 @@ function toPack(code) {
   if (mythic && !_.rand(8))
     rare = mythic
   //make small sets draftable.
-  if (size < 9)
+  if (size < 9 && code != 'SOI')
     size = 10
   var pack = [].concat(
     _.choose(size, common),
