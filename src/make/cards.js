@@ -80,7 +80,7 @@ function before() {
 }
 
 function after() {
-    var {SOI} = Sets
+  var {SOI} = Sets
   SOI.special = {
     "mythic": [
       "archangel avacyn",
