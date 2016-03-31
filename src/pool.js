@@ -70,7 +70,7 @@ function toPack(code) {
       ? special.common
       : special.fetch
     break
-      case 'ISD':
+  case 'ISD':
   //http://www.mtgsalvation.com/forums/magic-fundamentals/magic-general/327956-innistrad-block-transforming-card-pack-odds?comment=4
   //121 card sheet, 1 mythic, 12 rare (13), 42 uncommon (55), 66 common
     var specialrnd = _.rand(121)
