@@ -28,9 +28,6 @@ function toPack(code) {
   //make small sets draftable.
   if (size < 9)
     size = 10
-  //SOI has 2 possible DFC slots
-  if (code == 'SOI')
-    size=8
   var pack = [].concat(
     _.choose(size, common),
     _.choose(3, uncommon),
