@@ -25,10 +25,15 @@ function toPack(code) {
   var {common, uncommon, rare, mythic, special, size} = set
   if (mythic && !_.rand(8))
     rare = mythic
-
+  //make small sets draftable.
+  if (size < 9)
+    size = 10
+  //SOI has 2 possible DFC slots
+  if (code == 'SOI')
+    size=8
   var pack = [].concat(
-    _.choose(10, common),
-    _.choose(2, uncommon),
+    _.choose(size, common),
+    _.choose(3, uncommon),
     _.choose(1, rare)
   )
   if (code == 'SOI')
@@ -39,10 +44,7 @@ function toPack(code) {
       else
         pack.push(_.choose(1, special.rare))
     else
-      pack.push(_.choose(1, uncommon))
-  else
-    pack.push(_.choose(1, uncommon))
-
+      pack.push(_.choose(1, common))
   switch (code) {
   case 'SOI':
     if (_.rand(106) < 38)
@@ -70,7 +72,33 @@ function toPack(code) {
     special = _.rand(20)
       ? special.common
       : special.fetch
-    break     
+    break
+      case 'ISD':
+  //http://www.mtgsalvation.com/forums/magic-fundamentals/magic-general/327956-innistrad-block-transforming-card-pack-odds?comment=4
+  //121 card sheet, 1 mythic, 12 rare (13), 42 uncommon (55), 66 common
+    var specialrnd = _.rand(121)
+    if (specialrnd == 0)
+      special = special.mythic
+    else if (specialrnd < 13)
+      special = special.rare
+    else if (specialrnd < 55)
+      special = special.uncommon
+    else
+      special = special.common
+    break
+  case 'DKA':
+  //http://www.mtgsalvation.com/forums/magic-fundamentals/magic-general/327956-innistrad-block-transforming-card-pack-odds?comment=4
+  //80 card sheet, 2 mythic, 6 rare (8), 24 uncommon (32), 48 common
+    var specialrnd = _.rand(80)
+    if (specialrnd < 2)
+      special = special.mythic
+    else if (specialrnd < 8)
+      special = special.rare
+    else if (specialrnd < 32)
+      special = special.uncommon
+    else
+      special = special.common
+    break
   }
 
   if (special)
