@@ -49,6 +49,10 @@ function before() {
   })
 
   var card
+  for (card of raw.SOI.cards)
+    if (card.layout === 'double-faced')
+      card.rarity = 'special'
+      
   for (card of raw.ISD.cards)
     if (card.layout === 'double-faced')
       card.rarity = 'special'
@@ -102,7 +106,8 @@ function after() {
       "heir of falkenrath",
       "kindly stranger",
       "breakneck rider",
-      "skin invatsion",
+      "convicted killer",
+      "skin invasion",
       "village messenger",
       "autumnal gloom",
       "duskwatch recruiter",
@@ -119,6 +124,7 @@ function after() {
       "solitary hunter"
     ]
   }
+  SOI.size = 8
   var {ISD} = Sets
   ISD.special = {
     mythic: [
