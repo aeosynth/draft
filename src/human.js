@@ -10,6 +10,7 @@ module.exports = class extends EventEmitter {
       name: sock.name,
       time: 0,
       packs: [],
+      pile: [],
       pool: []
     })
     this.attach(sock)
@@ -21,6 +22,8 @@ module.exports = class extends EventEmitter {
     sock.mixin(this)
     sock.on('pick', this._pick.bind(this))
     sock.on('hash', this._hash.bind(this))
+    sock.on('takePile', (() => this.emit('takePile')).bind(this))
+    sock.on('passPile', (() => this.emit('passPile')).bind(this))
 
     var [pack] = this.packs
     if (pack)
@@ -51,6 +54,15 @@ module.exports = class extends EventEmitter {
       this.time = 20 + 5 * pack.length
 
     this.send('pack', pack)
+  }
+  sendCard(card) {
+    this.send('winstonCard', card)
+  }
+  sendPile(pile) {
+    if (this.useTimer)
+      this.time = 20 + 5 * pile.length
+
+    this.send('pile', pile)
   }
   pick(index) {
     var pack = this.packs.shift()

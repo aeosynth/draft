@@ -25,9 +25,35 @@ for (let name in Cards)
 let rawPack, clicked
 export let Zones = {
   pack: {},
+  pile: {},
   main: {},
   side: {},
   junk: {}
+}
+
+function moveCardsToZone(cards, zoneName, dropTo) {
+  rawPack = cards
+  if (dropTo !== undefined) {
+    Zones[zoneName] = dropTo
+  }
+  let theZone = Zones[zoneName]
+  for (let card of cards) {
+    let {name} = card
+    Cards[name] = card
+    theZone[name] || (theZone[name] = 0)
+    theZone[name]++
+  }
+  App.update()
+  if (App.state.beep)
+    document.getElementById('beep').play()
+}
+
+function replaceCardsInZone(cards, zoneName) {
+  moveCardsToZone(cards, zoneName, {})
+}
+
+function addCardsToZone(cards, zoneName) {
+  moveCardsToZone(cards, zoneName)
 }
 
 function hash() {
@@ -70,6 +96,25 @@ let events = {
 
     App.update()
   },
+  takePile(zoneName, cards, e) {
+    let src = Zones[zoneName]
+    let dst = Zones [e.shiftKey
+      ? zoneName === 'junk' ? 'main' : 'junk'
+      : zoneName === 'side' ? 'main' : 'side']
+    cards.forEach((card) => {
+      dst[card.name] || (dst[card.name] = 0)
+      src[card.name]--
+      dst[card.name]++
+      if (!src[card.name])
+        delete src[card.name]
+    })
+    App.send('takePile', {})
+    App.update()
+  },
+  passPile(zoneName, cards, e) {
+    App.send('passPile', {})
+    App.update()
+  },
   copy(ref) {
     let node = ref.getDOMNode()
     node.value = filetypes.txt()
@@ -88,17 +133,13 @@ let events = {
     App.send('start', options)
   },
   pack(cards) {
-    rawPack = cards
-    let pack = Zones.pack = {}
-
-    for (let card of cards) {
-      let {name} = card
-      Cards[name] = card
-      pack[name] = 1
-    }
-    App.update()
-    if (App.state.beep)
-      document.getElementById('beep').play()
+    replaceCardsInZone(cards, 'pack')
+  },
+  pile(cards) {
+    replaceCardsInZone(cards, 'pile')
+  },
+  winstonCard(card) {
+    addCardsToZone([card], 'junk')
   },
   create() {
     let {type, seats} = App.state

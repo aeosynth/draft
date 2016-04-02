@@ -43,9 +43,11 @@ export default React.createClass({
   Cards() {
     if (Object.keys(Zones.pack).length)
       let pack = Grid({ zones: ['pack'] })
+    else
+      let pile = Grid({ zones: ['pile'] })
     let component = App.state.cols ? Cols : Grid
     let pool = component({ zones: ['main', 'side', 'junk'] })
-    return [pack, pool]
+    return [pack, pile, pool]
   },
   Start() {
     if (App.state.round || !App.state.isHost)
