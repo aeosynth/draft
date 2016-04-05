@@ -141,3 +141,35 @@ time {
 #chat input {
   flex-shrink: 0
 }
+
+
+@media(max-width: 1020px) {
+  .menu {
+    /* so the footer doesn't get in the way when we scroll to the bottom with limited vertical space (landscape) */
+    padding-bottom: 55px; 
+  }
+  .menu > div {
+    display: block;
+    width: 50%;
+    margin-left: 5%;
+    margin-bottom: 16px;
+    font-size: 32px;
+    text-align: center;
+  }
+
+  .menu > div:nth-child(1) > button,
+  .menu > div:nth-child(1) > select,
+  .menu > div:nth-child(1) > span {
+    display: inline-block;
+    width: 30%;
+  }
+
+
+  .menu > div > button,
+  .menu > div > select {
+    display: block;
+    width: 90%;
+    margin: auto;
+    margin-bottom: 8px;
+  }
+}
