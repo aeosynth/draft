@@ -62,6 +62,12 @@ function before() {
       || /draft/.test(card.text))
       card.rarity = 'special'
 
+  for (card of raw.SOI.cards) {
+    if (card.layout === 'double-faced') {
+      card.rarity = 'special'
+    }
+  }
+
   for (card of raw.FRF.cards)
     if (card.types[0] === 'Land'
       && (card.name !== 'Crucible of the Spirit Dragon'))
@@ -128,6 +134,50 @@ function after() {
       'hinterland hermit',
       'loyal cathar',
       'scorned villager'
+    ]
+  }
+  var {SOI} = Sets
+  SOI.special = {
+    mythic: [
+      'archangel avacyn',
+      'startled awake',
+      'arlinn kord'
+    ],
+    rare: [
+      'hanweir militia captain',
+      'thing in the ice',
+      'elusive tormentor',
+      'geier reach bandit',
+      'sage of ancient lore'
+    ],
+    uncommon: [
+      'avacynian missionaries',
+      'pious evangel',
+      'town gossipmonger',
+      'aberrant researcher',
+      'daring sleuth',
+      'uninvited geist',
+      'accursed witch',
+      'heir of falkenrath',
+      'kindly stranger',
+      'breakneck rider',
+      'kessig forgemaster',
+      'skin invasion',
+      'village messenger',
+      'autumnal gloom',
+      'cult of the waxing moon',
+      'duskwatch recruiter',
+      'hermit of the natterknolls',
+      'lambholt pacifist',
+      'harvest hand',
+      'neglected heirloom',
+      'thraben gargoyle'
+    ],
+    common: [
+      'convicted killer',
+      'gatstaf arsonists',
+      'hinterland logger',
+      'solitary hunter'
     ]
   }
   var {DGM} = Sets

@@ -32,58 +32,85 @@ function toPack(code) {
     _.choose(1, rare)
   )
 
-  switch (code) {
-  case 'DGM':
-    special = _.rand(20)
-      ? special.gate
-      : special.shock
-    break
-  case 'MMA':
-    special = selectRarity(set)
-    break
-  case 'MM2':
-    special = selectRarity(set)
-    break
-  case 'VMA':
-    //http://www.wizards.com/magic/magazine/article.aspx?x=mtg/daily/arcana/1491
-    if (_.rand(53))
-      special = selectRarity(set)
-    break
-  case 'FRF':
-    special = _.rand(20)
-      ? special.common
-      : special.fetch
-    break
-  case 'ISD':
-  //http://www.mtgsalvation.com/forums/magic-fundamentals/magic-general/327956-innistrad-block-transforming-card-pack-odds?comment=4
-  //121 card sheet, 1 mythic, 12 rare (13), 42 uncommon (55), 66 common
-    specialrnd = _.rand(121)
-    if (specialrnd == 0)
-      special = special.mythic
-    else if (specialrnd < 13)
-      special = special.rare
-    else if (specialrnd < 55)
-      special = special.uncommon
-    else
-      special = special.common
-    break
-  case 'DKA':
-  //http://www.mtgsalvation.com/forums/magic-fundamentals/magic-general/327956-innistrad-block-transforming-card-pack-odds?comment=4
-  //80 card sheet, 2 mythic, 6 rare (8), 24 uncommon (32), 48 common
-    specialrnd = _.rand(80)
-    if (specialrnd <= 1)
-      special = special.mythic
-    else if (specialrnd < 8)
-      special = special.rare
-    else if (specialrnd < 32)
-      special = special.uncommon
-    else
-      special = special.common
-    break  
+  var special1
+  var specialrnd
+  switch (code) { // the author of this switch should be whipped with a switch
+                  // I have fixed it after quite some time of debugging while
+                  // adding SOI. MUTABILITY IS YOUR ENEMY.
+                  // ~~ @manpages
+
+    case 'DGM':
+      special1 = _.rand(20)
+        ? special.gate
+        : special.shock
+      break
+
+    case 'MMA':
+      special1 = selectRarity(set)
+      break
+
+    case 'MM2':
+      special1 = selectRarity(set)
+      break
+
+    case 'VMA':
+      //http://www.wizards.com/magic/magazine/article.aspx?x=mtg/daily/arcana/1491
+      if (_.rand(53))
+        special1 = selectRarity(set)
+      break
+
+    case 'FRF':
+      special1 = _.rand(20)
+        ? special.common
+        : special.fetch
+      break
+
+    case 'ISD':
+    //http://www.mtgsalvation.com/forums/magic-fundamentals/magic-general/327956-innistrad-block-transforming-card-pack-odds?comment=4
+    //121 card sheet, 1 mythic, 12 rare (13), 42 uncommon (55), 66 common
+      specialrnd = _.rand(121)
+      if (specialrnd == 0)
+        special1 = special.mythic
+      else if (specialrnd < 13)
+        special1 = special.rare
+      else if (specialrnd < 55)
+        special1 = special.uncommon
+      else
+        special1 = special.common
+      break
+
+    case 'SOI':
+    // Copied ISD
+    //121 card sheet, 1 mythic, 12 rare (13), 42 uncommon (55), 66 common
+      specialrnd = _.rand(121)
+      if (specialrnd == 0)
+        special1 = special.mythic
+      else if (specialrnd < 13)
+        special1 = special.rare
+      else if (specialrnd < 55)
+        special1 = special.uncommon
+      else
+        special1 = special.common
+      break
+
+    case 'DKA':
+    //http://www.mtgsalvation.com/forums/magic-fundamentals/magic-general/327956-innistrad-block-transforming-card-pack-odds?comment=4
+    //80 card sheet, 2 mythic, 6 rare (8), 24 uncommon (32), 48 common
+      specialrnd = _.rand(80)
+      if (specialrnd <= 1)
+        special1 = special.mythic
+      else if (specialrnd < 8)
+        special1 = special.rare
+      else if (specialrnd < 32)
+        special1 = special.uncommon
+      else
+        special1 = special.common
+      break
+
   }
 
-  if (special)
-    pack.push(_.choose(1, special))
+  if (special1)
+    pack.push(_.choose(1, special1))
 
   return toCards(pack, code)
 }

@@ -14,7 +14,7 @@ module.exports = {
   },
   at(arr, index) {
     var {length} = arr
-    index = (index % length + length) % length//please kill me it hurts to live
+    index = (index % length + length) % length
     return arr[index]
   },
   count(arr, attr) {

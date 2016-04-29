@@ -23,8 +23,8 @@ function transform(cube, seats, type) {
   var min = type === 'cube draft'
     ? seats * cards * packs
     : seats * 90
-  assert(min <= list.length && list.length <= 1e3,
-    `this cube needs between ${min} and 1000 cards; it has ${list.length}`)
+  assert(min <= list.length && list.length <= 9e3,
+    `this cube needs between ${min} and 9000 cards; it has ${list.length}`)
 
   var bad = []
   for (var cardName of list)
