@@ -16,15 +16,12 @@ module.exports = class extends EventEmitter {
     var scoredcards = 0
     pack.forEach((card, i) => {
       if (card.score) {
-        //if there's a better card in the pack, save the index of that card
         if (card.score < score) {
           score = card.score
           index = i
         }
-      //keep track of the # of cards with scores
       scoredcards = scoredcards + 1
       }
-      //track the number of cards in the pack
       cardcount = i
     })
     //if 50% of cards doesn't have a score, we're going to pick randomly
