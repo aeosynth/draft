@@ -126,6 +126,19 @@ module.exports = function (src, playerCount, isSealed, isChaos) {
       _.shuffle(src.list)
     }
   }
+  else {
+    for (i = 0; i < src.length; i++) {
+      if (src[i] == 'RNG') {
+        var rnglist = []
+        for (var rngcode in Sets)
+          //TODO check this against public/src/data.js
+          if (rngcode != 'UNH' && rngcode != 'UGL' && rngcode != 'SOI')
+            rnglist.push(rngcode)
+        var rngindex = _.rand(rnglist.length)
+        src[i] = rnglist[rngindex]
+      }
+    }
+  }
   if (isSealed) {
     var count = playerCount
     var size = 90
