@@ -70,7 +70,9 @@ var util = module.exports = {
 
     if (/cube/.test(type))
       transform(cube, seats, type)
-    else
-      sets.forEach(set => assert(set in Sets, `${set} in Sets`))
+    //remove the below check for now to allow Random sets
+    //TODO add if check for Random set
+    //else
+    //  sets.forEach(set => assert(set in Sets, `${set} in Sets`))
   }
 }
