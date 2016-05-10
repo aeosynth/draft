@@ -16,11 +16,16 @@ function zone(zoneName) {
   let cards = _.flat(values)
 
   let items = cards.map(card =>
-    d.img({
-      onClick: App._emit('click', zoneName, card.name),
-      src: card.url,
-      alt: card.name
-    }))
+    d.span(
+      {
+        className: card.isSelected ? 'selected-card' : 'unselected-card',
+        title: card.isSelected ? 'This card will be automatically picked if your time expires.' : '',
+        onClick: App._emit('click', zoneName, card.name),
+      },
+      d.img({
+        src: card.url,
+        alt: card.name,
+      })))
 
   return d.div({ className: 'zone' },
     d.h1({}, `${zoneName} ${cards.length}`),

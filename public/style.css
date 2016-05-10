@@ -39,6 +39,51 @@ time {
   color: white;
 }
 
+/* Tint the card blue when selected. */
+.selected-card, .unselected-card {
+  display: inline-block;
+  position: relative;
+  margin: 0;
+  cursor: pointer;
+}
+
+.selected-card:before, .unselected-card:hover:before {
+  content: '';
+
+  display: block;
+  position: absolute;
+
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  margin-bottom: 5px;
+  border-radius: 12px;
+
+  background: rgba(200, 200, 200, 0.25);
+}
+
+.selected-card:after {
+  content: 'Autopick';
+
+  display: inline-block;
+  position: absolute;
+
+  /* Center in the middle of the bottom border on the card. */
+  line-height: 25px;
+  bottom: 5px;
+  left: 0;
+  right: 0;
+
+  color: #fff;
+  font-family: Verdana, Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+  text-shadow: 0px 0px 2px #000;
+}
+
 .error {
   color: red;
 }
