@@ -1,4 +1,7 @@
 export default {
+  random: {
+    "Random Set": "RNG"
+  },
   expansion: {
     "Shadows Over Innistrad": "SOI",
     "Oath of the Gatewatch": "OGW",
