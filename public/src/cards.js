@@ -218,10 +218,20 @@ function cube() {
 }
 
 function clickPack(cardName) {
-  if (clicked !== cardName)
-    return clicked = cardName
-
   let index = rawPack.findIndex(x => x.name === cardName)
+  let card = rawPack[index]
+
+  if (clicked !== cardName) {
+    clicked = cardName
+    // There may be duplicate cards in a pack, but only one copy of a card is
+    // shown in the pick view. We must be sure to mark them all since we don't
+    // know which one is being displayed.
+    rawPack.forEach(card => card.isAutopick = card.name === cardName)
+    App.update()
+    App.send('autopick', index)
+    return clicked
+  }
+
   clicked = null
   Zones.pack = {}
   App.update()
