@@ -15,11 +15,13 @@ function zone(zoneName) {
   let values = _.values(zone)
   let cards = _.flat(values)
 
+  let isAutopickable = card => zoneName === 'pack' && card.isAutopick
+
   let items = cards.map(card =>
     d.span(
       {
-        className: card.isSelected ? 'selected-card' : 'unselected-card',
-        title: card.isSelected ? 'This card will be automatically picked if your time expires.' : '',
+        className: `card ${isAutopickable(card) ? 'autopick-card' : ''}`,
+        title: isAutopickable(card) ? 'This card will be automatically picked if your time expires.' : '',
         onClick: App._emit('click', zoneName, card.name),
       },
       d.img({

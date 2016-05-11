@@ -226,13 +226,10 @@ function clickPack(cardName) {
     // There may be duplicate cards in a pack, but only one copy of a card is
     // shown in the pick view. We must be sure to mark them all since we don't
     // know which one is being displayed.
-    rawPack.forEach(card => card.isSelected = card.name == cardName);
+    rawPack.forEach(card => card.isAutopick = card.name === cardName)
     App.update()
+    App.send('autopick', index)
     return clicked
-  } else if (card.hasOwnProperty('isSelected')) {
-    // Don't leave the is-selected overlay when moving the card to a different
-    // zone.
-    delete card['isSelected']
   }
 
   clicked = null

@@ -17,7 +17,7 @@ var games = {}
       continue
     for (var p of game.players)
       if (p.time && !--p.time)
-        p.pickRand()
+        p.pickOnTimeout()
   }
   setTimeout(playerTimer, SECOND)
 })()
