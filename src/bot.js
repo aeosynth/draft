@@ -1,3 +1,4 @@
+var _ = require('./_')
 var {EventEmitter} = require('events')
 
 module.exports = class extends EventEmitter {
