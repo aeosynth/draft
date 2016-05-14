@@ -62,6 +62,7 @@ export default React.createClass({
     return d.table({ id: 'players' },
       d.tr({},
         d.th({}, '#'),
+        d.th({}, ''), // connection status
         d.th({}, 'name'),
         d.th({}, 'packs'),
         d.th({}, 'time'),
@@ -85,6 +86,7 @@ function row(p, i) {
 
   return d.tr({ className },
     d.td({}, i + 1),
+    d.td({}, p.isConnected ? 'Y' : 'N'),
     d.td({}, p.name),
     d.td({}, p.packs),
     d.td({}, p.time),

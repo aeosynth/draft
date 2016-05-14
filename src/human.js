@@ -10,7 +10,8 @@ module.exports = class extends EventEmitter {
       name: sock.name,
       time: 0,
       packs: [],
-      pool: []
+      pool: [],
+      isConnected: false
     })
     this.attach(sock)
   }
