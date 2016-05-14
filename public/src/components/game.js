@@ -84,9 +84,23 @@ function row(p, i) {
     : i === opp  ? 'opp'
     : null
 
+  let connectionStatusIndicator
+    = p.isBot ? d.span({
+        className: 'icon-bot',
+        title: 'This player is a bot.',
+      })
+    : p.isConnected ? d.span({
+        className: 'icon-connected',
+        title: 'This player is currently connected to the server.',
+      })
+    : d.span({
+        className: 'icon-disconnected',
+        title: 'This player is currently disconnected from the server.',
+      })
+
   return d.tr({ className },
     d.td({}, i + 1),
-    d.td({}, p.isConnected ? 'Y' : 'N'),
+    d.td({}, connectionStatusIndicator),
     d.td({}, p.name),
     d.td({}, p.packs),
     d.td({}, p.time),

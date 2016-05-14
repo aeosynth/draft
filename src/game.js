@@ -145,7 +145,8 @@ module.exports = class Game extends Room {
       name: p.name,
       time: p.time,
       packs: p.packs.length,
-      isConnected: p.isConnected
+      isBot: p.isBot,
+      isConnected: p.isConnected,
     }))
     for (var p of this.players)
       p.send('set', state)
