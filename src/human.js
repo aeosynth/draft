@@ -10,6 +10,7 @@ module.exports = class extends EventEmitter {
       name: sock.name,
       time: 0,
       packs: [],
+      autopick_index: -1,
       pool: []
     })
     this.attach(sock)
@@ -19,6 +20,7 @@ module.exports = class extends EventEmitter {
       this.sock.ws.close()
 
     sock.mixin(this)
+    sock.on('autopick', this._autopick.bind(this))
     sock.on('pick', this._pick.bind(this))
     sock.on('hash', this._hash.bind(this))
 
@@ -33,6 +35,11 @@ module.exports = class extends EventEmitter {
 
     this.hash = hash(deck)
     this.emit('meta')
+  }
+  _autopick(index) {
+    var [pack] = this.packs
+    if (pack && index < pack.length)
+      this.autopick_index = index
   }
   _pick(index) {
     var [pack] = this.packs
@@ -65,17 +72,20 @@ module.exports = class extends EventEmitter {
     else
       this.sendPack(next)
 
+    this.autopick_index = -1
     this.emit('pass', pack)
   }
-  pickRand() {
-    var index = _.rand(this.packs[0].length)
+  pickOnTimeout() {
+    let index = this.autopick_index
+    if (index === -1)
+      index = _.rand(this.packs[0].length)
     this.pick(index)
   }
   kick() {
     this.send = ()=>{}
     while(this.packs.length)
-      this.pickRand()
-    this.sendPack = this.pickRand
+      this.pickOnTimeout()
+    this.sendPack = this.pickOnTimeout
     this.isBot = true
   }
 }
