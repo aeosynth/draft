@@ -25,16 +25,33 @@ function toPack(code) {
   var {common, uncommon, rare, mythic, special, size} = set
   if (mythic && !_.rand(8))
     rare = mythic
-
+  //make small sets draftable.
+  if (size < 9 && code != 'SOI')
+    size = 10
   var pack = [].concat(
     _.choose(size, common),
     _.choose(3, uncommon),
     _.choose(1, rare)
   )
 
-  let specialrnd
+  if (code == 'SOI')
+  //http://markrosewater.tumblr.com/post/141794840953/if-the-as-fan-of-double-face-cards-is-1125-that
+    if (_.rand(8) == 0)
+      if (_.rand(15) < 3)
+        pack.push(_.choose(1, special.mythic))
+      else
+        pack.push(_.choose(1, special.rare))
+    else
+      pack.push(_.choose(1, common))
 
+  let specialrnd
   switch (code) {
+  case 'SOI':
+    if (_.rand(106) < 38)
+      special = special.uncommon
+    else
+      special = special.common
+    break
   case 'DGM':
     special = _.rand(20)
       ? special.gate
@@ -81,7 +98,7 @@ function toPack(code) {
       special = special.uncommon
     else
       special = special.common
-    break  
+    break
   }
 
   if (special)
@@ -99,17 +116,31 @@ function toCards(pool, code) {
     if (isCube)
       [code] = Object.keys(sets)
     card.code = mws[code] || code
-
     var set = sets[code]
     delete card.sets
     return Object.assign(card, set)
   })
 }
 
-module.exports = function (src, playerCount, isSealed) {
+module.exports = function (src, playerCount, isSealed, isChaos) {
   if (!(src instanceof Array)) {
-    var isCube = true
-    _.shuffle(src.list)
+    if (!(isChaos)) {
+      var isCube = true
+      _.shuffle(src.list)
+    }
+  }
+  else {
+    for (i = 0; i < src.length; i++) {
+      if (src[i] == 'RNG') {
+        var rnglist = []
+        for (var rngcode in Sets)
+          //TODO check this against public/src/data.js
+          if (rngcode != 'UNH' && rngcode != 'UGL' && rngcode != 'SOI')
+            rnglist.push(rngcode)
+        var rngindex = _.rand(rnglist.length)
+        src[i] = rnglist[rngindex]
+      }
+    }
   }
   if (isSealed) {
     var count = playerCount
@@ -120,15 +151,30 @@ module.exports = function (src, playerCount, isSealed) {
   }
   var pools = []
 
-  if (isCube || isSealed)
-    while (count--)
-      pools.push(isCube
-        ? toCards(src.list.splice(-size))
-        : [].concat(...src.map(toPack)))
-  else
+  if (isCube || isSealed) {
+    if (!(isChaos)) {
+      while (count--)
+        pools.push(isCube
+            ? toCards(src.list.splice(-size))
+            : [].concat(...src.map(toPack)))
+    } else {
+      var setlist = []
+      for (var code in Sets)
+        if (code != 'UNH' && code != 'UGL')
+          setlist.push(code)
+      for (var i = 0; i < 3; i++) {
+        for (var j = 0; j < playerCount; j++) {
+	  var setindex = _.rand(setlist.length)
+          var code = setlist[setindex]
+	  setlist.splice(setindex, 1)
+          pools.push(toPack(code))
+        }
+      }
+    }
+  } else {
     for (var code of src.reverse())
       for (var i = 0; i < playerCount; i++)
         pools.push(toPack(code))
-
+  }
   return pools
 }

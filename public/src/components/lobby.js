@@ -42,6 +42,7 @@ function Sets(selectedSet, index) {
 
 function content() {
   let sets = App.state.sets.map(Sets)
+
   let setsTop = d.div({}, sets.slice(0, 3))
   let setsBot = d.div({}, sets.slice(3))
 
@@ -54,27 +55,29 @@ function content() {
   ]
 
   let cards = _.seq(15, 8).map(x => d.option({}, x))
-  let packs = _.seq( 7, 3).map(x => d.option({}, x))
+  let packs = _.seq(12, 3).map(x => d.option({}, x))
   let cubeDraft = d.div({},
     d.select({ valueLink: App.link('cards') }, cards),
     ' cards ',
     d.select({ valueLink: App.link('packs') }, packs),
     ' packs')
+  let chaos = d.div({})
 
   switch(App.state.type) {
     case 'draft' : return setsTop
     case 'sealed': return [setsTop, setsBot]
     case 'cube draft' : return [cube, cubeDraft]
     case 'cube sealed': return cube
+    case 'chaos': return chaos
     case 'editor': return d.a({ href: 'http://editor.draft.wtf' }, 'editor')
   }
 }
 
 function Create() {
-  let seats = _.seq(8, 2).map(x =>
+  let seats = _.seq(100, 2).map(x =>
     d.option({}, x))
 
-  let types = ['draft', 'sealed', 'cube draft', 'cube sealed', 'editor']
+  let types = ['draft', 'sealed', 'cube draft', 'cube sealed', 'chaos', 'editor']
     .map(type =>
       d.button({
         disabled: type === App.state.type,
