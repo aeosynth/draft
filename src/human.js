@@ -33,6 +33,9 @@ module.exports = class extends EventEmitter {
       this.send('pack', pack)
     this.send('pool', this.pool)
   }
+  err(message) {
+    this.send('error', message)
+  }
   _hash(deck) {
     if (!util.deck(deck, this.pool))
       return

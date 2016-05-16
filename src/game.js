@@ -99,7 +99,7 @@ module.exports = class Game extends Room {
   }
 
   kick(i) {
-    var h = this.players[i]
+    let h = this.players[i]
     if (!h || h.isBot)
       return
 
@@ -109,6 +109,7 @@ module.exports = class Game extends Room {
       h.exit()
 
     h.err('you were kicked')
+    h.kick()
   }
 
   greet(h) {

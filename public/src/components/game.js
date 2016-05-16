@@ -79,6 +79,9 @@ export default React.createClass({
     if (!App.state.round)
       columns.push(d.th({ title: READY_TITLE_TEXT }, 'ready'))
 
+    if (App.state.isHost)
+      columns.push(d.th({})) // kick
+
     return d.table({ id: 'players' },
       d.tr({}, ...columns),
       rows)
@@ -138,6 +141,14 @@ function row(p, i) {
       className: 'ready',
       title: READY_TITLE_TEXT
     }, readyCheckbox))
+
+  if (App.state.isHost)
+    if (i !== self && !p.isBot)
+      columns.push(d.td({}, d.button({
+        onClick: ()=> App.send('kick', i),
+      }, 'kick')))
+    else
+      columns.push(d.td({}))
 
   return d.tr({ className }, ...columns)
 }
