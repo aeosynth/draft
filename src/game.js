@@ -99,7 +99,7 @@ module.exports = class Game extends Room {
   }
 
   kick(i) {
-    var h = this.players[i]
+    let h = this.players[i]
     if (!h || h.isBot)
       return
 
@@ -109,6 +109,7 @@ module.exports = class Game extends Room {
       h.exit()
 
     h.err('you were kicked')
+    h.kick()
   }
 
   greet(h) {
@@ -147,6 +148,7 @@ module.exports = class Game extends Room {
       packs: p.packs.length,
       isBot: p.isBot,
       isConnected: p.isConnected,
+      isReadyToStart: p.isReadyToStart,
     }))
     for (var p of this.players)
       p.send('set', state)
@@ -217,6 +219,9 @@ module.exports = class Game extends Room {
     var src = this.cube ? this.cube : this.sets
     var {players} = this
     var p
+
+    if (!players.every(x => x.isReadyToStart))
+      return
 
     this.renew()
 

@@ -143,6 +143,10 @@ time {
   background-color: rgba(0, 0, 0, 0.25);
 }
 
+.ready {
+  text-align: center;
+}
+
 #img {
   position: fixed;
   bottom: 0;
