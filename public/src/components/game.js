@@ -8,6 +8,8 @@ import Settings from './settings'
 import {LBox} from './checkbox'
 let d = React.DOM
 
+const READY_TITLE_TEXT = 'The host may start the game once all users have clicked the "ready" checkbox.'
+
 export default React.createClass({
   componentWillMount() {
     App.state.players = []
@@ -51,23 +53,34 @@ export default React.createClass({
     if (App.state.round || !App.state.isHost)
       return
 
+    let readyToStart = App.state.players.every(x => x.isReadyToStart)
+    let startButton
+      = readyToStart
+      ? d.button({ onClick: App._emit('start') }, 'start')
+      : d.button({ disabled: true, title: READY_TITLE_TEXT }, 'start')
+
     return d.div({},
-      d.div({},
-        d.button({ onClick: App._emit('start') }, 'start')),
+      d.div({}, startButton),
       LBox('bots', 'bots'),
       LBox('timer', 'timer'))
   },
   Players() {
     let rows = App.state.players.map(row)
+    let columns = [
+      d.th({}, '#'),
+      d.th({}, ''), // connection status
+      d.th({}, 'name'),
+      d.th({}, 'packs'),
+      d.th({}, 'time'),
+      d.th({}, 'cock'),
+      d.th({}, 'mws'),
+    ]
+
+    if (!App.state.round)
+      columns.push(d.th({ title: READY_TITLE_TEXT }, 'ready'))
+
     return d.table({ id: 'players' },
-      d.tr({},
-        d.th({}, '#'),
-        d.th({}, ''), // connection status
-        d.th({}, 'name'),
-        d.th({}, 'packs'),
-        d.th({}, 'time'),
-        d.th({}, 'cock'),
-        d.th({}, 'mws')),
+      d.tr({}, ...columns),
       rows)
   }
 })
@@ -98,14 +111,35 @@ function row(p, i) {
         title: 'This player is currently disconnected from the server.',
       })
 
-  return d.tr({ className },
+  let readyCheckbox
+    = i === self ? d.input({
+        checked: p.isReadyToStart,
+        onChange: App._emit('readyToStart'),
+        type: 'checkbox',
+      })
+    : d.input({
+        checked: p.isReadyToStart,
+        disabled: true,
+        type: 'checkbox',
+      })
+
+  let columns = [
     d.td({}, i + 1),
     d.td({}, connectionStatusIndicator),
     d.td({}, p.name),
     d.td({}, p.packs),
     d.td({}, p.time),
     d.td({}, p.hash && p.hash.cock),
-    d.td({}, p.hash && p.hash.mws))
+    d.td({}, p.hash && p.hash.mws),
+  ]
+
+  if (!App.state.round)
+    columns.push(d.td({
+      className: 'ready',
+      title: READY_TITLE_TEXT
+    }, readyCheckbox))
+
+  return d.tr({ className }, ...columns)
 }
 
 function decrement() {
