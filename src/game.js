@@ -69,6 +69,7 @@ module.exports = class Game extends Room {
   }
 
   join(sock) {
+    sock.on('exit', this.farewell.bind(this))
     for (var i = 0; i < this.players.length; i++) {
       var p = this.players[i]
       if (p.id === sock.id) {
@@ -111,12 +112,18 @@ module.exports = class Game extends Room {
   }
 
   greet(h) {
+    h.isConnected = true
     h.send('set', {
       isHost: h.isHost,
       round: this.round,
       self: this.players.indexOf(h),
       title: this.title
     })
+  }
+
+  farewell(sock) {
+    sock.h.isConnected = false
+    this.meta()
   }
 
   exit(sock) {
@@ -137,7 +144,9 @@ module.exports = class Game extends Room {
       hash: p.hash,
       name: p.name,
       time: p.time,
-      packs: p.packs.length
+      packs: p.packs.length,
+      isBot: p.isBot,
+      isConnected: p.isConnected,
     }))
     for (var p of this.players)
       p.send('set', state)
