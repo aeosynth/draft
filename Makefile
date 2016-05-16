@@ -1,6 +1,11 @@
+.PHONY: all install clean cards score js
 all: install clean cards score js
 
 node := ${CURDIR}/node_modules
+all_sets := ${CURDIR}/data/AllSets.json
+traceur := ${node}/.bin/traceur
+
+${traceur}: install
 
 install:
 	npm install
@@ -14,22 +19,22 @@ install:
 	ln -sf ${node}/utils/utils.js public/lib
 
 clean:
-	rm -f data/AllSets.json
+	rm -f ${all_sets}
 
-cards: data/AllSets.json
+cards: ${all_sets}
 	node src/make cards
 
 custom:
 	node src/make custom
 
-data/AllSets.json:
-	curl -so data/AllSets.json https://mtgjson.com/json/AllSets.json
+${all_sets}:
+	curl -so ${all_sets} https://mtgjson.com/json/AllSets.json
 
 score:
 	-node src/make score #ignore errors
 
-js:
-	node_modules/.bin/traceur --out public/lib/app.js public/src/init.js
+js: ${traceur} ${all_sets}
+	${traceur} --out public/lib/app.js public/src/init.js
 
 run: js
 	node run

@@ -245,6 +245,7 @@ function doCard(rawCard, cards, code, set) {
     colors[0].toLowerCase()
 
   cards[name] = { color, name,
+    manaCost: rawCard.manaCost,
     type: rawCard.types[rawCard.types.length - 1],
     cmc: rawCard.cmc || 0,
     sets: {

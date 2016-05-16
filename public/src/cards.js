@@ -10,6 +10,13 @@ let Cards = {
 }
 
 export let BASICS = Object.keys(Cards)
+let COLORS_TO_LANDS = {
+  'W': 'Plains',
+  'U': 'Island',
+  'B': 'Swamp',
+  'R': 'Mountain',
+  'G': 'Forest',
+}
 
 for (let name in Cards)
   Cards[name] = {name,
@@ -140,6 +147,109 @@ let events = {
       delete Zones[zoneName][cardName]
     App.update()
   },
+  deckSize(e) {
+    let n = Number(e.target.value)
+    if (n && n > 0)
+      App.state.deckSize = n
+    App.update()
+  },
+  suggestLands() {
+    // Algorithm: count the number of mana symbols appearing in the costs of
+    // the cards in the pool, then assign lands roughly commensurately.
+    let colors = ['W', 'U', 'B', 'R', 'G']
+    let colorRegex = /\{[^}]+\}/g
+    let manaSymbols = {}
+    colors.forEach(x => manaSymbols[x] = 0)
+
+    // Count the number of mana symbols of each type.
+    for (let card of Object.keys(Zones['main'])) {
+      let quantity = Zones['main'][card]
+      card = Cards[card]
+
+      if (!card.manaCost)
+        continue
+      let cardManaSymbols = card.manaCost.match(colorRegex)
+
+      for (let color of colors)
+        for (let symbol of cardManaSymbols)
+          // Test to see if '{U}' contains 'U'. This also handles things like
+          // '{G/U}' triggering both 'G' and 'U'.
+          if (symbol.indexOf(color) !== -1)
+            manaSymbols[color] += quantity
+    }
+
+    _resetLands()
+    // NB: We could set only the sideboard lands of the colors we are using to
+    // 5, but this reveals information to the opponent on Cockatrice (and
+    // possibly other clients) since it tells the opponent the sideboard size.
+    colors.forEach(color => Zones['side'][COLORS_TO_LANDS[color]] = 5)
+
+    colors = colors.filter(x => manaSymbols[x] > 0)
+    colors.forEach(x => manaSymbols[x] = Math.max(3, manaSymbols[x]))
+    colors.sort((a, b) => manaSymbols[b] - manaSymbols[a])
+
+    // Round-robin choose the lands to go into the deck. For example, if the
+    // mana symbol counts are W: 2, U: 2, B: 1, cycle through the sequence
+    // [Plains, Island, Swamp, Plains, Island] infinitely until the deck is
+    // finished.
+    //
+    // This has a few nice effects:
+    //
+    //   * Colors with greater mana symbol counts get more lands.
+    //
+    //   * When in a typical two color deck adding 17 lands, the 9/8 split will
+    //   be in favor of the color with slightly more mana symbols of that
+    //   color.
+    //
+    //   * Every color in the deck is represented, if it is possible to do so
+    //   in the remaining number of cards.
+    //
+    //   * Because of the minimum mana symbol count for each represented color,
+    //   splashing cards doesn't add exactly one land of the given type
+    //   (although the land count may still be low for that color).
+    //
+    //   * The problem of deciding how to round land counts is now easy to
+    //   solve.
+    let manaSymbolsToAdd = colors.map(color => manaSymbols[color])
+    let colorsToAdd = []
+    for (let i = 0; true; i = (i + 1) % colors.length) {
+      if (manaSymbolsToAdd.every(x => x === 0))
+        break
+      if (manaSymbolsToAdd[i] === 0)
+        continue
+      colorsToAdd.push(colors[i])
+      manaSymbolsToAdd[i]--
+    }
+
+    let mainDeckSize = Object.keys(Zones['main'])
+      .map(x => Zones['main'][x])
+      .reduce((a, b) => a + b)
+    let landsToAdd = App.state.deckSize - mainDeckSize
+
+    let j = 0
+    for (let i = 0; i < landsToAdd; i++) {
+      let color = colorsToAdd[j]
+      let land = COLORS_TO_LANDS[color]
+      if (!Zones['main'].hasOwnProperty(land))
+        Zones['main'][land] = 0
+      Zones['main'][land]++
+
+      j = (j + 1) % colorsToAdd.length
+    }
+
+    App.update()
+  },
+  resetLands() {
+    _resetLands()
+    App.update()
+  },
+}
+
+function _resetLands() {
+  Object.keys(COLORS_TO_LANDS).forEach((key) => {
+    let land = COLORS_TO_LANDS[key]
+    Zones['main'][land] = Zones['side'][land] = 0
+  })
 }
 
 for (let event in events)
