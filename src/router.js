@@ -7,6 +7,10 @@ var rooms = {
   lobby: new Room
 }
 
+// All sockets currently connected to the server, useful for broadcasting
+// messages.
+var socks = []
+
 function numGames() {
   // Don't include the lobby as a game.
   return Object.keys(rooms).length - 1
@@ -40,8 +44,22 @@ function kill() {
   console.log(`game ${this.id} destroyed, there are now ${numGames()} games`)
 }
 
+function printNumSockets() {
+  console.log(`there are now ${socks.length} connected users`)
+}
+
 module.exports = function (ws) {
   var sock = new Sock(ws)
   sock.on('join', join)
   sock.on('create', create)
+
+  socks.push(sock)
+  printNumSockets()
+  ws.once('close', ()=> {
+    let index = socks.indexOf(sock)
+    if (index !== -1) {
+      socks.splice(index, 1)
+      printNumSockets()
+    }
+  })
 }
