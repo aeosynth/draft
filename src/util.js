@@ -65,12 +65,14 @@ var util = module.exports = {
   game({seats, type, sets, cube}) {
     assert(typeof seats === 'number', 'typeof seats')
     assert(2 <= seats && seats <= 8, 'seats range')
-    assert(['draft', 'sealed', 'cube draft', 'cube sealed'].indexOf(type) > -1,
+    assert(['draft', 'sealed', 'cube draft', 'cube sealed', 'chaos'].indexOf(type) > -1,
       'indexOf type')
 
     if (/cube/.test(type))
       transform(cube, seats, type)
-    else
-      sets.forEach(set => assert(set in Sets, `${set} in Sets`))
+    //remove this check to allow Random
+    //TODO add if check for random set
+    //else
+    //  sets.forEach(set => assert(set in Sets, `${set} in Sets`))
   }
 }

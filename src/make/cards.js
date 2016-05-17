@@ -49,6 +49,10 @@ function before() {
   })
 
   var card
+  for (card of raw.SOI.cards)
+    if (card.layout === 'double-faced')
+      card.rarity = 'special'
+  
   for (card of raw.ISD.cards)
     if (card.layout === 'double-faced')
       card.rarity = 'special'
@@ -76,6 +80,51 @@ function before() {
 }
 
 function after() {
+  var {SOI} = Sets
+  SOI.special = {
+    "mythic": [
+      "archangel avacyn",
+      "startled awake",
+      "arlinn kord"
+    ],
+    "rare": [
+      "hanweir militia captain",
+      "elusive tormentor",
+      "thing in the ice",
+      "geier reach bandit",
+      "sage of ancient lore",
+      "westvale abbey"
+    ],
+    "uncommon": [
+      "avacynian missionaries",
+      "pious evangel",
+      "town gossipmonger",
+      "aberrant researcher",
+      "daring sleuth",
+      "uninvited geist",
+      "accursed witch",
+      "heir of falkenrath",
+      "kindly stranger",
+      "breakneck rider",
+      "convicted killer",
+      "skin invasion",
+      "village messenger",
+      "autumnal gloom",
+      "duskwatch recruiter",
+      "hermit of the natterknolls",
+      "lambholt pacifist",
+      "harvest hand",
+      "neglected heirloom",
+      "thraben gargoyle"
+    ],
+    "common": [
+      "convicted killer",
+      "gatstaf arsonists",
+      "hinterland logger",
+      "solitary hunter"
+    ]
+  }
+  SOI.size = 8
   var {ISD} = Sets
   ISD.special = {
     mythic: [
@@ -245,9 +294,10 @@ function doCard(rawCard, cards, code, set) {
     colors[0].toLowerCase()
 
   cards[name] = { color, name,
-    manaCost: rawCard.manaCost,
     type: rawCard.types[rawCard.types.length - 1],
-    cmc: rawCard.cmc || 0,
+    cmc: rawCard.cmc || 0, 
+    text: rawCard.text || '',
+    manaCost: rawCard.manaCost || '',
     sets: {
       [code]: { rarity,
         url: `http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=${rawCard.multiverseid}&type=card`
