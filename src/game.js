@@ -61,6 +61,7 @@ module.exports = class Game extends Room {
     })
     this.renew()
     games[gameID] = this
+    console.log(`game ${gameID} created: ${this.title}`)
   }
 
   renew() {
@@ -244,6 +245,7 @@ module.exports = class Game extends Room {
     for (p of players)
       p.useTimer = useTimer
 
+    console.log(`game ${this.id} started with ${this.players.length} players and ${this.seats} seats`)
     if (addBots)
       while (players.length < this.seats)
         players.push(new Bot)
