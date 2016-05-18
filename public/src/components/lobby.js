@@ -12,6 +12,7 @@ export default React.createClass({
     return d.div({},
       Chat(),
       d.h1({}, 'drafts.ninja'),
+      d.p({}, `${App.state.numGames} ${App.state.numGames === 1 ? 'game' : 'games'} in progress`),
       d.p({ className: 'error' }, App.err),
       Create(),
       d.footer({},
