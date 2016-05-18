@@ -13,7 +13,8 @@ let App = {
     id: null,
     name: 'ninja',
 
-    numGames: 0,
+    numPlayers: 0,
+    numActiveGames: 0,
 
     seats: 8,
     type: 'draft',
@@ -46,7 +47,6 @@ let App = {
     App.on('set', App.set)
     App.on('error', App.error)
     App.on('route', App.route)
-    App.on('numGames', numGames => App.save('numGames', numGames))
 
     App.restore()
     App.connect()

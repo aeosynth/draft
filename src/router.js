@@ -7,34 +7,6 @@ var rooms = {
   lobby: new Room
 }
 
-// All sockets currently connected to the server, useful for broadcasting
-// messages.
-var socks = []
-
-function broadcast(...args) {
-  for (let sock of socks)
-    sock.send(...args)
-}
-
-function numGames() {
-  // Don't include the lobby as a game.
-  return Object.keys(rooms).length - 1
-}
-
-function connect(sock) {
-  socks.push(sock)
-  printNumSockets()
-  broadcast('numGames', numGames())
-
-  sock.ws.once('close', ()=> {
-    let index = socks.indexOf(sock)
-    if (index !== -1) {
-      socks.splice(index, 1)
-      printNumSockets()
-    }
-  })
-}
-
 function create(opts) {
   try {
     util.game(opts)
@@ -47,8 +19,6 @@ function create(opts) {
   rooms[g.id] = g
   this.send('route', 'g/' + g.id)
   g.once('kill', kill)
-  broadcast('numGames', numGames())
-  console.log(`game ${g.id} created, there are now ${numGames()} games`)
 }
 
 function join(roomID) {
@@ -61,17 +31,12 @@ function join(roomID) {
 
 function kill() {
   delete rooms[this.id]
-  broadcast('numGames', numGames())
-  console.log(`game ${this.id} destroyed, there are now ${numGames()} games`)
-}
-
-function printNumSockets() {
-  console.log(`there are now ${socks.length} connected users`)
 }
 
 module.exports = function (ws) {
   var sock = new Sock(ws)
   sock.on('join', join)
   sock.on('create', create)
-  connect(sock)
+
+  Game.broadcastGameInfo()
 }
