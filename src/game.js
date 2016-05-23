@@ -35,7 +35,7 @@ module.exports = class Game extends Room {
   constructor({id, seats, type, sets, cube}) {
     super()
 
-    if (sets)
+    if (sets) {
       if (type != 'chaos') {
         Object.assign(this, {
           sets,
@@ -43,9 +43,13 @@ module.exports = class Game extends Room {
         })
       }
       else {
-        var title = type
-        if (type === 'cube draft')
-          title += ' ' + cube.packs + 'x' + cube.cards
+        Object.assign(this, { title: 'CHAOS!'})
+      }
+    }
+    else {
+      var title = type
+      if (type === 'cube draft')
+        title += ' ' + cube.packs + 'x' + cube.cards
       Object.assign(this, { cube, title })
     }
 
