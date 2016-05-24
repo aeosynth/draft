@@ -276,12 +276,15 @@ function doCard(rawCard, cards, code, set) {
   if (rawCard.layout === 'split')
     name = rawCard.names.join(' // ')
 
+  //separate landsfrom 0cmc cards by setting 0cmc to .2
+  var cmcadjusted = rawCard.cmc || 0.2
+
   name = _.ascii(name)
 
   if (name in cards) {
     if (rawCard.layout === 'split') {
       var card = cards[name]
-      card.cmc += rawCard.cmc
+      cmcadjusted = card.cmc + rawCard.cmc
       if (card.color !== rawCard.color)
         card.color = 'multicolor'
     }
@@ -292,10 +295,14 @@ function doCard(rawCard, cards, code, set) {
   var color = !colors ? 'colorless' :
     colors.length > 1 ? 'multicolor' :
     colors[0].toLowerCase()
+  
+  //set lands to .1 to sort them before nonland 0cmc  
+  if ('Land'.indexOf(rawCard.types) > -1)
+    cmcadjusted = 0.1
 
   cards[name] = { color, name,
     type: rawCard.types[rawCard.types.length - 1],
-    cmc: rawCard.cmc || 0, 
+    cmc: cmcadjusted, 
     text: rawCard.text || '',
     manaCost: rawCard.manaCost || '',
     sets: {
