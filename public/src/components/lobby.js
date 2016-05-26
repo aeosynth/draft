@@ -11,14 +11,12 @@ export default React.createClass({
   render() {
     return d.div({},
       Chat(),
-      d.h1({}, 'drafts.in'),
+      d.h1({}, 'drafts.ninja'),
       d.p({ className: 'error' }, App.err),
       Create(),
       d.footer({},
         d.div({},
-          d.a({ className: 'icon ion-social-github', href: 'https://github.com/aeosynth/draft' }),
-          d.a({ className: 'icon ion-social-twitter', href: 'https://twitter.com/aeosynth' }),
-          d.a({ className: 'icon ion-android-mail', href: 'mailto:james.r.campos@gmail.com' })),
+          d.a({ className: 'icon ion-social-github', href: 'https://github.com/arxanas/draft' })),
         d.div({},
           d.small({}, 'unaffiliated with wizards of the coast'))))
   }
@@ -69,7 +67,6 @@ function content() {
     case 'cube draft' : return [cube, cubeDraft]
     case 'cube sealed': return cube
     case 'chaos': return chaos
-    case 'editor': return d.a({ href: 'http://editor.draft.wtf' }, 'editor')
   }
 }
 
@@ -77,7 +74,7 @@ function Create() {
   let seats = _.seq(100, 2).map(x =>
     d.option({}, x))
 
-  let types = ['draft', 'sealed', 'cube draft', 'cube sealed', 'chaos', 'editor']
+  let types = ['draft', 'sealed', 'cube draft', 'cube sealed', 'chaos']
     .map(type =>
       d.button({
         disabled: type === App.state.type,
