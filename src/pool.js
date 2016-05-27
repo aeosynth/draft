@@ -33,6 +33,7 @@ function toPack(code) {
     _.choose(3, uncommon),
     _.choose(1, rare)
   )
+
   if (code == 'SOI')
   //http://markrosewater.tumblr.com/post/141794840953/if-the-as-fan-of-double-face-cards-is-1125-that
     if (_.rand(8) == 0)
@@ -42,13 +43,15 @@ function toPack(code) {
         pack.push(_.choose(1, special.rare))
     else
       pack.push(_.choose(1, common))
+
+  let specialrnd
   switch (code) {
-    case 'SOI':
-      if (_.rand(106) < 38)
-        special = special.uncommon
-      else
-        special = special.common
-      break
+  case 'SOI':
+    if (_.rand(106) < 38)
+      special = special.uncommon
+    else
+      special = special.common
+    break
   case 'DGM':
     special = _.rand(20)
       ? special.gate
@@ -95,7 +98,7 @@ function toPack(code) {
       special = special.uncommon
     else
       special = special.common
-    break  
+    break
   }
 
   if (special)
@@ -113,7 +116,6 @@ function toCards(pool, code) {
     if (isCube)
       [code] = Object.keys(sets)
     card.code = mws[code] || code
-
     var set = sets[code]
     delete card.sets
     return Object.assign(card, set)
@@ -132,8 +134,8 @@ module.exports = function (src, playerCount, isSealed, isChaos) {
       if (src[i] == 'RNG') {
         var rnglist = []
         for (var rngcode in Sets)
-            //TODO check this against public/src/data.js
-          if (rngcode != 'UNH' && rngcode != 'UGL' && rngcode != 'SOI')
+          //TODO check this against public/src/data.js
+          if (rngcode != 'UNH' && rngcode != 'UGL')
             rnglist.push(rngcode)
         var rngindex = _.rand(rnglist.length)
         src[i] = rnglist[rngindex]

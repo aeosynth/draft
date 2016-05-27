@@ -11,14 +11,14 @@ export default React.createClass({
   render() {
     return d.div({},
       Chat(),
-      d.h1({}, 'drafts.in'),
+      d.h1({}, 'drafts.ninja'),
+      d.p({}, `${App.state.numPlayers} ${App.state.numPlayers === 1 ? 'player' : 'players'}
+               playing ${App.state.numActiveGames} ${App.state.numActiveGames === 1 ? 'game' : 'games'}`),
       d.p({ className: 'error' }, App.err),
       Create(),
       d.footer({},
         d.div({},
-          d.a({ className: 'icon ion-social-github', href: 'https://github.com/aeosynth/draft' }),
-          d.a({ className: 'icon ion-social-twitter', href: 'https://twitter.com/aeosynth' }),
-          d.a({ className: 'icon ion-android-mail', href: 'mailto:james.r.campos@gmail.com' })),
+          d.a({ className: 'icon ion-social-github', href: 'https://github.com/arxanas/draft' })),
         d.div({},
           d.small({}, 'unaffiliated with wizards of the coast'))))
   }
@@ -42,6 +42,7 @@ function Sets(selectedSet, index) {
 
 function content() {
   let sets = App.state.sets.map(Sets)
+
   let setsTop = d.div({}, sets.slice(0, 3))
   let setsBot = d.div({}, sets.slice(3))
 
@@ -54,7 +55,7 @@ function content() {
   ]
 
   let cards = _.seq(15, 8).map(x => d.option({}, x))
-  let packs = _.seq( 7, 3).map(x => d.option({}, x))
+  let packs = _.seq(12, 3).map(x => d.option({}, x))
   let cubeDraft = d.div({},
     d.select({ valueLink: App.link('cards') }, cards),
     ' cards ',
@@ -68,15 +69,14 @@ function content() {
     case 'cube draft' : return [cube, cubeDraft]
     case 'cube sealed': return cube
     case 'chaos': return chaos
-    case 'editor': return d.a({ href: 'http://editor.draft.wtf' }, 'editor')
   }
 }
 
 function Create() {
-  let seats = _.seq(8, 2).map(x =>
+  let seats = _.seq(100, 2).map(x =>
     d.option({}, x))
 
-  let types = ['draft', 'sealed', 'cube draft', 'cube sealed', 'chaos', 'editor']
+  let types = ['draft', 'sealed', 'cube draft', 'cube sealed', 'chaos']
     .map(type =>
       d.button({
         disabled: type === App.state.type,

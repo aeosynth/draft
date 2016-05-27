@@ -52,7 +52,7 @@ function before() {
   for (card of raw.SOI.cards)
     if (card.layout === 'double-faced')
       card.rarity = 'special'
-  
+
   for (card of raw.ISD.cards)
     if (card.layout === 'double-faced')
       card.rarity = 'special'
@@ -128,32 +128,32 @@ function after() {
   var {ISD} = Sets
   ISD.special = {
     mythic: [
-      'garruk relentless'
+        'garruk relentless'
     ],
     rare: [
-      'bloodline keeper',
-      'daybreak ranger',
-      'instigator gang',
-      'kruin outlaw',
-      'ludevic\'s test subject',
-      'mayor of avabruck'
+        'bloodline keeper',
+        'daybreak ranger',
+        'instigator gang',
+        'kruin outlaw',
+        'ludevic\'s test subject',
+        'mayor of avabruck'
     ],
     uncommon: [
-      'civilized scholar',
-      'cloistered youth',
-      'gatstaf shepherd',
-      'hanweir watchkeep',
-      'reckless waif',
-      'screeching bat',
-      'ulvenwald mystics'
+        'civilized scholar',
+        'cloistered youth',
+        'gatstaf shepherd',
+        'hanweir watchkeep',
+        'reckless waif',
+        'screeching bat',
+        'ulvenwald mystics'
     ],
     common: [
-      'delver of secrets',
-      'grizzled outcasts',
-      'thraben sentry',
-      'tormented pariah',
-      'village ironsmith',
-      'villagers of estwald'
+        'delver of secrets',
+        'grizzled outcasts',
+        'thraben sentry',
+        'tormented pariah',
+        'village ironsmith',
+        'villagers of estwald'
     ]
   }
   var {DKA} = Sets

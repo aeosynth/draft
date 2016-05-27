@@ -1,3 +1,4 @@
+var _ = require('./_')
 var {EventEmitter} = require('events')
 var _ = require('./_')
 
@@ -5,9 +6,10 @@ module.exports = class extends EventEmitter {
   constructor() {
     Object.assign(this, {
       isBot: true,
+      isConnected: true,
       name: 'bot',
       packs: [],
-      time: 0
+      time: 0,
     })
   }
   getPack(pack) {

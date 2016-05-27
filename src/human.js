@@ -6,12 +6,15 @@ var hash = require('./hash')
 module.exports = class extends EventEmitter {
   constructor(sock) {
     Object.assign(this, {
+      isBot: false,
+      isConnected: false,
+      isReadyToStart: false,
       id: sock.id,
       name: sock.name,
       time: 0,
       packs: [],
       autopick_index: -1,
-      pool: []
+      pool: [],
     })
     this.attach(sock)
   }
@@ -20,6 +23,7 @@ module.exports = class extends EventEmitter {
       this.sock.ws.close()
 
     sock.mixin(this)
+    sock.on('readyToStart', this._readyToStart.bind(this))
     sock.on('autopick', this._autopick.bind(this))
     sock.on('pick', this._pick.bind(this))
     sock.on('hash', this._hash.bind(this))
@@ -29,11 +33,18 @@ module.exports = class extends EventEmitter {
       this.send('pack', pack)
     this.send('pool', this.pool)
   }
+  err(message) {
+    this.send('error', message)
+  }
   _hash(deck) {
     if (!util.deck(deck, this.pool))
       return
 
     this.hash = hash(deck)
+    this.emit('meta')
+  }
+  _readyToStart(value) {
+    this.isReadyToStart = value
     this.emit('meta')
   }
   _autopick(index) {

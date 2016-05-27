@@ -14,4 +14,5 @@ var server = http.createServer(function(req, res) {
 }).listen(PORT)
 var eioServer = eio(server).on('connection', router)
 
-console.log(new Date)
+require('log-timestamp')
+console.log('Started up')

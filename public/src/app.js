@@ -11,7 +11,10 @@ let App = {
 
   state: {
     id: null,
-    name: 'newfriend',
+    name: 'ninja',
+
+    numPlayers: 0,
+    numActiveGames: 0,
 
     seats: 8,
     type: 'draft',
