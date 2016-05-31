@@ -57,6 +57,9 @@ function toPack(code) {
       ? special.gate
       : special.shock
     break
+  case 'EMA':
+    special = selectRarity(set)
+    break
   case 'MMA':
     special = selectRarity(set)
     break
