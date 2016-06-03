@@ -58,11 +58,16 @@ export default React.createClass({
       = readyToStart
       ? d.button({ onClick: App._emit('start') }, 'start')
       : d.button({ disabled: true, title: READY_TITLE_TEXT }, 'start')
-
     return d.div({},
       d.div({}, startButton),
       LBox('bots', 'bots'),
-      LBox('timer', 'timer'))
+      d.div({}, d.input({
+        min: 0,
+        max: 60,
+        //onChange: App._emit('timer'),
+        type: 'number',
+        valueLink: App.link('timer'),
+        }), ' second timer'))
   },
   Players() {
     let rows = App.state.players.map(row)
