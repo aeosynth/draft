@@ -64,7 +64,6 @@ export default React.createClass({
       d.div({}, d.input({
         min: 0,
         max: 60,
-        //onChange: App._emit('timer'),
         type: 'number',
         valueLink: App.link('timer'),
         }), ' second timer'))
