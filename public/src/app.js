@@ -11,28 +11,32 @@ let App = {
 
   state: {
     id: null,
-    name: 'newfriend',
+    name: 'ninja',
+
+    numPlayers: 0,
+    numActiveGames: 0,
 
     seats: 8,
     type: 'draft',
     sets: [
-      'BFZ',
-      'BFZ',
-      'BFZ',
-      'BFZ',
-      'BFZ',
-      'BFZ'
+      'SOI',
+      'SOI',
+      'SOI',
+      'SOI',
+      'SOI',
+      'SOI'
     ],
     list: '',
     cards: 15,
     packs: 3,
 
     bots: true,
-    timer: true,
+    timer: 40,
 
     beep: false,
     chat: true,
     cols: false,
+    deckSize: 40,
     filename: 'filename',
     filetype: 'txt',
     side: false,

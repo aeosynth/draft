@@ -37,4 +37,6 @@ module.exports = function (ws) {
   var sock = new Sock(ws)
   sock.on('join', join)
   sock.on('create', create)
+
+  Game.broadcastGameInfo()
 }

@@ -24,12 +24,28 @@ function Lands() {
       inputs)
   })
 
+  let suggest = d.tr({},
+    d.td({}, 'deck size'),
+    d.td({}, d.input({
+      min: 0,
+      onChange: App._emit('deckSize'),
+      type: 'number',
+      value: App.state.deckSize,
+    })),
+    d.td({ colSpan: 2 }, d.button({
+      onClick: App._emit('resetLands')
+    }, 'reset lands')),
+    d.td({colSpan: 2 }, d.button({
+      onClick: App._emit('suggestLands')
+    }, 'suggest lands')))
+
   return d.table({},
     d.tr({},
       d.td(),
       symbols),
     main,
-    side)
+    side,
+    suggest)
 }
 
 function Sort() {

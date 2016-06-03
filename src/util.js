@@ -14,17 +14,17 @@ function transform(cube, seats, type) {
 
   assert(typeof list === 'string', 'typeof list')
   assert(typeof cards === 'number', 'typeof cards')
-  assert(8 <= cards && cards <= 15, 'cards range')
+  assert(5 <= cards && cards <= 30, 'cards range')
   assert(typeof packs === 'number', 'typeof packs')
-  assert(3 <= packs && packs <= 7, 'packs range')
+  assert(3 <= packs && packs <= 12, 'packs range')
 
   list = list.split('\n').map(_.ascii)
 
   var min = type === 'cube draft'
     ? seats * cards * packs
     : seats * 90
-  assert(min <= list.length && list.length <= 1e3,
-    `this cube needs between ${min} and 1000 cards; it has ${list.length}`)
+  assert(min <= list.length && list.length <= 1e5,
+    `this cube needs between ${min} and 100,000 cards; it has ${list.length}`)
 
   var bad = []
   for (var cardName of list)
@@ -64,13 +64,15 @@ var util = module.exports = {
   },
   game({seats, type, sets, cube}) {
     assert(typeof seats === 'number', 'typeof seats')
-    assert(2 <= seats && seats <= 8, 'seats range')
-    assert(['draft', 'sealed', 'cube draft', 'cube sealed'].indexOf(type) > -1,
+    assert(2 <= seats && seats <= 100, 'seats range')
+    assert(['draft', 'sealed', 'cube draft', 'cube sealed', 'chaos'].indexOf(type) > -1,
       'indexOf type')
 
     if (/cube/.test(type))
       transform(cube, seats, type)
-    else
-      sets.forEach(set => assert(set in Sets, `${set} in Sets`))
+    //remove the below check for now to allow Random sets
+    //TODO add if check for Random set
+    //else
+    //  sets.forEach(set => assert(set in Sets, `${set} in Sets`))
   }
 }

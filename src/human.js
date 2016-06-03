@@ -6,11 +6,15 @@ var hash = require('./hash')
 module.exports = class extends EventEmitter {
   constructor(sock) {
     Object.assign(this, {
+      isBot: false,
+      isConnected: false,
+      isReadyToStart: false,
       id: sock.id,
       name: sock.name,
       time: 0,
       packs: [],
-      pool: []
+      autopick_index: -1,
+      pool: [],
     })
     this.attach(sock)
   }
@@ -19,6 +23,8 @@ module.exports = class extends EventEmitter {
       this.sock.ws.close()
 
     sock.mixin(this)
+    sock.on('readyToStart', this._readyToStart.bind(this))
+    sock.on('autopick', this._autopick.bind(this))
     sock.on('pick', this._pick.bind(this))
     sock.on('hash', this._hash.bind(this))
 
@@ -27,12 +33,24 @@ module.exports = class extends EventEmitter {
       this.send('pack', pack)
     this.send('pool', this.pool)
   }
+  err(message) {
+    this.send('error', message)
+  }
   _hash(deck) {
     if (!util.deck(deck, this.pool))
       return
 
     this.hash = hash(deck)
     this.emit('meta')
+  }
+  _readyToStart(value) {
+    this.isReadyToStart = value
+    this.emit('meta')
+  }
+  _autopick(index) {
+    var [pack] = this.packs
+    if (pack && index < pack.length)
+      this.autopick_index = index
   }
   _pick(index) {
     var [pack] = this.packs
@@ -47,8 +65,8 @@ module.exports = class extends EventEmitter {
     if (pack.length === 1)
       return this.pick(0)
 
-    if (this.useTimer)
-      this.time = 20 + 5 * pack.length
+    if (this.useTimer > 0)
+      this.time = parseInt(this.useTimer) + parseInt(pack.length)
 
     this.send('pack', pack)
   }
@@ -65,17 +83,20 @@ module.exports = class extends EventEmitter {
     else
       this.sendPack(next)
 
+    this.autopick_index = -1
     this.emit('pass', pack)
   }
-  pickRand() {
-    var index = _.rand(this.packs[0].length)
+  pickOnTimeout() {
+    let index = this.autopick_index
+    if (index === -1)
+      index = _.rand(this.packs[0].length)
     this.pick(index)
   }
   kick() {
     this.send = ()=>{}
     while(this.packs.length)
-      this.pickRand()
-    this.sendPack = this.pickRand
+      this.pickOnTimeout()
+    this.sendPack = this.pickOnTimeout
     this.isBot = true
   }
 }

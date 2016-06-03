@@ -1,5 +1,9 @@
 export default {
+  random: {
+    "Random Set": "RNG"
+  },
   expansion: {
+    "Shadows Over Innistrad": "SOI",
     "Oath of the Gatewatch": "OGW",
     "Battle for Zendikar": "BFZ",
     "Dragons of Tarkir": "DTK",
@@ -71,6 +75,7 @@ export default {
     "Arabian Nights": "ARN"
   },
   core: {
+    "Magic Origins": "ORI",
     "Magic 2015 Core Set": "M15",
     "Magic 2014 Core Set": "M14",
     "Magic 2013": "M13",
@@ -90,7 +95,7 @@ export default {
     "Limited Edition Alpha": "LEA"
   },
   other: {
-    "Magic Origins": "ORI",
+    "Eternal Masters": "EMA",
     "Modern Masters 2015": "MM2",
     "Tempest Remastered": "TPR",
     "Conspiracy": "CNS",
